@@ -1,6 +1,6 @@
-import prisma from '../../config/database';
-import { sanityClient, ARTICLES_QUERY } from '../../config/sanity';
-import { SanityArticle, SyncResult } from './articles.types';
+import prisma from "../../config/database";
+import { sanityClient, ARTICLES_QUERY } from "../../config/sanity";
+import { SanityArticle, SyncResult } from "./articles.types";
 
 export class ArticlesService {
   /**
@@ -8,7 +8,9 @@ export class ArticlesService {
    */
   async syncFromSanity(): Promise<SyncResult> {
     // Fetch articles from Sanity
-    const sanityArticles: SanityArticle[] = await sanityClient.fetch(ARTICLES_QUERY);
+    const sanityArticles: SanityArticle[] = await sanityClient.fetch(
+      ARTICLES_QUERY
+    );
 
     let created = 0;
     let updated = 0;
@@ -19,8 +21,8 @@ export class ArticlesService {
       });
 
       // Determine type and infer isPost
-      const type = sanityArticle._type || 'article'; // Default to 'article' if not set
-      const isPost = type.toLowerCase() === 'post';
+      const type = sanityArticle._type || "article"; // Default to 'article' if not set
+      const isPost = type.toLowerCase() === "post";
 
       if (!existingArticle) {
         // Create new article
@@ -32,7 +34,7 @@ export class ArticlesService {
             author: sanityArticle.author || null,
             type,
             isPost,
-            visibility: 'private', // Default to private
+            visibility: "private", // Default to private
             isEditorsPick: false,
             lastSyncedAt: new Date(),
           },
@@ -67,7 +69,7 @@ export class ArticlesService {
    */
   async listArticles() {
     return prisma.article.findMany({
-      orderBy: { lastSyncedAt: 'desc' },
+      orderBy: { lastSyncedAt: "desc" },
       select: {
         id: true,
         sanityId: true,
@@ -86,13 +88,13 @@ export class ArticlesService {
   /**
    * Update article visibility
    */
-  async updateVisibility(articleId: string, visibility: 'public' | 'private') {
+  async updateVisibility(articleId: string, visibility: "public" | "private") {
     const article = await prisma.article.findUnique({
       where: { id: articleId },
     });
 
     if (!article) {
-      throw new Error('Article not found');
+      throw new Error("Article not found");
     }
 
     return prisma.article.update({
@@ -111,16 +113,16 @@ export class ArticlesService {
     });
 
     if (!article) {
-      throw new Error('Article not found');
+      throw new Error("Article not found");
     }
 
     // Check if article is a post
     if (!article.isPost) {
-      throw new Error('Only posts can be set as Editor\'s Pick');
+      throw new Error("Only posts can be set as Editor's Pick");
     }
 
     // Use transaction to ensure atomicity
-    return prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async (tx: any) => {
       // Unset previous editor's pick
       await tx.article.updateMany({
         where: { isEditorsPick: true },
@@ -140,8 +142,8 @@ export class ArticlesService {
    */
   async getPublicArticles() {
     return prisma.article.findMany({
-      where: { visibility: 'public' },
-      orderBy: { lastSyncedAt: 'desc' },
+      where: { visibility: "public" },
+      orderBy: { lastSyncedAt: "desc" },
       select: {
         id: true,
         sanityId: true,
@@ -161,7 +163,7 @@ export class ArticlesService {
    */
   async getPublicArticleBySlug(slug: string) {
     const article = await prisma.article.findUnique({
-      where: { slug, visibility: 'public' },
+      where: { slug, visibility: "public" },
       select: {
         id: true,
         sanityId: true,
@@ -176,7 +178,7 @@ export class ArticlesService {
     });
 
     if (!article) {
-      throw new Error('Article not found');
+      throw new Error("Article not found");
     }
 
     return article;

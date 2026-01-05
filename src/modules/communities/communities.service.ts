@@ -1,8 +1,8 @@
-import prisma from '../../config/database';
-import { SlugUtil } from '../../utils/slug.util';
-import { OtpUtil } from '../../utils/otp.util';
-import { EmailUtil } from '../../utils/email.util';
-import { env } from '../../config/env';
+import prisma from "../../config/database";
+import { SlugUtil } from "../../utils/slug.util";
+import { OtpUtil } from "../../utils/otp.util";
+import { EmailUtil } from "../../utils/email.util";
+import { env } from "../../config/env";
 import {
   CreateCommunitySubmissionRequest,
   ApproveSubmissionResponse,
@@ -12,16 +12,16 @@ import {
   VerifyLeaveRequest,
   AddMemberRequest,
   UpdateMemberRequest,
-} from './communities.types';
+} from "./communities.types";
 
 export class CommunitiesService {
   /**
    * List all community submissions
    */
-  async listSubmissions(status?: 'pending' | 'approved' | 'rejected') {
+  async listSubmissions(status?: "pending" | "approved" | "rejected") {
     return prisma.communitySubmission.findMany({
       where: status ? { status } : undefined,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
   }
 
@@ -34,7 +34,7 @@ export class CommunitiesService {
     });
 
     if (!submission) {
-      throw new Error('Submission not found');
+      throw new Error("Submission not found");
     }
 
     return submission;
@@ -50,11 +50,11 @@ export class CommunitiesService {
     });
 
     if (!submission) {
-      throw new Error('Submission not found');
+      throw new Error("Submission not found");
     }
 
-    if (submission.status !== 'pending') {
-      throw new Error('Submission has already been processed');
+    if (submission.status !== "pending") {
+      throw new Error("Submission has already been processed");
     }
 
     // Generate unique slug
@@ -67,11 +67,11 @@ export class CommunitiesService {
     );
 
     // Use transaction to ensure atomicity
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       // Update submission status
       const updatedSubmission = await tx.communitySubmission.update({
         where: { id },
-        data: { status: 'approved' },
+        data: { status: "approved" },
       });
 
       // Create community
@@ -112,16 +112,16 @@ export class CommunitiesService {
     });
 
     if (!submission) {
-      throw new Error('Submission not found');
+      throw new Error("Submission not found");
     }
 
-    if (submission.status !== 'pending') {
-      throw new Error('Submission has already been processed');
+    if (submission.status !== "pending") {
+      throw new Error("Submission has already been processed");
     }
 
     return prisma.communitySubmission.update({
       where: { id },
-      data: { status: 'rejected' },
+      data: { status: "rejected" },
     });
   }
 
@@ -130,7 +130,7 @@ export class CommunitiesService {
    */
   async listCommunities() {
     return prisma.community.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       include: {
         _count: {
           select: {
@@ -156,13 +156,13 @@ export class CommunitiesService {
           where: {
             deletedAt: null, // Only return active members
           },
-          orderBy: { createdAt: 'asc' },
+          orderBy: { createdAt: "asc" },
         },
       },
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     return community;
@@ -173,7 +173,7 @@ export class CommunitiesService {
    */
   async getPublicCommunities() {
     return prisma.community.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         name: true,
@@ -218,7 +218,7 @@ export class CommunitiesService {
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     return community;
@@ -238,7 +238,7 @@ export class CommunitiesService {
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     // Check if already a member
@@ -252,7 +252,7 @@ export class CommunitiesService {
     });
 
     if (existingMember && !existingMember.deletedAt) {
-      throw new Error('Already a member of this community');
+      throw new Error("Already a member of this community");
     }
 
     // Generate OTP
@@ -266,7 +266,7 @@ export class CommunitiesService {
         email,
         name,
         otp,
-        action: 'join',
+        action: "join",
         expiresAt,
       },
     });
@@ -274,7 +274,7 @@ export class CommunitiesService {
     // Send email
     await EmailUtil.sendJoinOtp(email, name, community.name, otp);
 
-    return { message: 'Verification code sent to your email' };
+    return { message: "Verification code sent to your email" };
   }
 
   /**
@@ -289,19 +289,19 @@ export class CommunitiesService {
         communityId,
         email,
         otp,
-        action: 'join',
+        action: "join",
         verified: false,
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!otpRecord) {
-      throw new Error('Invalid verification code');
+      throw new Error("Invalid verification code");
     }
 
     // Check expiration
     if (OtpUtil.isExpired(otpRecord.expiresAt)) {
-      throw new Error('Verification code has expired');
+      throw new Error("Verification code has expired");
     }
 
     // Get community
@@ -310,11 +310,11 @@ export class CommunitiesService {
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     // Use transaction
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       // Mark OTP as verified
       await tx.communityOtp.update({
         where: { id: otpRecord.id },
@@ -363,7 +363,7 @@ export class CommunitiesService {
     });
 
     return {
-      message: 'Successfully joined community',
+      message: "Successfully joined community",
       member: result,
     };
   }
@@ -388,7 +388,7 @@ export class CommunitiesService {
     });
 
     if (!member || member.deletedAt) {
-      throw new Error('Not a member of this community');
+      throw new Error("Not a member of this community");
     }
 
     // Generate OTP
@@ -401,15 +401,20 @@ export class CommunitiesService {
         communityId,
         email,
         otp,
-        action: 'leave',
+        action: "leave",
         expiresAt,
       },
     });
 
     // Send email
-    await EmailUtil.sendLeaveOtp(email, member.name, member.community.name, otp);
+    await EmailUtil.sendLeaveOtp(
+      email,
+      member.name,
+      member.community.name,
+      otp
+    );
 
-    return { message: 'Verification code sent to your email' };
+    return { message: "Verification code sent to your email" };
   }
 
   /**
@@ -424,23 +429,23 @@ export class CommunitiesService {
         communityId,
         email,
         otp,
-        action: 'leave',
+        action: "leave",
         verified: false,
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!otpRecord) {
-      throw new Error('Invalid verification code');
+      throw new Error("Invalid verification code");
     }
 
     // Check expiration
     if (OtpUtil.isExpired(otpRecord.expiresAt)) {
-      throw new Error('Verification code has expired');
+      throw new Error("Verification code has expired");
     }
 
     // Use transaction
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       // Mark OTP as verified
       await tx.communityOtp.update({
         where: { id: otpRecord.id },
@@ -460,12 +465,12 @@ export class CommunitiesService {
         },
         data: {
           deletedAt: new Date(),
-          deletedBy: 'self',
+          deletedBy: "self",
         },
       });
     });
 
-    return { message: 'Successfully left community' };
+    return { message: "Successfully left community" };
   }
 
   /**
@@ -480,7 +485,7 @@ export class CommunitiesService {
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     // Check if member already exists
@@ -494,7 +499,7 @@ export class CommunitiesService {
     });
 
     if (existingMember && !existingMember.deletedAt) {
-      throw new Error('Member already exists in this community');
+      throw new Error("Member already exists in this community");
     }
 
     let member;
@@ -542,7 +547,7 @@ export class CommunitiesService {
     });
 
     if (!member) {
-      throw new Error('Member not found');
+      throw new Error("Member not found");
     }
 
     return prisma.communityMember.update({
@@ -569,7 +574,7 @@ export class CommunitiesService {
     });
 
     if (!member) {
-      throw new Error('Member not found');
+      throw new Error("Member not found");
     }
 
     // Soft delete with admin tracking
