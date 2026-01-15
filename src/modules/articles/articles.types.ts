@@ -2,6 +2,7 @@
 export interface SanityArticle {
   _id: string;
   title: string;
+  isPost: boolean
   slug: string;
   author?: string;
   _type?: string; // Optional in case some articles don't have type set

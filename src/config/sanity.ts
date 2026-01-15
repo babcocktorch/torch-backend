@@ -14,10 +14,12 @@ export const sanityClient = createClient({
  * Adjust fields based on your Sanity schema
  */
 export const ARTICLES_QUERY = `
-  *[_type in ["Post", "Opinion"]] | order(_createdAt desc){
+  *[_type == "Post"] 
+  | order(_createdAt desc) 
+  [0...1000] {
     _id,
-    _type,
     title,
+    isPost,
     "slug": slug.current,
     "author": author->name,
     _createdAt,

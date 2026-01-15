@@ -19,6 +19,7 @@ export class ArticlesController {
       }, 200);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Sync failed';
+      console.log(error)
       return ResponseUtil.error(res, message, 500);
     }
   }
