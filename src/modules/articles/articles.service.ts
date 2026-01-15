@@ -22,7 +22,7 @@ export class ArticlesService {
 
       // Determine type and infer isPost
       const type = sanityArticle._type || "article"; // Default to 'article' if not set
-      const isPost = type.toLowerCase() === "post";
+      const isPost = type.toLowerCase() === "Post";
 
       if (!existingArticle) {
         // Create new article

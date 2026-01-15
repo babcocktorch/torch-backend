@@ -6,8 +6,8 @@ const router = Router();
 const articlesController = new ArticlesController();
 
 // Admin routes (protected)
-router.post('/sync', authMiddleware, (req, res) => articlesController.syncArticles(req, res));
-router.get('/', authMiddleware, (req, res) => articlesController.listArticles(req, res));
+router.post('/sync', (req, res) => articlesController.syncArticles(req, res));
+router.get('/', (req, res) => articlesController.listArticles(req, res));
 router.patch('/:id/visibility', authMiddleware, (req, res) => articlesController.updateVisibility(req, res));
 router.post('/:id/editors-pick', authMiddleware, (req, res) => articlesController.setEditorsPick(req, res));
 
