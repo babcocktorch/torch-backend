@@ -1,191 +1,51 @@
-# Newspaper Admin Backend API
+# Newspaper Admin Backend - API Documentation
 
-## Overview
-Backend system for managing a school newspaper. Built with Express.js, TypeScript, Prisma, and PostgreSQL.
+Complete API reference for the school newspaper backend system.
 
-**Base URL:** `http://localhost:3000`
-
-## Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/newspaper_db"
-
-# JWT Authentication
-JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
-JWT_EXPIRES_IN="7d"
-
-# Server Configuration
-PORT=3000
-NODE_ENV="development"
-
-# Sanity CMS
-SANITY_PROJECT_ID="your-sanity-project-id"
-SANITY_DATASET="production"
-SANITY_API_VERSION="2023-05-03"
-SANITY_TOKEN="your-sanity-read-token"  # Optional for private datasets
-
-# Email Service (nodemailer)
-EMAIL_SERVICE="smtp"
-EMAIL_HOST="smtp.gmail.com"
-EMAIL_PORT="587"
-EMAIL_USER="your-email@gmail.com"
-EMAIL_PASSWORD="your-app-password"
-EMAIL_FROM="noreply@schoolnewspaper.com"
-
-# OTP Configuration
-OTP_EXPIRY_MINUTES="10"
-```
-
-### Email Service Configuration
-
-The system uses **nodemailer** for sending emails. Supported configurations:
-
-#### Option 1: Gmail (Recommended for Development)
-```env
-EMAIL_HOST="smtp.gmail.com"
-EMAIL_PORT="587"
-EMAIL_USER="your-gmail@gmail.com"
-EMAIL_PASSWORD="your-app-password"  # Generate at myaccount.google.com/apppasswords
-```
-
-#### Option 2: Custom SMTP
-```env
-EMAIL_HOST="your-smtp-server.com"
-EMAIL_PORT="587"
-EMAIL_USER="your-smtp-username"
-EMAIL_PASSWORD="your-smtp-password"
-```
-
-#### Option 3: SendGrid, Mailgun (Production)
-Update `src/utils/email.util.ts` to use their respective SDKs.
+**Base URL:** `http://localhost:3000api/v2/`  
+**Version:** 2.0.0  
+**Last Updated:** January 4, 2026
 
 ---
 
-## 📋 Implementation Status
+## Quick Navigation
 
-### ✅ Completed Sections
-- **Section 1:** Admin Authentication (Email allowlist with password setup)
-- **Section 2:** Articles Management (Sanity sync, visibility control, Editor's Pick)
-- **Section 4:** Community Submissions & Management (Approve/reject, list communities)
-- **Section 5:** Community Member Management (OTP-based join/leave, admin controls)
-
-### ❌ Not Implemented (Out of Scope - v1)
-- **Section 3:** Article/Story Submissions (user-submitted article ideas)
-- **Community Owner Dashboards** (will be added later)
-- **Announcements** (community-specific announcements)
-- **Events** (community event management)
-- **Member Roles** (beyond basic membership)
-- **Comments/Discussions** (on articles or communities)
-- **Moderation Tools** (content moderation interface)
-- **Analytics Dashboard** (usage statistics, metrics)
-- **Email Automation Logic** (automated campaigns)
-- **Article Read Tracking** (by IP address)
-- **Reactions System** (like/love/insightful on articles)
-
-**Note:** Article submissions, read tracking, and reactions were mentioned in the original spec but deprioritized for v1. These will be implemented in future versions.
-
----
-
-## Table of Contents
-- [Implementation Status](#-implementation-status)
-- [Project Structure](#-project-structure)
-- [Authentication](#authentication)
-- [Articles](#articles)
-- [Community Submissions](#community-submissions)
-- [Communities](#communities)
-- [Member Management](#member-management)
-- [Setup & Installation](#setup--installation)
-- [Database Schema](#database-schema)
-- [Environment Variables](#environment-variables)
-- [Development Scripts](#development-scripts)
-
----
-
-## 📁 Project Structure
-
-```
-newspaper-backend/
-├── src/
-│   ├── config/
-│   │   ├── database.ts          # Prisma client instance
-│   │   ├── env.ts               # Environment variable validation
-│   │   └── sanity.ts            # Sanity CMS client configuration
-│   ├── middleware/
-│   │   ├── auth.middleware.ts   # JWT verification middleware
-│   │   └── error.middleware.ts  # Global error handler
-│   ├── modules/
-│   │   ├── auth/
-│   │   │   ├── auth.controller.ts
-│   │   │   ├── auth.service.ts
-│   │   │   ├── auth.routes.ts
-│   │   │   └── auth.types.ts
-│   │   ├── articles/
-│   │   │   ├── articles.controller.ts
-│   │   │   ├── articles.service.ts
-│   │   │   ├── articles.routes.ts
-│   │   │   ├── articles.types.ts
-│   │   │   ├── public.routes.ts    # Public article endpoints
-│   │   │   └── cron.routes.ts      # Internal sync endpoint
-│   │   └── communities/
-│   │       ├── communities.controller.ts
-│   │       ├── communities.service.ts
-│   │       ├── communities.routes.ts
-│   │       ├── communities.types.ts
-│   │       └── public.routes.ts    # Public community endpoints
-│   ├── utils/
-│   │   ├── jwt.util.ts          # JWT generation & verification
-│   │   ├── password.util.ts     # bcrypt hashing & validation
-│   │   ├── response.util.ts     # Standardized API responses
-│   │   ├── slug.util.ts         # URL slug generation
-│   │   ├── email.util.ts        # Email service (nodemailer)
-│   │   └── otp.util.ts          # OTP generation & validation
-│   ├── types/
-│   │   └── express.d.ts         # Express type extensions
-│   ├── app.ts                   # Express app setup
-│   └── server.ts                # Server entry point
-├── prisma/
-│   ├── schema.prisma            # Database schema
-│   ├── migrations/              # Database migrations
-│   └── seed.ts                  # Seed script for admin allowlist
-├── .env                         # Environment variables (not in git)
-├── .env.example                 # Environment template
-├── .gitignore
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+- [Authentication](#authentication) - Login, setup, logout
+- [Articles](#articles) - Sanity sync, visibility, editor's pick
+- [Communities](#communities) - Directory CRUD
+- [Submissions](#submissions) - Community content submissions
+- [Response Format](#standard-response-format)
+- [Setup Guide](#setup-instructions)
 
 ---
 
 ## Authentication
 
-All admin endpoints require JWT authentication via the `Authorization` header:
+All admin endpoints (`/admin/*`) require JWT authentication via the `Authorization` header:
 ```
 Authorization: Bearer YOUR_JWT_TOKEN
 ```
 
-### Setup Password (First Login)
-**Endpoint:** `POST /admin/auth/setup`
+### 1. Setup Password (First Login)
 
-**Description:** First-time password setup for allowlisted admins.
+**POST** `/admin/auth/setup` - Public
 
-**Request Body:**
+First-time password setup for allowlisted admin emails.
+
+**Request:**
 ```json
 {
-  "email": "admin@school.edu",
-  "password": "SecurePass123"
+  "email": "admin@school.edu",     // Required: Must be pre-approved
+  "password": "SecurePass123"      // Required: 8+ chars, 1 upper, 1 lower, 1 number
 }
 ```
 
-**Response (201):**
+**Success (201):**
 ```json
 {
   "success": true,
   "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "token": "eyJhbGc...",
     "admin": {
       "id": "uuid",
       "email": "admin@school.edu",
@@ -195,19 +55,27 @@ Authorization: Bearer YOUR_JWT_TOKEN
 }
 ```
 
-**Error Responses:**
+**Errors:**
+- `400` - Weak password or missing fields
 - `403` - Email not allowlisted
 - `400` - Account already activated
-- `400` - Invalid password (must be 8+ chars, 1 uppercase, 1 lowercase, 1 number)
+
+**cURL:**
+```bash
+curl -X POST http://localhost:3000/api/v2/admin/auth/setup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@school.edu","password":"SecurePass123"}'
+```
 
 ---
 
-### Login
-**Endpoint:** `POST /admin/auth/login`
+### 2. Login
 
-**Description:** Standard login for activated accounts.
+**POST** `/admin/auth/login` - Public
 
-**Request Body:**
+Standard login after password is set.
+
+**Request:**
 ```json
 {
   "email": "admin@school.edu",
@@ -215,73 +83,59 @@ Authorization: Bearer YOUR_JWT_TOKEN
 }
 ```
 
-**Response (200):**
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "admin": {
-      "id": "uuid",
-      "email": "admin@school.edu",
-      "name": "Admin User"
-    }
+    "token": "eyJhbGc...",
+    "admin": { "id": "uuid", "email": "admin@school.edu", "name": "Admin User" }
   }
 }
 ```
 
-**Error Responses:**
+**Errors:**
 - `401` - Invalid credentials
 - `403` - Account not activated (password not set)
 
 ---
 
-### Get Current Admin
-**Endpoint:** `GET /admin/auth/me`
+### 3. Get Current Admin
 
-**Description:** Get current authenticated admin's profile.
+**GET** `/admin/auth/me` - Protected
 
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+Get currently authenticated admin details.
 
-**Response (200):**
+**Headers:** `Authorization: Bearer TOKEN`
+
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "admin": {
-      "id": "uuid",
-      "email": "admin@school.edu",
-      "name": "Admin User"
-    }
+    "admin": { "id": "uuid", "email": "admin@school.edu", "name": "Admin User" }
   }
 }
 ```
 
-**Error Responses:**
-- `401` - Invalid or expired token
+**Errors:**
+- `401` - Missing or invalid token
 
 ---
 
-### Logout
-**Endpoint:** `POST /admin/auth/logout`
+### 4. Logout
 
-**Description:** Logout (client-side token deletion).
+**POST** `/admin/auth/logout` - Protected
 
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+Logout (client-side token deletion).
 
-**Response (200):**
+**Headers:** `Authorization: Bearer TOKEN`
+
+**Success (200):**
 ```json
 {
   "success": true,
-  "data": {
-    "message": "Logged out successfully"
-  }
+  "data": { "message": "Logged out successfully" }
 }
 ```
 
@@ -289,136 +143,50 @@ Authorization: Bearer YOUR_JWT_TOKEN
 
 ## Articles
 
-### Sync Articles from Sanity
-**Endpoint:** `POST /admin/articles/sync`
+### 5. Sync from Sanity
 
-**Description:** Fetch articles from Sanity CMS and sync to database. Creates new articles or updates existing ones (preserves visibility and editor's pick status).
+**POST** `/admin/articles/sync` - Protected
 
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+Manual sync of articles from Sanity CMS.
 
-**Response (200):**
+**Headers:** `Authorization: Bearer TOKEN`
+
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
     "message": "Articles synced successfully",
-    "created": 5,
-    "updated": 3,
-    "total": 8
+    "created": 15,
+    "updated": 25,
+    "total": 40
   }
 }
 ```
 
 **Notes:**
-- New articles default to `visibility: "private"`
-- `isPost` is automatically inferred from `type` field (`type === "post"`)
-- Metadata (title, slug, author, type) is updated on sync
-- Visibility and editor's pick status are preserved
+- Fetches articles with `_type` in `["post", "opinion"]`
+- Uses pagination (100 per batch)
+- New articles default to `private`
+- Updates metadata only, preserves visibility/editor's pick
+- Auto-computes `isPost` from `_type === "post"`
 
 ---
 
-### List All Articles (Admin)
-**Endpoint:** `GET /admin/articles`
+### 6. List Articles (Admin)
 
-**Description:** Get all articles with admin metadata.
+**GET** `/admin/articles` - Protected
 
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+Get all articles with admin metadata.
 
-**Response (200):**
+**Headers:** `Authorization: Bearer TOKEN`
+
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "articles": [
-      {
-        "id": "uuid",
-        "sanityId": "sanity-id",
-        "title": "Article Title",
-        "slug": "article-slug",
-        "author": "John Doe",
-        "type": "post",
-        "isPost": true,
-        "visibility": "public",
-        "isEditorsPick": true,
-        "lastSyncedAt": "2026-01-03T10:00:00Z"
-      }
-    ]
-  }
-}
-```
-
----
-
-### Update Article Visibility
-**Endpoint:** `PATCH /admin/articles/:id/visibility`
-
-**Description:** Change article visibility between public and private.
-
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
-**Request Body:**
-```json
-{
-  "visibility": "public"
-}
-```
-
-**Valid Values:** `"public"` | `"private"`
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "article": {
-      "id": "uuid",
-      "sanityId": "sanity-id",
-      "title": "Article Title",
-      "slug": "article-slug",
-      "author": "John Doe",
-      "type": "post",
-      "isPost": true,
-      "visibility": "public",
-      "isEditorsPick": false,
-      "lastSyncedAt": "2026-01-03T10:00:00Z",
-      "createdAt": "2026-01-01T00:00:00Z"
-    }
-  }
-}
-```
-
-**Error Responses:**
-- `400` - Invalid visibility value
-- `404` - Article not found
-
----
-
-### Set Editor's Pick
-**Endpoint:** `POST /admin/articles/:id/editors-pick`
-
-**Description:** Set article as Editor's Pick. Only ONE article can be Editor's Pick at a time. Only articles with `type === "post"` can be set as Editor's Pick.
-
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Article set as Editor's Pick",
-    "article": {
+    "articles": [{
       "id": "uuid",
       "sanityId": "sanity-id",
       "title": "Article Title",
@@ -428,316 +196,176 @@ Authorization: Bearer YOUR_JWT_TOKEN
       "isPost": true,
       "visibility": "public",
       "isEditorsPick": true,
-      "lastSyncedAt": "2026-01-03T10:00:00Z",
-      "createdAt": "2026-01-01T00:00:00Z"
-    }
+      "lastSyncedAt": "2026-01-04T10:00:00Z"
+    }]
   }
 }
 ```
 
-**Error Responses:**
+---
+
+### 7. Update Visibility
+
+**PATCH** `/admin/articles/:id/visibility` - Protected
+
+Change article visibility.
+
+**Headers:** `Authorization: Bearer TOKEN`  
+**URL Params:** `id` (UUID)
+
+**Request:**
+```json
+{
+  "visibility": "public"  // "public" or "private"
+}
+```
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": { "article": { "id": "uuid", "visibility": "public", ... } }
+}
+```
+
+**Errors:**
+- `400` - Invalid visibility value
 - `404` - Article not found
-- `400` - Only posts can be set as Editor's Pick (when `isPost === false`)
+
+---
+
+### 8. Set Editor's Pick
+
+**POST** `/admin/articles/:id/editors-pick` - Protected
+
+Set article as Editor's Pick (only ONE at a time, posts only).
+
+**Headers:** `Authorization: Bearer TOKEN`  
+**URL Params:** `id` (UUID)
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Article set as Editor's Pick",
+    "article": { "id": "uuid", "isEditorsPick": true, ... }
+  }
+}
+```
+
+**Errors:**
+- `404` - Article not found
+- `400` - Only posts can be Editor's Pick (when `isPost === false`)
 
 **Business Rules:**
-- Previous Editor's Pick is automatically unset
-- Only articles where `type === "post"` (i.e., `isPost === true`) can be Editor's Pick
-- Articles with `type === "opinion"`, `"news"`, `"article"`, etc. cannot be Editor's Pick
+- Only ONE article can be Editor's Pick
+- Only articles with `type === "post"` allowed
+- Previous pick automatically unset
 
 ---
 
-### Get Public Articles (Frontend)
-**Endpoint:** `GET /articles`
+### 9. Get Public Articles
 
-**Description:** Get all public articles (no authentication required).
+**GET** `/articles` - Public
 
-**Response (200):**
+Get all public articles for frontend.
+
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "articles": [
-      {
-        "id": "uuid",
-        "sanityId": "sanity-id",
-        "title": "Article Title",
-        "slug": "article-slug",
-        "author": "John Doe",
-        "type": "post",
-        "isPost": true,
-        "isEditorsPick": true,
-        "lastSyncedAt": "2026-01-03T10:00:00Z"
-      }
-    ]
-  }
-}
-```
-
-**Notes:**
-- Only returns articles with `visibility: "public"`
-- Editor's Pick is included in the list
-
----
-
-### Get Single Public Article
-**Endpoint:** `GET /articles/:slug`
-
-**Description:** Get a single public article by slug (no authentication required).
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "article": {
+    "articles": [{
       "id": "uuid",
-      "sanityId": "sanity-id",
       "title": "Article Title",
       "slug": "article-slug",
       "author": "John Doe",
       "type": "post",
       "isPost": true,
-      "isEditorsPick": false,
-      "lastSyncedAt": "2026-01-03T10:00:00Z"
-    }
+      "isEditorsPick": true,
+      "lastSyncedAt": "2026-01-04T10:00:00Z"
+    }]
   }
 }
 ```
 
-**Error Responses:**
+**Notes:** Only returns `visibility === "public"` articles
+
+---
+
+### 10. Get Single Article
+
+**GET** `/articles/:slug` - Public
+
+Get single article by slug.
+
+**URL Params:** `slug` (string)
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": { "article": { "id": "uuid", "slug": "article-slug", ... } }
+}
+```
+
+**Errors:**
 - `404` - Article not found or not public
 
 ---
 
-### Cron Sync (Internal)
-**Endpoint:** `POST /internal/articles/sync`
+### 11. Internal Sync (Cron)
 
-**Description:** Internal endpoint for automated article syncing (e.g., via cron jobs).
+**POST** `/internal/articles/sync` - Internal
 
-**Response:** Same as `POST /admin/articles/sync`
+Automated sync endpoint for cron jobs.
 
-**Security Note:** In production, this endpoint should be protected by IP allowlist or secret token.
+**Success:** Same as `/admin/articles/sync`
 
----
-
-## Community Submissions
-
-### List Community Submissions
-**Endpoint:** `GET /admin/communities/submissions`
-
-**Description:** Get all community submissions. Optionally filter by status.
-
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
-**Query Parameters:**
-- `status` (optional): `"pending"` | `"approved"` | `"rejected"`
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "submissions": [
-      {
-        "id": "uuid",
-        "organizerName": "Jane Doe",
-        "organizerEmail": "jane@school.edu",
-        "communityName": "Robotics Club",
-        "description": "A community for robotics enthusiasts",
-        "status": "pending",
-        "createdAt": "2026-01-03T10:00:00Z"
-      }
-    ]
-  }
-}
-```
-
-**Error Responses:**
-- `400` - Invalid status value
-
----
-
-### Get Single Submission
-**Endpoint:** `GET /admin/communities/submissions/:id`
-
-**Description:** Get details of a specific community submission.
-
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "submission": {
-      "id": "uuid",
-      "organizerName": "Jane Doe",
-      "organizerEmail": "jane@school.edu",
-      "communityName": "Robotics Club",
-      "description": "A community for robotics enthusiasts",
-      "status": "pending",
-      "createdAt": "2026-01-03T10:00:00Z"
-    }
-  }
-}
-```
-
-**Error Responses:**
-- `404` - Submission not found
-
----
-
-### Approve Submission
-**Endpoint:** `POST /admin/communities/submissions/:id/approve`
-
-**Description:** Approve a community submission. This will:
-1. Create the community with a unique slug
-2. Add the organizer as the first member
-3. Enable notifications for the organizer by default
-4. Update submission status to "approved"
-
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Community submission approved",
-    "submission": {
-      "id": "uuid",
-      "organizerName": "Jane Doe",
-      "organizerEmail": "jane@school.edu",
-      "communityName": "Robotics Club",
-      "description": "A community for robotics enthusiasts",
-      "status": "approved",
-      "createdAt": "2026-01-03T10:00:00Z"
-    },
-    "community": {
-      "id": "uuid",
-      "name": "Robotics Club",
-      "slug": "robotics-club",
-      "description": "A community for robotics enthusiasts",
-      "createdAt": "2026-01-03T10:05:00Z"
-    },
-    "member": {
-      "id": "uuid",
-      "communityId": "uuid",
-      "name": "Jane Doe",
-      "email": "jane@school.edu",
-      "notificationsEnabled": true,
-      "deletedAt": null,
-      "createdAt": "2026-01-03T10:05:00Z"
-    }
-  }
-}
-```
-
-**Error Responses:**
-- `404` - Submission not found
-- `400` - Submission has already been processed
-
-**Business Rules:**
-- Slug is auto-generated from community name
-- If slug exists, a number is appended (e.g., `robotics-club-2`)
-- Organizer becomes first member with notifications enabled
-- Transaction ensures atomicity (all operations succeed or none do)
-
----
-
-### Reject Submission
-**Endpoint:** `POST /admin/communities/submissions/:id/reject`
-
-**Description:** Reject a community submission. Updates status to "rejected".
-
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Community submission rejected",
-    "submission": {
-      "id": "uuid",
-      "organizerName": "Jane Doe",
-      "organizerEmail": "jane@school.edu",
-      "communityName": "Robotics Club",
-      "description": "A community for robotics enthusiasts",
-      "status": "rejected",
-      "createdAt": "2026-01-03T10:00:00Z"
-    }
-  }
-}
-```
-
-**Error Responses:**
-- `404` - Submission not found
-- `400` - Submission has already been processed
+**Security:** Protect with IP allowlist or secret token in production
 
 ---
 
 ## Communities
 
-### List All Communities (Admin)
-**Endpoint:** `GET /admin/communities`
+### 12. List Communities (Public)
 
-**Description:** Get all communities with member counts.
+**GET** `/communities` - Public
 
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+Get all communities for dropdown selection.
 
-**Response (200):**
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "communities": [
-      {
-        "id": "uuid",
-        "name": "Robotics Club",
-        "slug": "robotics-club",
-        "description": "A community for robotics enthusiasts",
-        "createdAt": "2026-01-03T10:00:00Z",
-        "_count": {
-          "members": 15
-        }
-      }
-    ]
+    "communities": [{
+      "id": "uuid",
+      "name": "Robotics Club",
+      "slug": "robotics-club",
+      "description": "Building robots",
+      "logoUrl": "https://example.com/logo.png",
+      "createdAt": "2026-01-04T10:00:00Z",
+      "_count": { "submissions": 12 }
+    }]
   }
 }
 ```
 
-**Notes:**
-- Only counts active members (where `deletedAt` is null)
+**Notes:** Ordered alphabetically for dropdowns
 
 ---
 
-### Get Community Details (Admin)
-**Endpoint:** `GET /admin/communities/:id`
+### 13. Get Community by Slug
 
-**Description:** Get community details including all active members.
+**GET** `/communities/:slug` - Public
 
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+Get single community details.
 
-**Response (200):**
+**URL Params:** `slug` (string)
+
+**Success (200):**
 ```json
 {
   "success": true,
@@ -746,593 +374,405 @@ Authorization: Bearer YOUR_JWT_TOKEN
       "id": "uuid",
       "name": "Robotics Club",
       "slug": "robotics-club",
-      "description": "A community for robotics enthusiasts",
-      "createdAt": "2026-01-03T10:00:00Z",
-      "members": [
-        {
-          "id": "uuid",
-          "communityId": "uuid",
-          "name": "Jane Doe",
-          "email": "jane@school.edu",
-          "notificationsEnabled": true,
-          "deletedAt": null,
-          "createdAt": "2026-01-03T10:00:00Z"
-        }
-      ]
+      "description": "Building robots",
+      "logoUrl": "https://example.com/logo.png",
+      "contactEmail": "robotics@school.edu",
+      "createdAt": "2026-01-04T10:00:00Z",
+      "_count": { "submissions": 12 }
     }
   }
 }
 ```
 
-**Error Responses:**
+**Errors:**
 - `404` - Community not found
 
-**Notes:**
-- Only returns active members (soft-deleted members excluded)
-
 ---
 
-### Get Public Communities (Frontend)
-**Endpoint:** `GET /communities`
+### 14. List Communities (Admin)
 
-**Description:** Get all communities (public, no authentication required).
+**GET** `/admin/communities` - Protected
 
-**Response (200):**
+Get all communities with admin metadata.
+
+**Headers:** `Authorization: Bearer TOKEN`
+
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "communities": [
-      {
-        "id": "uuid",
-        "name": "Robotics Club",
-        "slug": "robotics-club",
-        "description": "A community for robotics enthusiasts",
-        "createdAt": "2026-01-03T10:00:00Z",
-        "_count": {
-          "members": 15
-        }
-      }
-    ]
-  }
-}
-```
-
----
-
-### Get Single Public Community
-**Endpoint:** `GET /communities/:slug`
-
-**Description:** Get a single community by slug (public, no authentication required).
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "community": {
+    "communities": [{
       "id": "uuid",
       "name": "Robotics Club",
       "slug": "robotics-club",
-      "description": "A community for robotics enthusiasts",
-      "createdAt": "2026-01-03T10:00:00Z",
-      "_count": {
-        "members": 15
-      }
-    }
+      "description": "Building robots",
+      "logoUrl": "https://example.com/logo.png",
+      "contactEmail": "robotics@school.edu",
+      "createdAt": "2026-01-04T10:00:00Z",
+      "updatedAt": "2026-01-04T10:00:00Z",
+      "_count": { "submissions": 12 }
+    }]
   }
 }
 ```
 
-**Error Responses:**
+---
+
+### 15. Get Community by ID (Admin)
+
+**GET** `/admin/communities/:id` - Protected
+
+Get single community by ID.
+
+**Headers:** `Authorization: Bearer TOKEN`  
+**URL Params:** `id` (UUID)
+
+**Success (200):** Same structure as public endpoint with `updatedAt`
+
+**Errors:**
 - `404` - Community not found
 
 ---
 
-## Member Management
+### 16. Create Community
 
-### Request to Join Community (Public)
-**Endpoint:** `POST /communities/:communityId/join/request`
+**POST** `/admin/communities` - Protected
 
-**Description:** Send OTP to email for joining a community. No authentication required.
+Create a new community.
 
-**Request Body:**
+**Headers:** `Authorization: Bearer TOKEN`
+
+**Request:**
 ```json
 {
-  "name": "Jane Doe",
-  "email": "jane@school.edu"
+  "name": "Robotics Team",              // Required
+  "slug": "robotics",                   // Optional: auto-generated if missing
+  "description": "Building robots",     // Optional
+  "logoUrl": "https://example.com/...", // Optional
+  "contactEmail": "robotics@school.edu" // Optional: must be valid email
 }
 ```
 
-**Response (200):**
+**Success (201):**
 ```json
 {
   "success": true,
   "data": {
-    "message": "Verification code sent to your email"
+    "message": "Community created successfully",
+    "community": {
+      "id": "uuid",
+      "name": "Robotics Team",
+      "slug": "robotics",
+      ...
+    }
   }
 }
 ```
 
-**Business Rules:**
-- 6-digit OTP sent to email
-- OTP expires in 10 minutes
-- Cannot join if already a member
-- OTP is single-use
+**Errors:**
+- `400` - Missing name or invalid email
+- Slug auto-increments if duplicate (e.g., `robotics-2`)
 
-**Error Responses:**
+---
+
+### 17. Update Community
+
+**PATCH** `/admin/communities/:id` - Protected
+
+Update community (partial update).
+
+**Headers:** `Authorization: Bearer TOKEN`  
+**URL Params:** `id` (UUID)
+
+**Request:**
+```json
+{
+  "name": "Updated Name",        // Optional
+  "slug": "updated-slug",        // Optional
+  "description": "New desc",     // Optional: null to clear
+  "logoUrl": "https://...",      // Optional: null to clear
+  "contactEmail": "new@..."      // Optional: null to clear
+}
+```
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Community updated successfully",
+    "community": { ... }
+  }
+}
+```
+
+**Errors:**
 - `404` - Community not found
-- `400` - Already a member of this community
-- `400` - Name and email are required
+- `400` - Empty body, duplicate slug, or invalid email
+
+**Notes:** Only provided fields are updated
 
 ---
 
-### Verify Join OTP (Public)
-**Endpoint:** `POST /communities/:communityId/join/verify`
+### 18. Delete Community
 
-**Description:** Verify OTP and complete membership. No authentication required.
+**DELETE** `/admin/communities/:id` - Protected
 
-**Request Body:**
-```json
-{
-  "email": "jane@school.edu",
-  "otp": "123456"
-}
-```
+Delete community (cascades to submissions).
 
-**Response (200):**
+**Headers:** `Authorization: Bearer TOKEN`  
+**URL Params:** `id` (UUID)
+
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "message": "Successfully joined community",
-    "member": {
-      "id": "uuid",
-      "communityId": "uuid",
-      "name": "Jane Doe",
-      "email": "jane@school.edu",
-      "notificationsEnabled": true,
-      "deletedAt": null,
-      "deletedBy": null,
-      "createdAt": "2026-01-03T10:00:00Z"
-    }
+    "message": "Community deleted successfully",
+    "deletedSubmissions": 12
   }
 }
 ```
 
-**Error Responses:**
-- `400` - Invalid verification code
-- `400` - Verification code has expired
+**Errors:**
 - `404` - Community not found
 
 ---
 
-### Request to Leave Community (Public)
-**Endpoint:** `POST /communities/:communityId/leave/request`
+## Submissions
 
-**Description:** Send OTP to email for leaving a community. No authentication required.
+### 19. Submit Community Content
 
-**Request Body:**
+**POST** `/submissions/community` - Public
+
+Submit community content (news/event/announcement).
+
+**Request:**
 ```json
 {
-  "email": "jane@school.edu"
+  "communityId": "uuid",                      // Required
+  "authorName": "Jane Doe",                   // Required
+  "authorContact": "jane@school.edu",         // Required: valid email
+  "submissionType": "news",                   // Required: news|event|announcement
+  "title": "We Won!",                         // Required
+  "content": "Our team placed first...",      // Required
+  "eventDate": "2026-05-15T18:00:00Z",        // Optional: required for events
+  "mediaUrls": ["https://..."]                // Optional: array of URLs
 }
 ```
 
-**Response (200):**
+**Success (201):**
 ```json
 {
   "success": true,
   "data": {
-    "message": "Verification code sent to your email"
-  }
-}
-```
-
-**Business Rules:**
-- Must be an active member
-- OTP sent for identity verification
-- Prevents unauthorized removal
-
-**Error Responses:**
-- `404` - Not a member of this community
-- `400` - Email is required
-
----
-
-### Verify Leave OTP (Public)
-**Endpoint:** `POST /communities/:communityId/leave/verify`
-
-**Description:** Verify OTP and leave community (soft delete). No authentication required.
-
-**Request Body:**
-```json
-{
-  "email": "jane@school.edu",
-  "otp": "654321"
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Successfully left community"
-  }
-}
-```
-
-**Database Changes:**
-- Member is soft-deleted (`deletedAt` set to current timestamp)
-- `deletedBy` set to `"self"` (indicates voluntary exit)
-- Data preserved for audit trail
-
-**Error Responses:**
-- `400` - Invalid verification code
-- `400` - Verification code has expired
-
----
-
-### Admin: Add Member (No OTP)
-**Endpoint:** `POST /admin/communities/:id/members`
-
-**Description:** Admin adds member directly without email verification.
-
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
-**Request Body:**
-```json
-{
-  "name": "Jane Doe",
-  "email": "jane@school.edu",
-  "notificationsEnabled": true
-}
-```
-
-**Response (201):**
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Member added successfully",
-    "member": {
+    "message": "Submission received successfully",
+    "submission": {
       "id": "uuid",
       "communityId": "uuid",
-      "name": "Jane Doe",
-      "email": "jane@school.edu",
-      "notificationsEnabled": true,
-      "deletedAt": null,
-      "deletedBy": null,
-      "createdAt": "2026-01-03T10:00:00Z"
+      "authorName": "Jane Doe",
+      "authorContact": "jane@school.edu",
+      "submissionType": "news",
+      "title": "We Won!",
+      "content": "Our team placed first...",
+      "eventDate": null,
+      "mediaUrls": "[\"https://...\"]",
+      "status": "pending",
+      "reviewedAt": null,
+      "reviewedBy": null,
+      "createdAt": "2026-01-04T10:00:00Z",
+      "community": { "id": "uuid", "name": "Robotics Club", "slug": "robotics-club" }
     }
   }
 }
 ```
 
-**Business Rules:**
-- No OTP required (admin override)
-- Instant membership
-- If member was previously soft-deleted, restores the member
-- No email notification sent
-
-**Error Responses:**
+**Errors:**
+- `400` - Missing fields, invalid type, or invalid email
 - `404` - Community not found
-- `400` - Member already exists in this community
-- `400` - Name and email are required
+- `400` - Event date required for event type
+
+**cURL:**
+```bash
+curl -X POST http://localhost:3000/api/v2/submissions/community \
+  -H "Content-Type: application/json" \
+  -d '{
+    "communityId":"uuid",
+    "authorName":"Jane Doe",
+    "authorContact":"jane@school.edu",
+    "submissionType":"news",
+    "title":"We Won!",
+    "content":"Our team placed first!",
+    "mediaUrls":["https://example.com/photo.jpg"]
+  }'
+```
 
 ---
 
-### Admin: Update Member Notifications
-**Endpoint:** `PATCH /admin/communities/:communityId/members/:memberId`
+### 20. List Submissions (Admin)
 
-**Description:** Admin updates member's notification preference.
+**GET** `/admin/submissions` - Protected
 
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+Get all submissions with filtering.
 
-**Request Body:**
-```json
-{
-  "notificationsEnabled": false
-}
-```
+**Headers:** `Authorization: Bearer TOKEN`
 
-**Response (200):**
+**Query Params:**
+- `community_id` (UUID) - Filter by community
+- `status` - `pending|reviewed|rejected`
+- `submission_type` - `news|event|announcement`
+
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "message": "Member updated successfully",
-    "member": {
+    "submissions": [{
       "id": "uuid",
       "communityId": "uuid",
-      "name": "Jane Doe",
-      "email": "jane@school.edu",
-      "notificationsEnabled": false,
-      "deletedAt": null,
-      "deletedBy": null,
-      "createdAt": "2026-01-03T10:00:00Z"
+      "authorName": "Jane Doe",
+      "submissionType": "news",
+      "title": "We Won!",
+      "status": "pending",
+      "createdAt": "2026-01-04T10:00:00Z",
+      "community": { "id": "uuid", "name": "Robotics Club", "slug": "robotics-club", "logoUrl": "..." }
+    }],
+    "filters": {
+      "type": "community",
+      "communityId": "uuid",
+      "status": "pending"
     }
   }
 }
 ```
 
-**Error Responses:**
-- `404` - Member not found
-- `400` - notificationsEnabled must be a boolean
+**Errors:**
+- `400` - Invalid filter values
+
+**cURL:**
+```bash
+# All pending submissions
+curl -X GET "http://localhost:3000/api/v2/admin/submissions?status=pending" \
+  -H "Authorization: Bearer TOKEN"
+
+# Community-specific
+curl -X GET "http://localhost:3000/api/v2/admin/submissions?community_id=UUID" \
+  -H "Authorization: Bearer TOKEN"
+```
 
 ---
 
-### Admin: Remove Member (No OTP)
-**Endpoint:** `DELETE /admin/communities/:communityId/members/:memberId`
+### 21. Get Submission by ID
 
-**Description:** Admin removes member without verification. Sends notification email to member.
+**GET** `/admin/submissions/:id` - Protected
 
-**Headers:**
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
+Get single submission details.
 
-**Response (200):**
+**Headers:** `Authorization: Bearer TOKEN`  
+**URL Params:** `id` (UUID)
+
+**Success (200):**
 ```json
 {
   "success": true,
   "data": {
-    "message": "Member removed successfully",
-    "member": {
+    "submission": {
       "id": "uuid",
       "communityId": "uuid",
-      "name": "Jane Doe",
-      "email": "jane@school.edu",
-      "notificationsEnabled": false,
-      "deletedAt": "2026-01-03T10:30:00Z",
-      "deletedBy": "admin-uuid-here",
-      "createdAt": "2026-01-03T10:00:00Z"
+      "authorName": "Jane Doe",
+      "authorContact": "jane@school.edu",
+      "submissionType": "news",
+      "title": "We Won!",
+      "content": "Full content here...",
+      "eventDate": null,
+      "mediaUrls": ["https://example.com/photo.jpg"],
+      "status": "pending",
+      "reviewedAt": null,
+      "reviewedBy": null,
+      "createdAt": "2026-01-04T10:00:00Z",
+      "community": { "id": "uuid", "name": "Robotics Club", "slug": "robotics-club", "logoUrl": "..." }
+    },
+    "type": "community"
+  }
+}
+```
+
+**Errors:**
+- `404` - Submission not found
+
+**Notes:** `mediaUrls` parsed from JSON string to array
+
+---
+
+### 22. Update Submission Status
+
+**PATCH** `/admin/submissions/:id/status` - Protected
+
+Update submission status.
+
+**Headers:** `Authorization: Bearer TOKEN`  
+**URL Params:** `id` (UUID)
+
+**Request:**
+```json
+{
+  "status": "reviewed"  // "reviewed" or "rejected"
+}
+```
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Submission status updated",
+    "submission": {
+      "id": "uuid",
+      "status": "reviewed",
+      "reviewedAt": "2026-01-04T11:00:00Z",
+      "reviewedBy": "admin-uuid",
+      ...
     }
   }
 }
 ```
 
-**Business Rules:**
-- Soft delete (preserves data)
-- `deletedBy` contains admin's UUID (from JWT token)
-- Email notification sent to member
-- All actions are auditable
+**Errors:**
+- `404` - Submission not found
+- `400` - Invalid status (must be `reviewed` or `rejected`)
 
-**Email Sent to Member:**
-- Subject: "Membership Update - [Community Name]"
-- Informs member of removal by admin
-
-**Error Responses:**
-- `404` - Member not found
+**Notes:** Auto-sets `reviewedAt` and `reviewedBy` (from JWT)
 
 ---
 
-## Setup & Installation
+### 23. Delete Submission
 
-### Prerequisites
-- Node.js 18+
-- PostgreSQL 14+
-- Sanity CMS project
+**DELETE** `/admin/submissions/:id` - Protected
 
-### Installation
+Delete a submission.
 
-1. **Clone and Install Dependencies:**
-```bash
-npm install
+**Headers:** `Authorization: Bearer TOKEN`  
+**URL Params:** `id` (UUID)
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": { "message": "Submission deleted successfully" }
+}
 ```
 
-2. **Configure Environment Variables:**
-
-Create `.env` file:
-```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/newspaper_db"
-
-# JWT
-JWT_SECRET="your-super-secret-jwt-key"
-JWT_EXPIRES_IN="7d"
-
-# Server
-PORT=3000
-NODE_ENV="development"
-
-# Sanity
-SANITY_PROJECT_ID="your-project-id"
-SANITY_DATASET="production"
-SANITY_API_VERSION="2023-05-03"
-SANITY_TOKEN="your-read-token"
-```
-
-3. **Run Database Migrations:**
-```bash
-npx prisma migrate dev
-npx prisma generate
-```
-
-4. **Seed Allowlisted Admins:**
-```bash
-npm run prisma:seed
-```
-
-Edit `prisma/seed.ts` to add your admin emails.
-
-5. **Start Development Server:**
-```bash
-npm run dev
-```
+**Errors:**
+- `404` - Submission not found
 
 ---
 
-## Database Schema
+## Standard Response Format
 
-### Admin
-```prisma
-model Admin {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  name          String?
-  passwordHash  String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
-```
+All endpoints follow this structure:
 
-### Article
-```prisma
-model Article {
-  id             String    @id @default(uuid())
-  sanityId       String    @unique
-  title          String
-  slug           String    @unique
-  author         String?
-  type           String    @default("article")
-  isPost         Boolean   // Computed: true if type == "post"
-  visibility     String    @default("private")
-  isEditorsPick  Boolean   @default(false)
-  lastSyncedAt   DateTime  @default(now())
-  createdAt      DateTime  @default(now())
-}
-```
-
-### CommunitySubmission
-```prisma
-model CommunitySubmission {
-  id              String    @id @default(uuid())
-  organizerName   String
-  organizerEmail  String
-  communityName   String
-  description     String?
-  status          String    @default("pending") // 'pending', 'approved', 'rejected'
-  createdAt       DateTime  @default(now())
-}
-```
-
-### Community
-```prisma
-model Community {
-  id          String    @id @default(uuid())
-  name        String
-  slug        String    @unique
-  description String?
-  createdAt   DateTime  @default(now())
-  members     CommunityMember[]
-}
-```
-
-### CommunityMember
-```prisma
-model CommunityMember {
-  id                    String    @id @default(uuid())
-  communityId           String
-  name                  String
-  email                 String
-  notificationsEnabled  Boolean   @default(true)
-  deletedAt             DateTime? // Soft delete
-  deletedBy             String?   // Admin ID or 'self' for voluntary exit
-  createdAt             DateTime  @default(now())
-  community             Community @relation(...)
-  @@unique([communityId, email])
-}
-```
-
-### CommunityOtp (New in Section 5)
-```prisma
-model CommunityOtp {
-  id              String    @id @default(uuid())
-  communityId     String
-  email           String
-  name            String?   // For join requests
-  otp             String
-  action          String    // 'join' or 'leave'
-  expiresAt       DateTime
-  verified        Boolean   @default(false)
-  verifiedAt      DateTime?
-  createdAt       DateTime  @default(now())
-  @@index([communityId, email, action])
-}
-```
-
----
-
-## Key Features & Business Logic
-
-### Authentication
-- **Email Allowlist:** Only pre-approved emails can access admin panel
-- **Phased Authentication:** 
-  1. First login: Set password (account activation)
-  2. Subsequent logins: Email + password
-- **JWT Tokens:** 7-day expiration (configurable)
-- **Password Requirements:** 8+ characters, 1 uppercase, 1 lowercase, 1 number
-
-### Articles
-- **Sanity as Source of Truth:** Articles authored in Sanity CMS
-- **Backend Controls:**
-  - Visibility (public/private)
-  - Editor's Pick (exclusive - only ONE at a time)
-  - Only posts (`type === "post"`) can be Editor's Pick
-- **Sync Logic:**
-  - Creates new articles as `private` by default
-  - Updates metadata on sync
-  - Preserves visibility and Editor's Pick status
-- **Auto-computed:** `isPost = (type === "post")`
-
-### Communities
-- **Submission Workflow:**
-  1. Admin receives submission (created externally or seeded)
-  2. Admin approves → Community created + Organizer becomes first member
-  3. Admin rejects → Submission marked as rejected
-- **Slug Generation:**
-  - Auto-generated from community name
-  - URL-friendly (lowercase, hyphens, no special chars)
-  - Handles duplicates (appends `-2`, `-3`, etc.)
-
-### Member Management
-- **Join Flow (OTP-based):**
-  1. User requests to join → OTP sent to email
-  2. User verifies OTP → Membership granted
-  3. Notifications enabled by default
-- **Leave Flow (OTP-based):**
-  1. Member requests to leave → OTP sent to email
-  2. Member verifies OTP → Soft delete with `deletedBy: "self"`
-- **Admin Override:**
-  - Add members instantly (no OTP)
-  - Remove members with email notification
-  - Soft delete with `deletedBy: adminId`
-- **Rejoin Capability:**
-  - Soft-deleted members can rejoin
-  - Restores existing record (no duplicate)
-
-### Security Features
-- **OTP Security:**
-  - 6-digit random codes
-  - 10-minute expiration
-  - Single-use (marked as verified after use)
-  - Action-specific (join vs leave)
-- **Soft Delete:**
-  - Preserves all data for audit trail
-  - Tracks deletion source (`self` vs `adminId`)
-  - Enables data recovery
-
-### Email Notifications
-- **Join OTP:** Verification code with community name
-- **Leave OTP:** Confirmation code with warning
-- **Admin Removal:** Notification to removed member
-
----
-
-## API Design Patterns
-
-### Response Format
-All endpoints follow consistent response structure:
-
-**Success:**
+### Success
 ```json
 {
   "success": true,
@@ -1340,7 +780,7 @@ All endpoints follow consistent response structure:
 }
 ```
 
-**Error:**
+### Error
 ```json
 {
   "success": false,
@@ -1351,304 +791,64 @@ All endpoints follow consistent response structure:
 ### HTTP Status Codes
 - `200` - Success
 - `201` - Created
-- `400` - Bad Request (validation errors)
-- `401` - Unauthorized (missing/invalid token)
-- `403` - Forbidden (not allowlisted, account not activated)
+- `400` - Bad Request (validation)
+- `401` - Unauthorized (auth required)
+- `403` - Forbidden (not allowed)
 - `404` - Not Found
 - `500` - Internal Server Error
 
-### Authentication Pattern
-Protected endpoints require JWT in header:
-```
-Authorization: Bearer <jwt-token>
-```
-
-### Pagination (Not Implemented - Future)
-Currently all list endpoints return full datasets. Pagination will be added in future versions.
-
 ---
 
-## Error Response Format
+## Setup Instructions
 
-All errors follow this structure:
+### Prerequisites
+- Node.js 18+
+- PostgreSQL 14+
+- Sanity CMS project
 
-```json
-{
-  "success": false,
-  "error": "Error message here"
-}
-```
-
-Common HTTP status codes:
-- `400` - Bad Request (validation errors)
-- `401` - Unauthorized (missing/invalid token)
-- `403` - Forbidden (not allowlisted, account not activated)
-- `404` - Not Found (resource doesn't exist)
-- `500` - Internal Server Error
-
----
-
-## Development Scripts
+### Installation
 
 ```bash
-# Start development server with hot reload
-npm run dev
+# Install dependencies
+npm install
 
-# Build for production
-npm run build
+# Configure environment
+cp .env.example .env
+# Edit .env with your values
 
-# Start production server
-npm start
-
-# Database commands
-npm run prisma:generate      # Generate Prisma client
-npm run prisma:migrate       # Run migrations
-npm run prisma:studio        # Open Prisma Studio (database GUI)
-npm run prisma:seed          # Seed admin allowlist
-
-# Create new migration
-npx prisma migrate dev --name migration_name
-```
-
----
-
-## Testing
-
-### Manual Testing with cURL
-See separate test documentation for complete cURL commands covering:
-- Authentication flow
-- Article management
-- Community submissions
-- Member join/leave with OTP
-- Admin member management
-
-### Automated Testing (Not Implemented)
-Unit tests, integration tests, and E2E tests will be added in future versions using Jest/Supertest.
-
----
-
-## Deployment Considerations
-
-### Production Checklist
-- [ ] Change `JWT_SECRET` to a strong random string
-- [ ] Set `NODE_ENV="production"`
-- [ ] Use production email service (SendGrid, Mailgun)
-- [ ] Enable HTTPS
-- [ ] Set up proper CORS policies
-- [ ] Implement rate limiting (not included in v1)
-- [ ] Set up monitoring and logging
-- [ ] Configure database backups
-- [ ] Protect `/internal/*` endpoints with IP allowlist or secret token
-- [ ] Review and update admin allowlist in `prisma/seed.ts`
-
-### Environment-Specific Configuration
-```bash
-# Development
-NODE_ENV="development"
-PORT=3000
-
-# Staging
-NODE_ENV="staging"
-PORT=3001
-
-# Production
-NODE_ENV="production"
-PORT=80
-```
-
----
-
-## Future Enhancements (v2+)
-
-### Planned Features
-1. **Article Submissions**
-   - Public submission form
-   - Admin review workflow
-   - Status tracking (pending/approved/rejected)
-
-2. **Analytics & Engagement**
-   - Article read tracking by IP
-   - Reactions system (like/love/insightful)
-   - Community activity metrics
-   - User engagement reports
-
-3. **Community Features**
-   - Announcements (community-specific posts)
-   - Events (with RSVP functionality)
-   - Member roles (organizer, moderator, member)
-   - Owner dashboards
-
-4. **Moderation**
-   - Content flagging system
-   - Automated moderation tools
-   - Admin moderation queue
-
-5. **Email Automation**
-   - Welcome emails for new members
-   - Weekly digest emails
-   - Event reminders
-   - Community updates
-
-6. **Performance**
-   - Pagination for all list endpoints
-   - Caching layer (Redis)
-   - Rate limiting
-   - Database indexing optimization
-
-7. **API Enhancements**
-   - GraphQL API option
-   - Webhooks for real-time updates
-   - Batch operations
-   - Bulk import/export
-
----
-
-## Troubleshooting
-
-### Common Issues
-
-#### 1. Database Connection Errors
-```bash
-Error: Can't reach database server
-```
-**Solution:** Verify PostgreSQL is running and `DATABASE_URL` is correct
-
-#### 2. Email Not Sending
-```bash
-Error: Invalid login
-```
-**Solution:** 
-- For Gmail: Enable 2FA and generate App Password
-- Verify `EMAIL_USER` and `EMAIL_PASSWORD` are correct
-- Check firewall/port 587 is open
-
-#### 3. JWT Token Invalid
-```bash
-Error: Invalid or expired token
-```
-**Solution:**
-- Token expired (7 days) - login again
-- `JWT_SECRET` changed - all existing tokens invalidated
-- Token format incorrect - must be `Bearer <token>`
-
-#### 4. Prisma Migration Errors
-```bash
-Error: Migration failed
-```
-**Solution:**
-```bash
-npx prisma migrate reset  # CAUTION: Deletes all data
+# Run migrations
 npx prisma migrate dev
 npx prisma generate
+
+# Seed admin allowlist
+npm run prisma:seed
+
+# Start server
+npm run dev
 ```
 
-#### 5. OTP Not Received
-**Possible causes:**
-- Check spam/junk folder
-- OTP expired (10 minutes)
-- Email service not configured
-- Wrong email address
+### Environment Variables
 
----
-
-## Contributing
-
-### Code Style
-- TypeScript strict mode enabled
-- Use ESLint + Prettier (add configuration in v2)
-- Follow existing folder structure
-- Add JSDoc comments for public methods
-
-### Git Workflow
-```bash
-# Create feature branch
-git checkout -b feature/article-reactions
-
-# Make changes and commit
-git add .
-git commit -m "feat: add article reactions system"
-
-# Push and create PR
-git push origin feature/article-reactions
-```
-
-### Commit Message Convention
-- `feat:` - New feature
-- `fix:` - Bug fix
-- `docs:` - Documentation changes
-- `refactor:` - Code refactoring
-- `test:` - Adding tests
-- `chore:` - Maintenance tasks
-
----
-
-## Tech Stack Summary
-
-### Core Technologies
-- **Runtime:** Node.js 18+
-- **Language:** TypeScript
-- **Framework:** Express.js
-- **Database:** PostgreSQL 14+
-- **ORM:** Prisma 5.x
-- **Authentication:** JWT (jsonwebtoken) + bcrypt
-- **Email:** nodemailer
-- **CMS:** Sanity (read-only integration)
-
-### Dependencies
-```json
-{
-  "dependencies": {
-    "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^7.2.0",
-    "@sanity/client": "^7.13.2",
-    "bcryptjs": "^3.0.3",
-    "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "nodemailer": "^7.0.12",
-    "pg": "^8.16.3"
-  },
-  "devDependencies": {
-    "@sanity/types": "^5.1.0",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^25.0.3",
-    "@types/nodemailer": "^7.0.4",
-    "@types/pg": "^8.16.0",
-    "cors": "^2.8.5",
-    "nodemon": "^3.1.11",
-    "prisma": "^7.2.0",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
-  }
-}
+```env
+DATABASE_URL="postgresql://user:pass@localhost:5432/newspaper_db"
+JWT_SECRET="your-secret-key"
+JWT_EXPIRES_IN="7d"
+PORT=3000
+NODE_ENV="development"
+SANITY_PROJECT_ID="your-project-id"
+SANITY_DATASET="production"
+SANITY_API_VERSION="2023-05-03"
+SANITY_TOKEN="your-token"
 ```
 
 ---
 
-## Changelog
+## Support
 
-### v1.0.0 (January 2026)
-- ✅ Admin authentication with email allowlist
-- ✅ Article management with Sanity sync
-- ✅ Community submission approval workflow
-- ✅ OTP-based member join/leave
-- ✅ Admin member management
-- ✅ Soft delete with audit trail
-- ✅ Email notifications
+For issues or questions:
+- Check this documentation first
+- Review error messages (they're descriptive)
+- Check server logs for details
 
-### Upcoming (v1.1.0)
-- Article submissions
-- Community submissioms
-- Read tracking
-- Reactions system
-
----
-
-**Last Updated:** January 4, 2026  
-**API Version:** v1.0.0  
-**Documentation Version:** 1.0
+**API Version:** 2.0.0  
+**Last Updated:** January 4, 2026
