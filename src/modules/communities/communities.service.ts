@@ -1,144 +1,29 @@
-import prisma from "../../config/database";
-import { SlugUtil } from "../../utils/slug.util";
-import { OtpUtil } from "../../utils/otp.util";
-import { EmailUtil } from "../../utils/email.util";
-import { env } from "../../config/env";
+import prisma from '../../config/database';
+import { SlugUtil } from '../../utils/slug.util';
 import {
-  CreateCommunitySubmissionRequest,
-  ApproveSubmissionResponse,
-  RequestJoinRequest,
-  VerifyJoinRequest,
-  RequestLeaveRequest,
-  VerifyLeaveRequest,
-  AddMemberRequest,
-  UpdateMemberRequest,
-} from "./communities.types";
+  CreateCommunityRequest,
+  UpdateCommunityRequest,
+} from './communities.types';
 
 export class CommunitiesService {
-  /**
-   * List all community submissions
-   */
-  async listSubmissions(status?: "pending" | "approved" | "rejected") {
-    return prisma.communitySubmission.findMany({
-      where: status ? { status } : undefined,
-      orderBy: { createdAt: "desc" },
-    });
-  }
-
-  /**
-   * Get single community submission by ID
-   */
-  async getSubmission(id: string) {
-    const submission = await prisma.communitySubmission.findUnique({
-      where: { id },
-    });
-
-    if (!submission) {
-      throw new Error("Submission not found");
-    }
-
-    return submission;
-  }
-
-  /**
-   * Approve community submission
-   * Creates community and adds organizer as first member
-   */
-  async approveSubmission(id: string): Promise<ApproveSubmissionResponse> {
-    const submission = await prisma.communitySubmission.findUnique({
-      where: { id },
-    });
-
-    if (!submission) {
-      throw new Error("Submission not found");
-    }
-
-    if (submission.status !== "pending") {
-      throw new Error("Submission has already been processed");
-    }
-
-    // Generate unique slug
-    const slug = await SlugUtil.generateUnique(
-      submission.communityName,
-      async (slug) => {
-        const existing = await prisma.community.findUnique({ where: { slug } });
-        return !!existing;
-      }
-    );
-
-    // Use transaction to ensure atomicity
-    const result = await prisma.$transaction(async (tx: any) => {
-      // Update submission status
-      const updatedSubmission = await tx.communitySubmission.update({
-        where: { id },
-        data: { status: "approved" },
-      });
-
-      // Create community
-      const community = await tx.community.create({
-        data: {
-          name: submission.communityName,
-          slug,
-          description: submission.description,
-        },
-      });
-
-      // Add organizer as first member with notifications enabled
-      const member = await tx.communityMember.create({
-        data: {
-          communityId: community.id,
-          name: submission.organizerName,
-          email: submission.organizerEmail,
-          notificationsEnabled: true,
-        },
-      });
-
-      return { updatedSubmission, community, member };
-    });
-
-    return {
-      submission: result.updatedSubmission,
-      community: result.community,
-      member: result.member,
-    };
-  }
-
-  /**
-   * Reject community submission
-   */
-  async rejectSubmission(id: string) {
-    const submission = await prisma.communitySubmission.findUnique({
-      where: { id },
-    });
-
-    if (!submission) {
-      throw new Error("Submission not found");
-    }
-
-    if (submission.status !== "pending") {
-      throw new Error("Submission has already been processed");
-    }
-
-    return prisma.communitySubmission.update({
-      where: { id },
-      data: { status: "rejected" },
-    });
-  }
-
   /**
    * List all communities (admin view)
    */
   async listCommunities() {
     return prisma.community.findMany({
-      orderBy: { createdAt: "desc" },
-      include: {
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        description: true,
+        logoUrl: true,
+        contactEmail: true,
+        createdAt: true,
+        updatedAt: true,
         _count: {
           select: {
-            members: {
-              where: {
-                deletedAt: null, // Only count active members
-              },
-            },
+            submissions: true,
           },
         },
       },
@@ -152,17 +37,16 @@ export class CommunitiesService {
     const community = await prisma.community.findUnique({
       where: { id },
       include: {
-        members: {
-          where: {
-            deletedAt: null, // Only return active members
+        _count: {
+          select: {
+            submissions: true,
           },
-          orderBy: { createdAt: "asc" },
         },
       },
     });
 
     if (!community) {
-      throw new Error("Community not found");
+      throw new Error('Community not found');
     }
 
     return community;
@@ -170,23 +54,21 @@ export class CommunitiesService {
 
   /**
    * Get public communities (frontend)
+   * Returns: id, name, slug, logoUrl for dropdown
    */
   async getPublicCommunities() {
     return prisma.community.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: { name: 'asc' }, // Alphabetical for dropdown
       select: {
         id: true,
         name: true,
         slug: true,
         description: true,
+        logoUrl: true,
         createdAt: true,
         _count: {
           select: {
-            members: {
-              where: {
-                deletedAt: null,
-              },
-            },
+            submissions: true,
           },
         },
       },
@@ -204,395 +86,133 @@ export class CommunitiesService {
         name: true,
         slug: true,
         description: true,
+        logoUrl: true,
+        contactEmail: true,
         createdAt: true,
         _count: {
           select: {
-            members: {
-              where: {
-                deletedAt: null,
-              },
-            },
+            submissions: true,
           },
         },
       },
     });
 
     if (!community) {
-      throw new Error("Community not found");
+      throw new Error('Community not found');
     }
 
     return community;
   }
 
-  // ========== MEMBER MANAGEMENT ==========
-
   /**
-   * Request to join community (send OTP)
+   * Admin: Create community
    */
-  async requestJoin(data: RequestJoinRequest) {
-    const { communityId, name, email } = data;
+  async createCommunity(data: CreateCommunityRequest) {
+    const { name, slug, description, logoUrl, contactEmail } = data;
 
-    // Check if community exists
-    const community = await prisma.community.findUnique({
-      where: { id: communityId },
-    });
+    // Generate slug if not provided
+    const finalSlug = slug || await SlugUtil.generateUnique(
+      name,
+      async (slug) => {
+        const existing = await prisma.community.findUnique({ where: { slug } });
+        return !!existing;
+      }
+    );
 
-    if (!community) {
-      throw new Error("Community not found");
+    // Validate email if provided
+    if (contactEmail) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(contactEmail)) {
+        throw new Error('Invalid contact email address');
+      }
     }
 
-    // Check if already a member
-    const existingMember = await prisma.communityMember.findUnique({
-      where: {
-        communityId_email: {
-          communityId,
-          email,
-        },
-      },
-    });
-
-    if (existingMember && !existingMember.deletedAt) {
-      throw new Error("Already a member of this community");
-    }
-
-    // Generate OTP
-    const otp = OtpUtil.generate();
-    const expiresAt = OtpUtil.getExpiryTime(env.OTP_EXPIRY_MINUTES);
-
-    // Save OTP
-    await prisma.communityOtp.create({
+    // Create community
+    const community = await prisma.community.create({
       data: {
-        communityId,
-        email,
         name,
-        otp,
-        action: "join",
-        expiresAt,
+        slug: finalSlug,
+        description: description || null,
+        logoUrl: logoUrl || null,
+        contactEmail: contactEmail || null,
       },
     });
 
-    // Send email
-    await EmailUtil.sendJoinOtp(email, name, community.name, otp);
-
-    return { message: "Verification code sent to your email" };
+    return community;
   }
 
   /**
-   * Verify OTP and add member to community
+   * Admin: Update community
    */
-  async verifyJoin(data: VerifyJoinRequest) {
-    const { communityId, email, otp } = data;
+  async updateCommunity(id: string, data: UpdateCommunityRequest) {
+    const { name, slug, description, logoUrl, contactEmail } = data;
 
-    // Find OTP record
-    const otpRecord = await prisma.communityOtp.findFirst({
-      where: {
-        communityId,
-        email,
-        otp,
-        action: "join",
-        verified: false,
-      },
-      orderBy: { createdAt: "desc" },
-    });
-
-    if (!otpRecord) {
-      throw new Error("Invalid verification code");
-    }
-
-    // Check expiration
-    if (OtpUtil.isExpired(otpRecord.expiresAt)) {
-      throw new Error("Verification code has expired");
-    }
-
-    // Get community
+    // Check if community exists
     const community = await prisma.community.findUnique({
-      where: { id: communityId },
+      where: { id },
     });
 
     if (!community) {
-      throw new Error("Community not found");
+      throw new Error('Community not found');
     }
 
-    // Use transaction
-    const result = await prisma.$transaction(async (tx: any) => {
-      // Mark OTP as verified
-      await tx.communityOtp.update({
-        where: { id: otpRecord.id },
-        data: {
-          verified: true,
-          verifiedAt: new Date(),
-        },
+    // If updating slug, check uniqueness
+    if (slug && slug !== community.slug) {
+      const existing = await prisma.community.findUnique({
+        where: { slug },
       });
-
-      // Check if member exists (might have been soft-deleted)
-      const existingMember = await tx.communityMember.findUnique({
-        where: {
-          communityId_email: {
-            communityId,
-            email,
-          },
-        },
-      });
-
-      let member;
-
-      if (existingMember) {
-        // Restore soft-deleted member
-        member = await tx.communityMember.update({
-          where: { id: existingMember.id },
-          data: {
-            name: otpRecord.name || existingMember.name,
-            deletedAt: null,
-            deletedBy: null,
-            notificationsEnabled: true,
-          },
-        });
-      } else {
-        // Create new member
-        member = await tx.communityMember.create({
-          data: {
-            communityId,
-            name: otpRecord.name!,
-            email,
-            notificationsEnabled: true,
-          },
-        });
+      if (existing) {
+        throw new Error('Slug already in use');
       }
+    }
 
-      return member;
+    // Validate email if provided
+    if (contactEmail !== undefined && contactEmail !== null) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(contactEmail)) {
+        throw new Error('Invalid contact email address');
+      }
+    }
+
+    // Build update data object (only include provided fields)
+    const updateData: any = {};
+    if (name !== undefined) updateData.name = name;
+    if (slug !== undefined) updateData.slug = slug;
+    if (description !== undefined) updateData.description = description || null;
+    if (logoUrl !== undefined) updateData.logoUrl = logoUrl || null;
+    if (contactEmail !== undefined) updateData.contactEmail = contactEmail || null;
+
+    return prisma.community.update({
+      where: { id },
+      data: updateData,
+    });
+  }
+
+  /**
+   * Admin: Delete community
+   */
+  async deleteCommunity(id: string) {
+    const community = await prisma.community.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: { submissions: true },
+        },
+      },
+    });
+
+    if (!community) {
+      throw new Error('Community not found');
+    }
+
+    // Delete community (cascade will delete submissions)
+    await prisma.community.delete({
+      where: { id },
     });
 
     return {
-      message: "Successfully joined community",
-      member: result,
+      message: 'Community deleted successfully',
+      deletedSubmissions: community._count.submissions,
     };
-  }
-
-  /**
-   * Request to leave community (send OTP)
-   */
-  async requestLeave(data: RequestLeaveRequest) {
-    const { communityId, email } = data;
-
-    // Check if member exists
-    const member = await prisma.communityMember.findUnique({
-      where: {
-        communityId_email: {
-          communityId,
-          email,
-        },
-      },
-      include: {
-        community: true,
-      },
-    });
-
-    if (!member || member.deletedAt) {
-      throw new Error("Not a member of this community");
-    }
-
-    // Generate OTP
-    const otp = OtpUtil.generate();
-    const expiresAt = OtpUtil.getExpiryTime(env.OTP_EXPIRY_MINUTES);
-
-    // Save OTP
-    await prisma.communityOtp.create({
-      data: {
-        communityId,
-        email,
-        otp,
-        action: "leave",
-        expiresAt,
-      },
-    });
-
-    // Send email
-    await EmailUtil.sendLeaveOtp(
-      email,
-      member.name,
-      member.community.name,
-      otp
-    );
-
-    return { message: "Verification code sent to your email" };
-  }
-
-  /**
-   * Verify OTP and remove member from community (self-initiated)
-   */
-  async verifyLeave(data: VerifyLeaveRequest) {
-    const { communityId, email, otp } = data;
-
-    // Find OTP record
-    const otpRecord = await prisma.communityOtp.findFirst({
-      where: {
-        communityId,
-        email,
-        otp,
-        action: "leave",
-        verified: false,
-      },
-      orderBy: { createdAt: "desc" },
-    });
-
-    if (!otpRecord) {
-      throw new Error("Invalid verification code");
-    }
-
-    // Check expiration
-    if (OtpUtil.isExpired(otpRecord.expiresAt)) {
-      throw new Error("Verification code has expired");
-    }
-
-    // Use transaction
-    await prisma.$transaction(async (tx: any) => {
-      // Mark OTP as verified
-      await tx.communityOtp.update({
-        where: { id: otpRecord.id },
-        data: {
-          verified: true,
-          verifiedAt: new Date(),
-        },
-      });
-
-      // Soft delete member
-      await tx.communityMember.update({
-        where: {
-          communityId_email: {
-            communityId,
-            email,
-          },
-        },
-        data: {
-          deletedAt: new Date(),
-          deletedBy: "self",
-        },
-      });
-    });
-
-    return { message: "Successfully left community" };
-  }
-
-  /**
-   * Admin: Add member directly (no OTP required)
-   */
-  async addMember(communityId: string, data: AddMemberRequest) {
-    const { name, email, notificationsEnabled = true } = data;
-
-    // Check if community exists
-    const community = await prisma.community.findUnique({
-      where: { id: communityId },
-    });
-
-    if (!community) {
-      throw new Error("Community not found");
-    }
-
-    // Check if member already exists
-    const existingMember = await prisma.communityMember.findUnique({
-      where: {
-        communityId_email: {
-          communityId,
-          email,
-        },
-      },
-    });
-
-    if (existingMember && !existingMember.deletedAt) {
-      throw new Error("Member already exists in this community");
-    }
-
-    let member;
-
-    if (existingMember) {
-      // Restore soft-deleted member
-      member = await prisma.communityMember.update({
-        where: { id: existingMember.id },
-        data: {
-          name,
-          deletedAt: null,
-          deletedBy: null,
-          notificationsEnabled,
-        },
-      });
-    } else {
-      // Create new member
-      member = await prisma.communityMember.create({
-        data: {
-          communityId,
-          name,
-          email,
-          notificationsEnabled,
-        },
-      });
-    }
-
-    return member;
-  }
-
-  /**
-   * Admin: Update member notification preference
-   */
-  async updateMemberNotifications(
-    communityId: string,
-    memberId: string,
-    data: UpdateMemberRequest
-  ) {
-    const member = await prisma.communityMember.findFirst({
-      where: {
-        id: memberId,
-        communityId,
-        deletedAt: null,
-      },
-    });
-
-    if (!member) {
-      throw new Error("Member not found");
-    }
-
-    return prisma.communityMember.update({
-      where: { id: memberId },
-      data: {
-        notificationsEnabled: data.notificationsEnabled,
-      },
-    });
-  }
-
-  /**
-   * Admin: Remove member (no OTP required)
-   */
-  async removeMember(communityId: string, memberId: string, adminId: string) {
-    const member = await prisma.communityMember.findFirst({
-      where: {
-        id: memberId,
-        communityId,
-        deletedAt: null,
-      },
-      include: {
-        community: true,
-      },
-    });
-
-    if (!member) {
-      throw new Error("Member not found");
-    }
-
-    // Soft delete with admin tracking
-    const deletedMember = await prisma.communityMember.update({
-      where: { id: memberId },
-      data: {
-        deletedAt: new Date(),
-        deletedBy: adminId,
-      },
-    });
-
-    // Send notification email
-    await EmailUtil.sendRemovalNotification(
-      member.email,
-      member.name,
-      member.community.name
-    );
-
-    return deletedMember;
   }
 }

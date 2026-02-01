@@ -115,45 +115,30 @@ exports.Prisma.ArticleScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.CommunitySubmissionScalarFieldEnum = {
-  id: 'id',
-  organizerName: 'organizerName',
-  organizerEmail: 'organizerEmail',
-  communityName: 'communityName',
-  description: 'description',
-  status: 'status',
-  createdAt: 'createdAt'
-};
-
 exports.Prisma.CommunityScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
   description: 'description',
-  createdAt: 'createdAt'
+  logoUrl: 'logoUrl',
+  contactEmail: 'contactEmail',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.CommunityMemberScalarFieldEnum = {
+exports.Prisma.SubmissionScalarFieldEnum = {
   id: 'id',
   communityId: 'communityId',
-  name: 'name',
-  email: 'email',
-  notificationsEnabled: 'notificationsEnabled',
-  deletedAt: 'deletedAt',
-  deletedBy: 'deletedBy',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.CommunityOtpScalarFieldEnum = {
-  id: 'id',
-  communityId: 'communityId',
-  email: 'email',
-  name: 'name',
-  otp: 'otp',
-  action: 'action',
-  expiresAt: 'expiresAt',
-  verified: 'verified',
-  verifiedAt: 'verifiedAt',
+  authorName: 'authorName',
+  authorContact: 'authorContact',
+  submissionType: 'submissionType',
+  title: 'title',
+  content: 'content',
+  eventDate: 'eventDate',
+  mediaUrls: 'mediaUrls',
+  status: 'status',
+  reviewedAt: 'reviewedAt',
+  reviewedBy: 'reviewedBy',
   createdAt: 'createdAt'
 };
 
@@ -180,10 +165,8 @@ exports.SubmissionStatus = exports.$Enums.SubmissionStatus = {
 exports.Prisma.ModelName = {
   Admin: 'Admin',
   Article: 'Article',
-  CommunitySubmission: 'CommunitySubmission',
   Community: 'Community',
-  CommunityMember: 'CommunityMember',
-  CommunityOtp: 'CommunityOtp'
+  Submission: 'Submission'
 };
 /**
  * Create the Client
@@ -193,10 +176,10 @@ const config = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum SubmissionStatus {\n  pending\n  approved\n  rejected\n}\n\nmodel Admin {\n  id           String   @id @default(uuid())\n  email        String   @unique\n  name         String?\n  passwordHash String?  @map(\"password_hash\")\n  createdAt    DateTime @default(now()) @map(\"created_at\")\n  updatedAt    DateTime @updatedAt @map(\"updated_at\")\n\n  @@map(\"admins\")\n}\n\n// Add this to your existing schema.prisma\n\nmodel Article {\n  id            String   @id @default(uuid())\n  sanityId      String   @unique @map(\"sanity_id\")\n  type          String\n  title         String\n  slug          String   @unique\n  author        String?\n  isPost        Boolean  @map(\"is_post\")\n  visibility    String   @default(\"private\") // 'public' or 'private'\n  isEditorsPick Boolean  @default(false) @map(\"is_editors_pick\")\n  lastSyncedAt  DateTime @default(now()) @map(\"last_synced_at\")\n  createdAt     DateTime @default(now()) @map(\"created_at\")\n\n  @@map(\"articles\")\n}\n\nmodel CommunitySubmission {\n  id             String           @id @default(uuid())\n  organizerName  String           @map(\"organizer_name\")\n  organizerEmail String           @map(\"organizer_email\")\n  communityName  String           @map(\"community_name\")\n  description    String?\n  status         SubmissionStatus @default(pending) // 'pending', 'approved', 'rejected'\n  createdAt      DateTime         @default(now()) @map(\"created_at\")\n\n  @@map(\"community_submissions\")\n}\n\nmodel Community {\n  id          String   @id @default(uuid())\n  name        String\n  slug        String   @unique\n  description String?\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n\n  members CommunityMember[]\n\n  @@map(\"communities\")\n}\n\nmodel CommunityMember {\n  id                   String    @id @default(uuid())\n  communityId          String    @map(\"community_id\")\n  name                 String\n  email                String\n  notificationsEnabled Boolean   @default(true) @map(\"notifications_enabled\")\n  deletedAt            DateTime? @map(\"deleted_at\")\n  deletedBy            String?   @map(\"deleted_by\") // Admin ID who deleted, or 'self' for voluntary exit\n  createdAt            DateTime  @default(now()) @map(\"created_at\")\n\n  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)\n\n  @@unique([communityId, email])\n  @@map(\"community_members\")\n}\n\nmodel CommunityOtp {\n  id          String    @id @default(uuid())\n  communityId String    @map(\"community_id\")\n  email       String\n  name        String? // For join requests\n  otp         String\n  action      String // 'join' or 'leave'\n  expiresAt   DateTime  @map(\"expires_at\")\n  verified    Boolean   @default(false)\n  verifiedAt  DateTime? @map(\"verified_at\")\n  createdAt   DateTime  @default(now()) @map(\"created_at\")\n\n  @@index([communityId, email, action])\n  @@map(\"community_otps\")\n}\n"
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum SubmissionStatus {\n  pending\n  approved\n  rejected\n}\n\nmodel Admin {\n  id           String   @id @default(uuid())\n  email        String   @unique\n  name         String?\n  passwordHash String?  @map(\"password_hash\")\n  createdAt    DateTime @default(now()) @map(\"created_at\")\n  updatedAt    DateTime @updatedAt @map(\"updated_at\")\n\n  @@map(\"admins\")\n}\n\n// Add this to your existing schema.prisma\n\nmodel Article {\n  id            String   @id @default(uuid())\n  sanityId      String   @unique @map(\"sanity_id\")\n  type          String\n  title         String\n  slug          String   @unique\n  author        String?\n  isPost        Boolean  @map(\"is_post\")\n  visibility    String   @default(\"private\") // 'public' or 'private'\n  isEditorsPick Boolean  @default(false) @map(\"is_editors_pick\")\n  lastSyncedAt  DateTime @default(now()) @map(\"last_synced_at\")\n  createdAt     DateTime @default(now()) @map(\"created_at\")\n\n  @@map(\"articles\")\n}\n\nmodel Community {\n  id           String   @id @default(uuid())\n  name         String\n  slug         String   @unique\n  description  String?\n  logoUrl      String?  @map(\"logo_url\")\n  contactEmail String?  @map(\"contact_email\")\n  createdAt    DateTime @default(now()) @map(\"created_at\")\n  updatedAt    DateTime @updatedAt @map(\"updated_at\")\n\n  submissions Submission[]\n\n  @@map(\"communities\")\n}\n\nmodel Submission {\n  id             String    @id @default(uuid())\n  communityId    String    @map(\"community_id\")\n  authorName     String    @map(\"author_name\")\n  authorContact  String    @map(\"author_contact\")\n  submissionType String    @map(\"submission_type\") // 'news', 'event', 'announcement'\n  title          String\n  content        String\n  eventDate      DateTime? @map(\"event_date\") // Only for events\n  mediaUrls      String?   @map(\"media_urls\") // JSON array stored as string\n  status         String    @default(\"pending\") // 'pending', 'reviewed', 'rejected'\n  reviewedAt     DateTime? @map(\"reviewed_at\")\n  reviewedBy     String?   @map(\"reviewed_by\") // Admin ID\n  createdAt      DateTime  @default(now()) @map(\"created_at\")\n\n  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)\n\n  @@index([communityId])\n  @@index([status])\n  @@index([submissionType])\n  @@map(\"submissions\")\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Admin\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"passwordHash\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"password_hash\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"}],\"dbName\":\"admins\"},\"Article\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sanityId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"sanity_id\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"author\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isPost\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_post\"},{\"name\":\"visibility\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isEditorsPick\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_editors_pick\"},{\"name\":\"lastSyncedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"last_synced_at\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"}],\"dbName\":\"articles\"},\"CommunitySubmission\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"organizerName\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"organizer_name\"},{\"name\":\"organizerEmail\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"organizer_email\"},{\"name\":\"communityName\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"community_name\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"SubmissionStatus\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"}],\"dbName\":\"community_submissions\"},\"Community\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"members\",\"kind\":\"object\",\"type\":\"CommunityMember\",\"relationName\":\"CommunityToCommunityMember\"}],\"dbName\":\"communities\"},\"CommunityMember\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"communityId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"community_id\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notificationsEnabled\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"notifications_enabled\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"deleted_at\"},{\"name\":\"deletedBy\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"deleted_by\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"community\",\"kind\":\"object\",\"type\":\"Community\",\"relationName\":\"CommunityToCommunityMember\"}],\"dbName\":\"community_members\"},\"CommunityOtp\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"communityId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"community_id\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"otp\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"action\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"expires_at\"},{\"name\":\"verified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"verifiedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"verified_at\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"}],\"dbName\":\"community_otps\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Admin\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"passwordHash\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"password_hash\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"}],\"dbName\":\"admins\"},\"Article\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sanityId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"sanity_id\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"author\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isPost\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_post\"},{\"name\":\"visibility\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isEditorsPick\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_editors_pick\"},{\"name\":\"lastSyncedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"last_synced_at\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"}],\"dbName\":\"articles\"},\"Community\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logoUrl\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"logo_url\"},{\"name\":\"contactEmail\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"contact_email\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"submissions\",\"kind\":\"object\",\"type\":\"Submission\",\"relationName\":\"CommunityToSubmission\"}],\"dbName\":\"communities\"},\"Submission\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"communityId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"community_id\"},{\"name\":\"authorName\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"author_name\"},{\"name\":\"authorContact\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"author_contact\"},{\"name\":\"submissionType\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"submission_type\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"event_date\"},{\"name\":\"mediaUrls\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"media_urls\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"reviewedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"reviewed_at\"},{\"name\":\"reviewedBy\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"reviewed_by\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"community\",\"kind\":\"object\",\"type\":\"Community\",\"relationName\":\"CommunityToSubmission\"}],\"dbName\":\"submissions\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
   getRuntime: async () => require('./query_compiler_bg.js'),
