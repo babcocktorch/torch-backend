@@ -24,25 +24,15 @@ export type Admin = $Result.DefaultSelection<Prisma.$AdminPayload>
  */
 export type Article = $Result.DefaultSelection<Prisma.$ArticlePayload>
 /**
- * Model CommunitySubmission
- * 
- */
-export type CommunitySubmission = $Result.DefaultSelection<Prisma.$CommunitySubmissionPayload>
-/**
  * Model Community
  * 
  */
 export type Community = $Result.DefaultSelection<Prisma.$CommunityPayload>
 /**
- * Model CommunityMember
+ * Model Submission
  * 
  */
-export type CommunityMember = $Result.DefaultSelection<Prisma.$CommunityMemberPayload>
-/**
- * Model CommunityOtp
- * 
- */
-export type CommunityOtp = $Result.DefaultSelection<Prisma.$CommunityOtpPayload>
+export type Submission = $Result.DefaultSelection<Prisma.$SubmissionPayload>
 
 /**
  * Enums
@@ -200,16 +190,6 @@ export class PrismaClient<
   get article(): Prisma.ArticleDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.communitySubmission`: Exposes CRUD operations for the **CommunitySubmission** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more CommunitySubmissions
-    * const communitySubmissions = await prisma.communitySubmission.findMany()
-    * ```
-    */
-  get communitySubmission(): Prisma.CommunitySubmissionDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.community`: Exposes CRUD operations for the **Community** model.
     * Example usage:
     * ```ts
@@ -220,24 +200,14 @@ export class PrismaClient<
   get community(): Prisma.CommunityDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.communityMember`: Exposes CRUD operations for the **CommunityMember** model.
+   * `prisma.submission`: Exposes CRUD operations for the **Submission** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more CommunityMembers
-    * const communityMembers = await prisma.communityMember.findMany()
+    * // Fetch zero or more Submissions
+    * const submissions = await prisma.submission.findMany()
     * ```
     */
-  get communityMember(): Prisma.CommunityMemberDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.communityOtp`: Exposes CRUD operations for the **CommunityOtp** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more CommunityOtps
-    * const communityOtps = await prisma.communityOtp.findMany()
-    * ```
-    */
-  get communityOtp(): Prisma.CommunityOtpDelegate<ExtArgs, ClientOptions>;
+  get submission(): Prisma.SubmissionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -674,10 +644,8 @@ export namespace Prisma {
   export const ModelName: {
     Admin: 'Admin',
     Article: 'Article',
-    CommunitySubmission: 'CommunitySubmission',
     Community: 'Community',
-    CommunityMember: 'CommunityMember',
-    CommunityOtp: 'CommunityOtp'
+    Submission: 'Submission'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -693,7 +661,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "admin" | "article" | "communitySubmission" | "community" | "communityMember" | "communityOtp"
+      modelProps: "admin" | "article" | "community" | "submission"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -845,80 +813,6 @@ export namespace Prisma {
           }
         }
       }
-      CommunitySubmission: {
-        payload: Prisma.$CommunitySubmissionPayload<ExtArgs>
-        fields: Prisma.CommunitySubmissionFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.CommunitySubmissionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.CommunitySubmissionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>
-          }
-          findFirst: {
-            args: Prisma.CommunitySubmissionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.CommunitySubmissionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>
-          }
-          findMany: {
-            args: Prisma.CommunitySubmissionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>[]
-          }
-          create: {
-            args: Prisma.CommunitySubmissionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>
-          }
-          createMany: {
-            args: Prisma.CommunitySubmissionCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.CommunitySubmissionCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>[]
-          }
-          delete: {
-            args: Prisma.CommunitySubmissionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>
-          }
-          update: {
-            args: Prisma.CommunitySubmissionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>
-          }
-          deleteMany: {
-            args: Prisma.CommunitySubmissionDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.CommunitySubmissionUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.CommunitySubmissionUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>[]
-          }
-          upsert: {
-            args: Prisma.CommunitySubmissionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunitySubmissionPayload>
-          }
-          aggregate: {
-            args: Prisma.CommunitySubmissionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCommunitySubmission>
-          }
-          groupBy: {
-            args: Prisma.CommunitySubmissionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CommunitySubmissionGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.CommunitySubmissionCountArgs<ExtArgs>
-            result: $Utils.Optional<CommunitySubmissionCountAggregateOutputType> | number
-          }
-        }
-      }
       Community: {
         payload: Prisma.$CommunityPayload<ExtArgs>
         fields: Prisma.CommunityFieldRefs
@@ -993,151 +887,77 @@ export namespace Prisma {
           }
         }
       }
-      CommunityMember: {
-        payload: Prisma.$CommunityMemberPayload<ExtArgs>
-        fields: Prisma.CommunityMemberFieldRefs
+      Submission: {
+        payload: Prisma.$SubmissionPayload<ExtArgs>
+        fields: Prisma.SubmissionFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.CommunityMemberFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload> | null
+            args: Prisma.SubmissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.CommunityMemberFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>
+            args: Prisma.SubmissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
           }
           findFirst: {
-            args: Prisma.CommunityMemberFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload> | null
+            args: Prisma.SubmissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.CommunityMemberFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>
+            args: Prisma.SubmissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
           }
           findMany: {
-            args: Prisma.CommunityMemberFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>[]
+            args: Prisma.SubmissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>[]
           }
           create: {
-            args: Prisma.CommunityMemberCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>
+            args: Prisma.SubmissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
           }
           createMany: {
-            args: Prisma.CommunityMemberCreateManyArgs<ExtArgs>
+            args: Prisma.SubmissionCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.CommunityMemberCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>[]
+            args: Prisma.SubmissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>[]
           }
           delete: {
-            args: Prisma.CommunityMemberDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>
+            args: Prisma.SubmissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
           }
           update: {
-            args: Prisma.CommunityMemberUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>
+            args: Prisma.SubmissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
           }
           deleteMany: {
-            args: Prisma.CommunityMemberDeleteManyArgs<ExtArgs>
+            args: Prisma.SubmissionDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.CommunityMemberUpdateManyArgs<ExtArgs>
+            args: Prisma.SubmissionUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.CommunityMemberUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>[]
+            args: Prisma.SubmissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>[]
           }
           upsert: {
-            args: Prisma.CommunityMemberUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityMemberPayload>
+            args: Prisma.SubmissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
           }
           aggregate: {
-            args: Prisma.CommunityMemberAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCommunityMember>
+            args: Prisma.SubmissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubmission>
           }
           groupBy: {
-            args: Prisma.CommunityMemberGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CommunityMemberGroupByOutputType>[]
+            args: Prisma.SubmissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubmissionGroupByOutputType>[]
           }
           count: {
-            args: Prisma.CommunityMemberCountArgs<ExtArgs>
-            result: $Utils.Optional<CommunityMemberCountAggregateOutputType> | number
-          }
-        }
-      }
-      CommunityOtp: {
-        payload: Prisma.$CommunityOtpPayload<ExtArgs>
-        fields: Prisma.CommunityOtpFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.CommunityOtpFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.CommunityOtpFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>
-          }
-          findFirst: {
-            args: Prisma.CommunityOtpFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.CommunityOtpFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>
-          }
-          findMany: {
-            args: Prisma.CommunityOtpFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>[]
-          }
-          create: {
-            args: Prisma.CommunityOtpCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>
-          }
-          createMany: {
-            args: Prisma.CommunityOtpCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.CommunityOtpCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>[]
-          }
-          delete: {
-            args: Prisma.CommunityOtpDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>
-          }
-          update: {
-            args: Prisma.CommunityOtpUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>
-          }
-          deleteMany: {
-            args: Prisma.CommunityOtpDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.CommunityOtpUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.CommunityOtpUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>[]
-          }
-          upsert: {
-            args: Prisma.CommunityOtpUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommunityOtpPayload>
-          }
-          aggregate: {
-            args: Prisma.CommunityOtpAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCommunityOtp>
-          }
-          groupBy: {
-            args: Prisma.CommunityOtpGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CommunityOtpGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.CommunityOtpCountArgs<ExtArgs>
-            result: $Utils.Optional<CommunityOtpCountAggregateOutputType> | number
+            args: Prisma.SubmissionCountArgs<ExtArgs>
+            result: $Utils.Optional<SubmissionCountAggregateOutputType> | number
           }
         }
       }
@@ -1251,10 +1071,8 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     admin?: AdminOmit
     article?: ArticleOmit
-    communitySubmission?: CommunitySubmissionOmit
     community?: CommunityOmit
-    communityMember?: CommunityMemberOmit
-    communityOtp?: CommunityOtpOmit
+    submission?: SubmissionOmit
   }
 
   /* Types for Logging */
@@ -1335,11 +1153,11 @@ export namespace Prisma {
    */
 
   export type CommunityCountOutputType = {
-    members: number
+    submissions: number
   }
 
   export type CommunityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | CommunityCountOutputTypeCountMembersArgs
+    submissions?: boolean | CommunityCountOutputTypeCountSubmissionsArgs
   }
 
   // Custom InputTypes
@@ -1356,8 +1174,8 @@ export namespace Prisma {
   /**
    * CommunityCountOutputType without action
    */
-  export type CommunityCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CommunityMemberWhereInput
+  export type CommunityCountOutputTypeCountSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionWhereInput
   }
 
 
@@ -3447,1027 +3265,6 @@ export namespace Prisma {
 
 
   /**
-   * Model CommunitySubmission
-   */
-
-  export type AggregateCommunitySubmission = {
-    _count: CommunitySubmissionCountAggregateOutputType | null
-    _min: CommunitySubmissionMinAggregateOutputType | null
-    _max: CommunitySubmissionMaxAggregateOutputType | null
-  }
-
-  export type CommunitySubmissionMinAggregateOutputType = {
-    id: string | null
-    organizerName: string | null
-    organizerEmail: string | null
-    communityName: string | null
-    description: string | null
-    status: $Enums.SubmissionStatus | null
-    createdAt: Date | null
-  }
-
-  export type CommunitySubmissionMaxAggregateOutputType = {
-    id: string | null
-    organizerName: string | null
-    organizerEmail: string | null
-    communityName: string | null
-    description: string | null
-    status: $Enums.SubmissionStatus | null
-    createdAt: Date | null
-  }
-
-  export type CommunitySubmissionCountAggregateOutputType = {
-    id: number
-    organizerName: number
-    organizerEmail: number
-    communityName: number
-    description: number
-    status: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type CommunitySubmissionMinAggregateInputType = {
-    id?: true
-    organizerName?: true
-    organizerEmail?: true
-    communityName?: true
-    description?: true
-    status?: true
-    createdAt?: true
-  }
-
-  export type CommunitySubmissionMaxAggregateInputType = {
-    id?: true
-    organizerName?: true
-    organizerEmail?: true
-    communityName?: true
-    description?: true
-    status?: true
-    createdAt?: true
-  }
-
-  export type CommunitySubmissionCountAggregateInputType = {
-    id?: true
-    organizerName?: true
-    organizerEmail?: true
-    communityName?: true
-    description?: true
-    status?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type CommunitySubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CommunitySubmission to aggregate.
-     */
-    where?: CommunitySubmissionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CommunitySubmissions to fetch.
-     */
-    orderBy?: CommunitySubmissionOrderByWithRelationInput | CommunitySubmissionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CommunitySubmissionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CommunitySubmissions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CommunitySubmissions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned CommunitySubmissions
-    **/
-    _count?: true | CommunitySubmissionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CommunitySubmissionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CommunitySubmissionMaxAggregateInputType
-  }
-
-  export type GetCommunitySubmissionAggregateType<T extends CommunitySubmissionAggregateArgs> = {
-        [P in keyof T & keyof AggregateCommunitySubmission]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCommunitySubmission[P]>
-      : GetScalarType<T[P], AggregateCommunitySubmission[P]>
-  }
-
-
-
-
-  export type CommunitySubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CommunitySubmissionWhereInput
-    orderBy?: CommunitySubmissionOrderByWithAggregationInput | CommunitySubmissionOrderByWithAggregationInput[]
-    by: CommunitySubmissionScalarFieldEnum[] | CommunitySubmissionScalarFieldEnum
-    having?: CommunitySubmissionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CommunitySubmissionCountAggregateInputType | true
-    _min?: CommunitySubmissionMinAggregateInputType
-    _max?: CommunitySubmissionMaxAggregateInputType
-  }
-
-  export type CommunitySubmissionGroupByOutputType = {
-    id: string
-    organizerName: string
-    organizerEmail: string
-    communityName: string
-    description: string | null
-    status: $Enums.SubmissionStatus
-    createdAt: Date
-    _count: CommunitySubmissionCountAggregateOutputType | null
-    _min: CommunitySubmissionMinAggregateOutputType | null
-    _max: CommunitySubmissionMaxAggregateOutputType | null
-  }
-
-  type GetCommunitySubmissionGroupByPayload<T extends CommunitySubmissionGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CommunitySubmissionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CommunitySubmissionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CommunitySubmissionGroupByOutputType[P]>
-            : GetScalarType<T[P], CommunitySubmissionGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CommunitySubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    organizerName?: boolean
-    organizerEmail?: boolean
-    communityName?: boolean
-    description?: boolean
-    status?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["communitySubmission"]>
-
-  export type CommunitySubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    organizerName?: boolean
-    organizerEmail?: boolean
-    communityName?: boolean
-    description?: boolean
-    status?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["communitySubmission"]>
-
-  export type CommunitySubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    organizerName?: boolean
-    organizerEmail?: boolean
-    communityName?: boolean
-    description?: boolean
-    status?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["communitySubmission"]>
-
-  export type CommunitySubmissionSelectScalar = {
-    id?: boolean
-    organizerName?: boolean
-    organizerEmail?: boolean
-    communityName?: boolean
-    description?: boolean
-    status?: boolean
-    createdAt?: boolean
-  }
-
-  export type CommunitySubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organizerName" | "organizerEmail" | "communityName" | "description" | "status" | "createdAt", ExtArgs["result"]["communitySubmission"]>
-
-  export type $CommunitySubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CommunitySubmission"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      organizerName: string
-      organizerEmail: string
-      communityName: string
-      description: string | null
-      status: $Enums.SubmissionStatus
-      createdAt: Date
-    }, ExtArgs["result"]["communitySubmission"]>
-    composites: {}
-  }
-
-  type CommunitySubmissionGetPayload<S extends boolean | null | undefined | CommunitySubmissionDefaultArgs> = $Result.GetResult<Prisma.$CommunitySubmissionPayload, S>
-
-  type CommunitySubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CommunitySubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CommunitySubmissionCountAggregateInputType | true
-    }
-
-  export interface CommunitySubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CommunitySubmission'], meta: { name: 'CommunitySubmission' } }
-    /**
-     * Find zero or one CommunitySubmission that matches the filter.
-     * @param {CommunitySubmissionFindUniqueArgs} args - Arguments to find a CommunitySubmission
-     * @example
-     * // Get one CommunitySubmission
-     * const communitySubmission = await prisma.communitySubmission.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CommunitySubmissionFindUniqueArgs>(args: SelectSubset<T, CommunitySubmissionFindUniqueArgs<ExtArgs>>): Prisma__CommunitySubmissionClient<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one CommunitySubmission that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CommunitySubmissionFindUniqueOrThrowArgs} args - Arguments to find a CommunitySubmission
-     * @example
-     * // Get one CommunitySubmission
-     * const communitySubmission = await prisma.communitySubmission.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CommunitySubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, CommunitySubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CommunitySubmissionClient<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CommunitySubmission that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunitySubmissionFindFirstArgs} args - Arguments to find a CommunitySubmission
-     * @example
-     * // Get one CommunitySubmission
-     * const communitySubmission = await prisma.communitySubmission.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CommunitySubmissionFindFirstArgs>(args?: SelectSubset<T, CommunitySubmissionFindFirstArgs<ExtArgs>>): Prisma__CommunitySubmissionClient<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CommunitySubmission that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunitySubmissionFindFirstOrThrowArgs} args - Arguments to find a CommunitySubmission
-     * @example
-     * // Get one CommunitySubmission
-     * const communitySubmission = await prisma.communitySubmission.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CommunitySubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, CommunitySubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__CommunitySubmissionClient<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more CommunitySubmissions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunitySubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all CommunitySubmissions
-     * const communitySubmissions = await prisma.communitySubmission.findMany()
-     * 
-     * // Get first 10 CommunitySubmissions
-     * const communitySubmissions = await prisma.communitySubmission.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const communitySubmissionWithIdOnly = await prisma.communitySubmission.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends CommunitySubmissionFindManyArgs>(args?: SelectSubset<T, CommunitySubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a CommunitySubmission.
-     * @param {CommunitySubmissionCreateArgs} args - Arguments to create a CommunitySubmission.
-     * @example
-     * // Create one CommunitySubmission
-     * const CommunitySubmission = await prisma.communitySubmission.create({
-     *   data: {
-     *     // ... data to create a CommunitySubmission
-     *   }
-     * })
-     * 
-     */
-    create<T extends CommunitySubmissionCreateArgs>(args: SelectSubset<T, CommunitySubmissionCreateArgs<ExtArgs>>): Prisma__CommunitySubmissionClient<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many CommunitySubmissions.
-     * @param {CommunitySubmissionCreateManyArgs} args - Arguments to create many CommunitySubmissions.
-     * @example
-     * // Create many CommunitySubmissions
-     * const communitySubmission = await prisma.communitySubmission.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CommunitySubmissionCreateManyArgs>(args?: SelectSubset<T, CommunitySubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many CommunitySubmissions and returns the data saved in the database.
-     * @param {CommunitySubmissionCreateManyAndReturnArgs} args - Arguments to create many CommunitySubmissions.
-     * @example
-     * // Create many CommunitySubmissions
-     * const communitySubmission = await prisma.communitySubmission.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many CommunitySubmissions and only return the `id`
-     * const communitySubmissionWithIdOnly = await prisma.communitySubmission.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends CommunitySubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, CommunitySubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a CommunitySubmission.
-     * @param {CommunitySubmissionDeleteArgs} args - Arguments to delete one CommunitySubmission.
-     * @example
-     * // Delete one CommunitySubmission
-     * const CommunitySubmission = await prisma.communitySubmission.delete({
-     *   where: {
-     *     // ... filter to delete one CommunitySubmission
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CommunitySubmissionDeleteArgs>(args: SelectSubset<T, CommunitySubmissionDeleteArgs<ExtArgs>>): Prisma__CommunitySubmissionClient<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one CommunitySubmission.
-     * @param {CommunitySubmissionUpdateArgs} args - Arguments to update one CommunitySubmission.
-     * @example
-     * // Update one CommunitySubmission
-     * const communitySubmission = await prisma.communitySubmission.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CommunitySubmissionUpdateArgs>(args: SelectSubset<T, CommunitySubmissionUpdateArgs<ExtArgs>>): Prisma__CommunitySubmissionClient<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more CommunitySubmissions.
-     * @param {CommunitySubmissionDeleteManyArgs} args - Arguments to filter CommunitySubmissions to delete.
-     * @example
-     * // Delete a few CommunitySubmissions
-     * const { count } = await prisma.communitySubmission.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CommunitySubmissionDeleteManyArgs>(args?: SelectSubset<T, CommunitySubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CommunitySubmissions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunitySubmissionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many CommunitySubmissions
-     * const communitySubmission = await prisma.communitySubmission.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CommunitySubmissionUpdateManyArgs>(args: SelectSubset<T, CommunitySubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CommunitySubmissions and returns the data updated in the database.
-     * @param {CommunitySubmissionUpdateManyAndReturnArgs} args - Arguments to update many CommunitySubmissions.
-     * @example
-     * // Update many CommunitySubmissions
-     * const communitySubmission = await prisma.communitySubmission.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more CommunitySubmissions and only return the `id`
-     * const communitySubmissionWithIdOnly = await prisma.communitySubmission.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends CommunitySubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, CommunitySubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one CommunitySubmission.
-     * @param {CommunitySubmissionUpsertArgs} args - Arguments to update or create a CommunitySubmission.
-     * @example
-     * // Update or create a CommunitySubmission
-     * const communitySubmission = await prisma.communitySubmission.upsert({
-     *   create: {
-     *     // ... data to create a CommunitySubmission
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the CommunitySubmission we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CommunitySubmissionUpsertArgs>(args: SelectSubset<T, CommunitySubmissionUpsertArgs<ExtArgs>>): Prisma__CommunitySubmissionClient<$Result.GetResult<Prisma.$CommunitySubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of CommunitySubmissions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunitySubmissionCountArgs} args - Arguments to filter CommunitySubmissions to count.
-     * @example
-     * // Count the number of CommunitySubmissions
-     * const count = await prisma.communitySubmission.count({
-     *   where: {
-     *     // ... the filter for the CommunitySubmissions we want to count
-     *   }
-     * })
-    **/
-    count<T extends CommunitySubmissionCountArgs>(
-      args?: Subset<T, CommunitySubmissionCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CommunitySubmissionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a CommunitySubmission.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunitySubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CommunitySubmissionAggregateArgs>(args: Subset<T, CommunitySubmissionAggregateArgs>): Prisma.PrismaPromise<GetCommunitySubmissionAggregateType<T>>
-
-    /**
-     * Group by CommunitySubmission.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunitySubmissionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CommunitySubmissionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CommunitySubmissionGroupByArgs['orderBy'] }
-        : { orderBy?: CommunitySubmissionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CommunitySubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCommunitySubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the CommunitySubmission model
-   */
-  readonly fields: CommunitySubmissionFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for CommunitySubmission.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CommunitySubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the CommunitySubmission model
-   */
-  interface CommunitySubmissionFieldRefs {
-    readonly id: FieldRef<"CommunitySubmission", 'String'>
-    readonly organizerName: FieldRef<"CommunitySubmission", 'String'>
-    readonly organizerEmail: FieldRef<"CommunitySubmission", 'String'>
-    readonly communityName: FieldRef<"CommunitySubmission", 'String'>
-    readonly description: FieldRef<"CommunitySubmission", 'String'>
-    readonly status: FieldRef<"CommunitySubmission", 'SubmissionStatus'>
-    readonly createdAt: FieldRef<"CommunitySubmission", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * CommunitySubmission findUnique
-   */
-  export type CommunitySubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunitySubmission to fetch.
-     */
-    where: CommunitySubmissionWhereUniqueInput
-  }
-
-  /**
-   * CommunitySubmission findUniqueOrThrow
-   */
-  export type CommunitySubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunitySubmission to fetch.
-     */
-    where: CommunitySubmissionWhereUniqueInput
-  }
-
-  /**
-   * CommunitySubmission findFirst
-   */
-  export type CommunitySubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunitySubmission to fetch.
-     */
-    where?: CommunitySubmissionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CommunitySubmissions to fetch.
-     */
-    orderBy?: CommunitySubmissionOrderByWithRelationInput | CommunitySubmissionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CommunitySubmissions.
-     */
-    cursor?: CommunitySubmissionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CommunitySubmissions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CommunitySubmissions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CommunitySubmissions.
-     */
-    distinct?: CommunitySubmissionScalarFieldEnum | CommunitySubmissionScalarFieldEnum[]
-  }
-
-  /**
-   * CommunitySubmission findFirstOrThrow
-   */
-  export type CommunitySubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunitySubmission to fetch.
-     */
-    where?: CommunitySubmissionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CommunitySubmissions to fetch.
-     */
-    orderBy?: CommunitySubmissionOrderByWithRelationInput | CommunitySubmissionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CommunitySubmissions.
-     */
-    cursor?: CommunitySubmissionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CommunitySubmissions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CommunitySubmissions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CommunitySubmissions.
-     */
-    distinct?: CommunitySubmissionScalarFieldEnum | CommunitySubmissionScalarFieldEnum[]
-  }
-
-  /**
-   * CommunitySubmission findMany
-   */
-  export type CommunitySubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunitySubmissions to fetch.
-     */
-    where?: CommunitySubmissionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CommunitySubmissions to fetch.
-     */
-    orderBy?: CommunitySubmissionOrderByWithRelationInput | CommunitySubmissionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing CommunitySubmissions.
-     */
-    cursor?: CommunitySubmissionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CommunitySubmissions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CommunitySubmissions.
-     */
-    skip?: number
-    distinct?: CommunitySubmissionScalarFieldEnum | CommunitySubmissionScalarFieldEnum[]
-  }
-
-  /**
-   * CommunitySubmission create
-   */
-  export type CommunitySubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * The data needed to create a CommunitySubmission.
-     */
-    data: XOR<CommunitySubmissionCreateInput, CommunitySubmissionUncheckedCreateInput>
-  }
-
-  /**
-   * CommunitySubmission createMany
-   */
-  export type CommunitySubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many CommunitySubmissions.
-     */
-    data: CommunitySubmissionCreateManyInput | CommunitySubmissionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * CommunitySubmission createManyAndReturn
-   */
-  export type CommunitySubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * The data used to create many CommunitySubmissions.
-     */
-    data: CommunitySubmissionCreateManyInput | CommunitySubmissionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * CommunitySubmission update
-   */
-  export type CommunitySubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * The data needed to update a CommunitySubmission.
-     */
-    data: XOR<CommunitySubmissionUpdateInput, CommunitySubmissionUncheckedUpdateInput>
-    /**
-     * Choose, which CommunitySubmission to update.
-     */
-    where: CommunitySubmissionWhereUniqueInput
-  }
-
-  /**
-   * CommunitySubmission updateMany
-   */
-  export type CommunitySubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update CommunitySubmissions.
-     */
-    data: XOR<CommunitySubmissionUpdateManyMutationInput, CommunitySubmissionUncheckedUpdateManyInput>
-    /**
-     * Filter which CommunitySubmissions to update
-     */
-    where?: CommunitySubmissionWhereInput
-    /**
-     * Limit how many CommunitySubmissions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * CommunitySubmission updateManyAndReturn
-   */
-  export type CommunitySubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * The data used to update CommunitySubmissions.
-     */
-    data: XOR<CommunitySubmissionUpdateManyMutationInput, CommunitySubmissionUncheckedUpdateManyInput>
-    /**
-     * Filter which CommunitySubmissions to update
-     */
-    where?: CommunitySubmissionWhereInput
-    /**
-     * Limit how many CommunitySubmissions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * CommunitySubmission upsert
-   */
-  export type CommunitySubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * The filter to search for the CommunitySubmission to update in case it exists.
-     */
-    where: CommunitySubmissionWhereUniqueInput
-    /**
-     * In case the CommunitySubmission found by the `where` argument doesn't exist, create a new CommunitySubmission with this data.
-     */
-    create: XOR<CommunitySubmissionCreateInput, CommunitySubmissionUncheckedCreateInput>
-    /**
-     * In case the CommunitySubmission was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CommunitySubmissionUpdateInput, CommunitySubmissionUncheckedUpdateInput>
-  }
-
-  /**
-   * CommunitySubmission delete
-   */
-  export type CommunitySubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-    /**
-     * Filter which CommunitySubmission to delete.
-     */
-    where: CommunitySubmissionWhereUniqueInput
-  }
-
-  /**
-   * CommunitySubmission deleteMany
-   */
-  export type CommunitySubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CommunitySubmissions to delete
-     */
-    where?: CommunitySubmissionWhereInput
-    /**
-     * Limit how many CommunitySubmissions to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * CommunitySubmission without action
-   */
-  export type CommunitySubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunitySubmission
-     */
-    select?: CommunitySubmissionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunitySubmission
-     */
-    omit?: CommunitySubmissionOmit<ExtArgs> | null
-  }
-
-
-  /**
    * Model Community
    */
 
@@ -4482,7 +3279,10 @@ export namespace Prisma {
     name: string | null
     slug: string | null
     description: string | null
+    logoUrl: string | null
+    contactEmail: string | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type CommunityMaxAggregateOutputType = {
@@ -4490,7 +3290,10 @@ export namespace Prisma {
     name: string | null
     slug: string | null
     description: string | null
+    logoUrl: string | null
+    contactEmail: string | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type CommunityCountAggregateOutputType = {
@@ -4498,7 +3301,10 @@ export namespace Prisma {
     name: number
     slug: number
     description: number
+    logoUrl: number
+    contactEmail: number
     createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -4508,7 +3314,10 @@ export namespace Prisma {
     name?: true
     slug?: true
     description?: true
+    logoUrl?: true
+    contactEmail?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type CommunityMaxAggregateInputType = {
@@ -4516,7 +3325,10 @@ export namespace Prisma {
     name?: true
     slug?: true
     description?: true
+    logoUrl?: true
+    contactEmail?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type CommunityCountAggregateInputType = {
@@ -4524,7 +3336,10 @@ export namespace Prisma {
     name?: true
     slug?: true
     description?: true
+    logoUrl?: true
+    contactEmail?: true
     createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -4605,7 +3420,10 @@ export namespace Prisma {
     name: string
     slug: string
     description: string | null
+    logoUrl: string | null
+    contactEmail: string | null
     createdAt: Date
+    updatedAt: Date
     _count: CommunityCountAggregateOutputType | null
     _min: CommunityMinAggregateOutputType | null
     _max: CommunityMaxAggregateOutputType | null
@@ -4630,8 +3448,11 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     description?: boolean
+    logoUrl?: boolean
+    contactEmail?: boolean
     createdAt?: boolean
-    members?: boolean | Community$membersArgs<ExtArgs>
+    updatedAt?: boolean
+    submissions?: boolean | Community$submissionsArgs<ExtArgs>
     _count?: boolean | CommunityCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["community"]>
 
@@ -4640,7 +3461,10 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     description?: boolean
+    logoUrl?: boolean
+    contactEmail?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["community"]>
 
   export type CommunitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4648,7 +3472,10 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     description?: boolean
+    logoUrl?: boolean
+    contactEmail?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["community"]>
 
   export type CommunitySelectScalar = {
@@ -4656,12 +3483,15 @@ export namespace Prisma {
     name?: boolean
     slug?: boolean
     description?: boolean
+    logoUrl?: boolean
+    contactEmail?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "createdAt", ExtArgs["result"]["community"]>
+  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "logoUrl" | "contactEmail" | "createdAt" | "updatedAt", ExtArgs["result"]["community"]>
   export type CommunityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | Community$membersArgs<ExtArgs>
+    submissions?: boolean | Community$submissionsArgs<ExtArgs>
     _count?: boolean | CommunityCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CommunityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4670,14 +3500,17 @@ export namespace Prisma {
   export type $CommunityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Community"
     objects: {
-      members: Prisma.$CommunityMemberPayload<ExtArgs>[]
+      submissions: Prisma.$SubmissionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       slug: string
       description: string | null
+      logoUrl: string | null
+      contactEmail: string | null
       createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["community"]>
     composites: {}
   }
@@ -5072,7 +3905,7 @@ export namespace Prisma {
    */
   export interface Prisma__CommunityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    members<T extends Community$membersArgs<ExtArgs> = {}>(args?: Subset<T, Community$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    submissions<T extends Community$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, Community$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5106,7 +3939,10 @@ export namespace Prisma {
     readonly name: FieldRef<"Community", 'String'>
     readonly slug: FieldRef<"Community", 'String'>
     readonly description: FieldRef<"Community", 'String'>
+    readonly logoUrl: FieldRef<"Community", 'String'>
+    readonly contactEmail: FieldRef<"Community", 'String'>
     readonly createdAt: FieldRef<"Community", 'DateTime'>
+    readonly updatedAt: FieldRef<"Community", 'DateTime'>
   }
     
 
@@ -5495,27 +4331,27 @@ export namespace Prisma {
   }
 
   /**
-   * Community.members
+   * Community.submissions
    */
-  export type Community$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Community$submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
-    where?: CommunityMemberWhereInput
-    orderBy?: CommunityMemberOrderByWithRelationInput | CommunityMemberOrderByWithRelationInput[]
-    cursor?: CommunityMemberWhereUniqueInput
+    include?: SubmissionInclude<ExtArgs> | null
+    where?: SubmissionWhereInput
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
+    cursor?: SubmissionWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: CommunityMemberScalarFieldEnum | CommunityMemberScalarFieldEnum[]
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
   }
 
   /**
@@ -5538,386 +4374,446 @@ export namespace Prisma {
 
 
   /**
-   * Model CommunityMember
+   * Model Submission
    */
 
-  export type AggregateCommunityMember = {
-    _count: CommunityMemberCountAggregateOutputType | null
-    _min: CommunityMemberMinAggregateOutputType | null
-    _max: CommunityMemberMaxAggregateOutputType | null
+  export type AggregateSubmission = {
+    _count: SubmissionCountAggregateOutputType | null
+    _min: SubmissionMinAggregateOutputType | null
+    _max: SubmissionMaxAggregateOutputType | null
   }
 
-  export type CommunityMemberMinAggregateOutputType = {
+  export type SubmissionMinAggregateOutputType = {
     id: string | null
     communityId: string | null
-    name: string | null
-    email: string | null
-    notificationsEnabled: boolean | null
-    deletedAt: Date | null
-    deletedBy: string | null
+    authorName: string | null
+    authorContact: string | null
+    submissionType: string | null
+    title: string | null
+    content: string | null
+    eventDate: Date | null
+    mediaUrls: string | null
+    status: string | null
+    reviewedAt: Date | null
+    reviewedBy: string | null
     createdAt: Date | null
   }
 
-  export type CommunityMemberMaxAggregateOutputType = {
+  export type SubmissionMaxAggregateOutputType = {
     id: string | null
     communityId: string | null
-    name: string | null
-    email: string | null
-    notificationsEnabled: boolean | null
-    deletedAt: Date | null
-    deletedBy: string | null
+    authorName: string | null
+    authorContact: string | null
+    submissionType: string | null
+    title: string | null
+    content: string | null
+    eventDate: Date | null
+    mediaUrls: string | null
+    status: string | null
+    reviewedAt: Date | null
+    reviewedBy: string | null
     createdAt: Date | null
   }
 
-  export type CommunityMemberCountAggregateOutputType = {
+  export type SubmissionCountAggregateOutputType = {
     id: number
     communityId: number
-    name: number
-    email: number
-    notificationsEnabled: number
-    deletedAt: number
-    deletedBy: number
+    authorName: number
+    authorContact: number
+    submissionType: number
+    title: number
+    content: number
+    eventDate: number
+    mediaUrls: number
+    status: number
+    reviewedAt: number
+    reviewedBy: number
     createdAt: number
     _all: number
   }
 
 
-  export type CommunityMemberMinAggregateInputType = {
+  export type SubmissionMinAggregateInputType = {
     id?: true
     communityId?: true
-    name?: true
-    email?: true
-    notificationsEnabled?: true
-    deletedAt?: true
-    deletedBy?: true
+    authorName?: true
+    authorContact?: true
+    submissionType?: true
+    title?: true
+    content?: true
+    eventDate?: true
+    mediaUrls?: true
+    status?: true
+    reviewedAt?: true
+    reviewedBy?: true
     createdAt?: true
   }
 
-  export type CommunityMemberMaxAggregateInputType = {
+  export type SubmissionMaxAggregateInputType = {
     id?: true
     communityId?: true
-    name?: true
-    email?: true
-    notificationsEnabled?: true
-    deletedAt?: true
-    deletedBy?: true
+    authorName?: true
+    authorContact?: true
+    submissionType?: true
+    title?: true
+    content?: true
+    eventDate?: true
+    mediaUrls?: true
+    status?: true
+    reviewedAt?: true
+    reviewedBy?: true
     createdAt?: true
   }
 
-  export type CommunityMemberCountAggregateInputType = {
+  export type SubmissionCountAggregateInputType = {
     id?: true
     communityId?: true
-    name?: true
-    email?: true
-    notificationsEnabled?: true
-    deletedAt?: true
-    deletedBy?: true
+    authorName?: true
+    authorContact?: true
+    submissionType?: true
+    title?: true
+    content?: true
+    eventDate?: true
+    mediaUrls?: true
+    status?: true
+    reviewedAt?: true
+    reviewedBy?: true
     createdAt?: true
     _all?: true
   }
 
-  export type CommunityMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which CommunityMember to aggregate.
+     * Filter which Submission to aggregate.
      */
-    where?: CommunityMemberWhereInput
+    where?: SubmissionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CommunityMembers to fetch.
+     * Determine the order of Submissions to fetch.
      */
-    orderBy?: CommunityMemberOrderByWithRelationInput | CommunityMemberOrderByWithRelationInput[]
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: CommunityMemberWhereUniqueInput
+    cursor?: SubmissionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CommunityMembers from the position of the cursor.
+     * Take `±n` Submissions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CommunityMembers.
+     * Skip the first `n` Submissions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned CommunityMembers
+     * Count returned Submissions
     **/
-    _count?: true | CommunityMemberCountAggregateInputType
+    _count?: true | SubmissionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: CommunityMemberMinAggregateInputType
+    _min?: SubmissionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: CommunityMemberMaxAggregateInputType
+    _max?: SubmissionMaxAggregateInputType
   }
 
-  export type GetCommunityMemberAggregateType<T extends CommunityMemberAggregateArgs> = {
-        [P in keyof T & keyof AggregateCommunityMember]: P extends '_count' | 'count'
+  export type GetSubmissionAggregateType<T extends SubmissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubmission]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateCommunityMember[P]>
-      : GetScalarType<T[P], AggregateCommunityMember[P]>
+        : GetScalarType<T[P], AggregateSubmission[P]>
+      : GetScalarType<T[P], AggregateSubmission[P]>
   }
 
 
 
 
-  export type CommunityMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CommunityMemberWhereInput
-    orderBy?: CommunityMemberOrderByWithAggregationInput | CommunityMemberOrderByWithAggregationInput[]
-    by: CommunityMemberScalarFieldEnum[] | CommunityMemberScalarFieldEnum
-    having?: CommunityMemberScalarWhereWithAggregatesInput
+  export type SubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionWhereInput
+    orderBy?: SubmissionOrderByWithAggregationInput | SubmissionOrderByWithAggregationInput[]
+    by: SubmissionScalarFieldEnum[] | SubmissionScalarFieldEnum
+    having?: SubmissionScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: CommunityMemberCountAggregateInputType | true
-    _min?: CommunityMemberMinAggregateInputType
-    _max?: CommunityMemberMaxAggregateInputType
+    _count?: SubmissionCountAggregateInputType | true
+    _min?: SubmissionMinAggregateInputType
+    _max?: SubmissionMaxAggregateInputType
   }
 
-  export type CommunityMemberGroupByOutputType = {
+  export type SubmissionGroupByOutputType = {
     id: string
     communityId: string
-    name: string
-    email: string
-    notificationsEnabled: boolean
-    deletedAt: Date | null
-    deletedBy: string | null
+    authorName: string
+    authorContact: string
+    submissionType: string
+    title: string
+    content: string
+    eventDate: Date | null
+    mediaUrls: string | null
+    status: string
+    reviewedAt: Date | null
+    reviewedBy: string | null
     createdAt: Date
-    _count: CommunityMemberCountAggregateOutputType | null
-    _min: CommunityMemberMinAggregateOutputType | null
-    _max: CommunityMemberMaxAggregateOutputType | null
+    _count: SubmissionCountAggregateOutputType | null
+    _min: SubmissionMinAggregateOutputType | null
+    _max: SubmissionMaxAggregateOutputType | null
   }
 
-  type GetCommunityMemberGroupByPayload<T extends CommunityMemberGroupByArgs> = Prisma.PrismaPromise<
+  type GetSubmissionGroupByPayload<T extends SubmissionGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<CommunityMemberGroupByOutputType, T['by']> &
+      PickEnumerable<SubmissionGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof CommunityMemberGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof SubmissionGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], CommunityMemberGroupByOutputType[P]>
-            : GetScalarType<T[P], CommunityMemberGroupByOutputType[P]>
+              : GetScalarType<T[P], SubmissionGroupByOutputType[P]>
+            : GetScalarType<T[P], SubmissionGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type CommunityMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type SubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     communityId?: boolean
-    name?: boolean
-    email?: boolean
-    notificationsEnabled?: boolean
-    deletedAt?: boolean
-    deletedBy?: boolean
+    authorName?: boolean
+    authorContact?: boolean
+    submissionType?: boolean
+    title?: boolean
+    content?: boolean
+    eventDate?: boolean
+    mediaUrls?: boolean
+    status?: boolean
+    reviewedAt?: boolean
+    reviewedBy?: boolean
     createdAt?: boolean
     community?: boolean | CommunityDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["communityMember"]>
+  }, ExtArgs["result"]["submission"]>
 
-  export type CommunityMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type SubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     communityId?: boolean
-    name?: boolean
-    email?: boolean
-    notificationsEnabled?: boolean
-    deletedAt?: boolean
-    deletedBy?: boolean
+    authorName?: boolean
+    authorContact?: boolean
+    submissionType?: boolean
+    title?: boolean
+    content?: boolean
+    eventDate?: boolean
+    mediaUrls?: boolean
+    status?: boolean
+    reviewedAt?: boolean
+    reviewedBy?: boolean
     createdAt?: boolean
     community?: boolean | CommunityDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["communityMember"]>
+  }, ExtArgs["result"]["submission"]>
 
-  export type CommunityMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type SubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     communityId?: boolean
-    name?: boolean
-    email?: boolean
-    notificationsEnabled?: boolean
-    deletedAt?: boolean
-    deletedBy?: boolean
+    authorName?: boolean
+    authorContact?: boolean
+    submissionType?: boolean
+    title?: boolean
+    content?: boolean
+    eventDate?: boolean
+    mediaUrls?: boolean
+    status?: boolean
+    reviewedAt?: boolean
+    reviewedBy?: boolean
     createdAt?: boolean
     community?: boolean | CommunityDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["communityMember"]>
+  }, ExtArgs["result"]["submission"]>
 
-  export type CommunityMemberSelectScalar = {
+  export type SubmissionSelectScalar = {
     id?: boolean
     communityId?: boolean
-    name?: boolean
-    email?: boolean
-    notificationsEnabled?: boolean
-    deletedAt?: boolean
-    deletedBy?: boolean
+    authorName?: boolean
+    authorContact?: boolean
+    submissionType?: boolean
+    title?: boolean
+    content?: boolean
+    eventDate?: boolean
+    mediaUrls?: boolean
+    status?: boolean
+    reviewedAt?: boolean
+    reviewedBy?: boolean
     createdAt?: boolean
   }
 
-  export type CommunityMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "communityId" | "name" | "email" | "notificationsEnabled" | "deletedAt" | "deletedBy" | "createdAt", ExtArgs["result"]["communityMember"]>
-  export type CommunityMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "communityId" | "authorName" | "authorContact" | "submissionType" | "title" | "content" | "eventDate" | "mediaUrls" | "status" | "reviewedAt" | "reviewedBy" | "createdAt", ExtArgs["result"]["submission"]>
+  export type SubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     community?: boolean | CommunityDefaultArgs<ExtArgs>
   }
-  export type CommunityMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     community?: boolean | CommunityDefaultArgs<ExtArgs>
   }
-  export type CommunityMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     community?: boolean | CommunityDefaultArgs<ExtArgs>
   }
 
-  export type $CommunityMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CommunityMember"
+  export type $SubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Submission"
     objects: {
       community: Prisma.$CommunityPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       communityId: string
-      name: string
-      email: string
-      notificationsEnabled: boolean
-      deletedAt: Date | null
-      deletedBy: string | null
+      authorName: string
+      authorContact: string
+      submissionType: string
+      title: string
+      content: string
+      eventDate: Date | null
+      mediaUrls: string | null
+      status: string
+      reviewedAt: Date | null
+      reviewedBy: string | null
       createdAt: Date
-    }, ExtArgs["result"]["communityMember"]>
+    }, ExtArgs["result"]["submission"]>
     composites: {}
   }
 
-  type CommunityMemberGetPayload<S extends boolean | null | undefined | CommunityMemberDefaultArgs> = $Result.GetResult<Prisma.$CommunityMemberPayload, S>
+  type SubmissionGetPayload<S extends boolean | null | undefined | SubmissionDefaultArgs> = $Result.GetResult<Prisma.$SubmissionPayload, S>
 
-  type CommunityMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CommunityMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CommunityMemberCountAggregateInputType | true
+  type SubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubmissionCountAggregateInputType | true
     }
 
-  export interface CommunityMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CommunityMember'], meta: { name: 'CommunityMember' } }
+  export interface SubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Submission'], meta: { name: 'Submission' } }
     /**
-     * Find zero or one CommunityMember that matches the filter.
-     * @param {CommunityMemberFindUniqueArgs} args - Arguments to find a CommunityMember
+     * Find zero or one Submission that matches the filter.
+     * @param {SubmissionFindUniqueArgs} args - Arguments to find a Submission
      * @example
-     * // Get one CommunityMember
-     * const communityMember = await prisma.communityMember.findUnique({
+     * // Get one Submission
+     * const submission = await prisma.submission.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends CommunityMemberFindUniqueArgs>(args: SelectSubset<T, CommunityMemberFindUniqueArgs<ExtArgs>>): Prisma__CommunityMemberClient<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends SubmissionFindUniqueArgs>(args: SelectSubset<T, SubmissionFindUniqueArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one CommunityMember that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Submission that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {CommunityMemberFindUniqueOrThrowArgs} args - Arguments to find a CommunityMember
+     * @param {SubmissionFindUniqueOrThrowArgs} args - Arguments to find a Submission
      * @example
-     * // Get one CommunityMember
-     * const communityMember = await prisma.communityMember.findUniqueOrThrow({
+     * // Get one Submission
+     * const submission = await prisma.submission.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends CommunityMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, CommunityMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CommunityMemberClient<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends SubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, SubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first CommunityMember that matches the filter.
+     * Find the first Submission that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityMemberFindFirstArgs} args - Arguments to find a CommunityMember
+     * @param {SubmissionFindFirstArgs} args - Arguments to find a Submission
      * @example
-     * // Get one CommunityMember
-     * const communityMember = await prisma.communityMember.findFirst({
+     * // Get one Submission
+     * const submission = await prisma.submission.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends CommunityMemberFindFirstArgs>(args?: SelectSubset<T, CommunityMemberFindFirstArgs<ExtArgs>>): Prisma__CommunityMemberClient<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends SubmissionFindFirstArgs>(args?: SelectSubset<T, SubmissionFindFirstArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first CommunityMember that matches the filter or
+     * Find the first Submission that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityMemberFindFirstOrThrowArgs} args - Arguments to find a CommunityMember
+     * @param {SubmissionFindFirstOrThrowArgs} args - Arguments to find a Submission
      * @example
-     * // Get one CommunityMember
-     * const communityMember = await prisma.communityMember.findFirstOrThrow({
+     * // Get one Submission
+     * const submission = await prisma.submission.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends CommunityMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, CommunityMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__CommunityMemberClient<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends SubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, SubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more CommunityMembers that matches the filter.
+     * Find zero or more Submissions that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {SubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all CommunityMembers
-     * const communityMembers = await prisma.communityMember.findMany()
+     * // Get all Submissions
+     * const submissions = await prisma.submission.findMany()
      * 
-     * // Get first 10 CommunityMembers
-     * const communityMembers = await prisma.communityMember.findMany({ take: 10 })
+     * // Get first 10 Submissions
+     * const submissions = await prisma.submission.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const communityMemberWithIdOnly = await prisma.communityMember.findMany({ select: { id: true } })
+     * const submissionWithIdOnly = await prisma.submission.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends CommunityMemberFindManyArgs>(args?: SelectSubset<T, CommunityMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends SubmissionFindManyArgs>(args?: SelectSubset<T, SubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a CommunityMember.
-     * @param {CommunityMemberCreateArgs} args - Arguments to create a CommunityMember.
+     * Create a Submission.
+     * @param {SubmissionCreateArgs} args - Arguments to create a Submission.
      * @example
-     * // Create one CommunityMember
-     * const CommunityMember = await prisma.communityMember.create({
+     * // Create one Submission
+     * const Submission = await prisma.submission.create({
      *   data: {
-     *     // ... data to create a CommunityMember
+     *     // ... data to create a Submission
      *   }
      * })
      * 
      */
-    create<T extends CommunityMemberCreateArgs>(args: SelectSubset<T, CommunityMemberCreateArgs<ExtArgs>>): Prisma__CommunityMemberClient<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends SubmissionCreateArgs>(args: SelectSubset<T, SubmissionCreateArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many CommunityMembers.
-     * @param {CommunityMemberCreateManyArgs} args - Arguments to create many CommunityMembers.
+     * Create many Submissions.
+     * @param {SubmissionCreateManyArgs} args - Arguments to create many Submissions.
      * @example
-     * // Create many CommunityMembers
-     * const communityMember = await prisma.communityMember.createMany({
+     * // Create many Submissions
+     * const submission = await prisma.submission.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends CommunityMemberCreateManyArgs>(args?: SelectSubset<T, CommunityMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends SubmissionCreateManyArgs>(args?: SelectSubset<T, SubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many CommunityMembers and returns the data saved in the database.
-     * @param {CommunityMemberCreateManyAndReturnArgs} args - Arguments to create many CommunityMembers.
+     * Create many Submissions and returns the data saved in the database.
+     * @param {SubmissionCreateManyAndReturnArgs} args - Arguments to create many Submissions.
      * @example
-     * // Create many CommunityMembers
-     * const communityMember = await prisma.communityMember.createManyAndReturn({
+     * // Create many Submissions
+     * const submission = await prisma.submission.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many CommunityMembers and only return the `id`
-     * const communityMemberWithIdOnly = await prisma.communityMember.createManyAndReturn({
+     * // Create many Submissions and only return the `id`
+     * const submissionWithIdOnly = await prisma.submission.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -5927,28 +4823,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends CommunityMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, CommunityMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends SubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, SubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a CommunityMember.
-     * @param {CommunityMemberDeleteArgs} args - Arguments to delete one CommunityMember.
+     * Delete a Submission.
+     * @param {SubmissionDeleteArgs} args - Arguments to delete one Submission.
      * @example
-     * // Delete one CommunityMember
-     * const CommunityMember = await prisma.communityMember.delete({
+     * // Delete one Submission
+     * const Submission = await prisma.submission.delete({
      *   where: {
-     *     // ... filter to delete one CommunityMember
+     *     // ... filter to delete one Submission
      *   }
      * })
      * 
      */
-    delete<T extends CommunityMemberDeleteArgs>(args: SelectSubset<T, CommunityMemberDeleteArgs<ExtArgs>>): Prisma__CommunityMemberClient<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends SubmissionDeleteArgs>(args: SelectSubset<T, SubmissionDeleteArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one CommunityMember.
-     * @param {CommunityMemberUpdateArgs} args - Arguments to update one CommunityMember.
+     * Update one Submission.
+     * @param {SubmissionUpdateArgs} args - Arguments to update one Submission.
      * @example
-     * // Update one CommunityMember
-     * const communityMember = await prisma.communityMember.update({
+     * // Update one Submission
+     * const submission = await prisma.submission.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5958,30 +4854,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends CommunityMemberUpdateArgs>(args: SelectSubset<T, CommunityMemberUpdateArgs<ExtArgs>>): Prisma__CommunityMemberClient<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends SubmissionUpdateArgs>(args: SelectSubset<T, SubmissionUpdateArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more CommunityMembers.
-     * @param {CommunityMemberDeleteManyArgs} args - Arguments to filter CommunityMembers to delete.
+     * Delete zero or more Submissions.
+     * @param {SubmissionDeleteManyArgs} args - Arguments to filter Submissions to delete.
      * @example
-     * // Delete a few CommunityMembers
-     * const { count } = await prisma.communityMember.deleteMany({
+     * // Delete a few Submissions
+     * const { count } = await prisma.submission.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends CommunityMemberDeleteManyArgs>(args?: SelectSubset<T, CommunityMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends SubmissionDeleteManyArgs>(args?: SelectSubset<T, SubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more CommunityMembers.
+     * Update zero or more Submissions.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {SubmissionUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many CommunityMembers
-     * const communityMember = await prisma.communityMember.updateMany({
+     * // Update many Submissions
+     * const submission = await prisma.submission.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5991,14 +4887,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends CommunityMemberUpdateManyArgs>(args: SelectSubset<T, CommunityMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends SubmissionUpdateManyArgs>(args: SelectSubset<T, SubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more CommunityMembers and returns the data updated in the database.
-     * @param {CommunityMemberUpdateManyAndReturnArgs} args - Arguments to update many CommunityMembers.
+     * Update zero or more Submissions and returns the data updated in the database.
+     * @param {SubmissionUpdateManyAndReturnArgs} args - Arguments to update many Submissions.
      * @example
-     * // Update many CommunityMembers
-     * const communityMember = await prisma.communityMember.updateManyAndReturn({
+     * // Update many Submissions
+     * const submission = await prisma.submission.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6007,8 +4903,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more CommunityMembers and only return the `id`
-     * const communityMemberWithIdOnly = await prisma.communityMember.updateManyAndReturn({
+     * // Update zero or more Submissions and only return the `id`
+     * const submissionWithIdOnly = await prisma.submission.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -6021,56 +4917,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends CommunityMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, CommunityMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends SubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, SubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one CommunityMember.
-     * @param {CommunityMemberUpsertArgs} args - Arguments to update or create a CommunityMember.
+     * Create or update one Submission.
+     * @param {SubmissionUpsertArgs} args - Arguments to update or create a Submission.
      * @example
-     * // Update or create a CommunityMember
-     * const communityMember = await prisma.communityMember.upsert({
+     * // Update or create a Submission
+     * const submission = await prisma.submission.upsert({
      *   create: {
-     *     // ... data to create a CommunityMember
+     *     // ... data to create a Submission
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the CommunityMember we want to update
+     *     // ... the filter for the Submission we want to update
      *   }
      * })
      */
-    upsert<T extends CommunityMemberUpsertArgs>(args: SelectSubset<T, CommunityMemberUpsertArgs<ExtArgs>>): Prisma__CommunityMemberClient<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends SubmissionUpsertArgs>(args: SelectSubset<T, SubmissionUpsertArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of CommunityMembers.
+     * Count the number of Submissions.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityMemberCountArgs} args - Arguments to filter CommunityMembers to count.
+     * @param {SubmissionCountArgs} args - Arguments to filter Submissions to count.
      * @example
-     * // Count the number of CommunityMembers
-     * const count = await prisma.communityMember.count({
+     * // Count the number of Submissions
+     * const count = await prisma.submission.count({
      *   where: {
-     *     // ... the filter for the CommunityMembers we want to count
+     *     // ... the filter for the Submissions we want to count
      *   }
      * })
     **/
-    count<T extends CommunityMemberCountArgs>(
-      args?: Subset<T, CommunityMemberCountArgs>,
+    count<T extends SubmissionCountArgs>(
+      args?: Subset<T, SubmissionCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], CommunityMemberCountAggregateOutputType>
+          : GetScalarType<T['select'], SubmissionCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a CommunityMember.
+     * Allows you to perform aggregations operations on a Submission.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {SubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -6090,13 +4986,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends CommunityMemberAggregateArgs>(args: Subset<T, CommunityMemberAggregateArgs>): Prisma.PrismaPromise<GetCommunityMemberAggregateType<T>>
+    aggregate<T extends SubmissionAggregateArgs>(args: Subset<T, SubmissionAggregateArgs>): Prisma.PrismaPromise<GetSubmissionAggregateType<T>>
 
     /**
-     * Group by CommunityMember.
+     * Group by Submission.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityMemberGroupByArgs} args - Group by arguments.
+     * @param {SubmissionGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -6111,14 +5007,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends CommunityMemberGroupByArgs,
+      T extends SubmissionGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CommunityMemberGroupByArgs['orderBy'] }
-        : { orderBy?: CommunityMemberGroupByArgs['orderBy'] },
+        ? { orderBy: SubmissionGroupByArgs['orderBy'] }
+        : { orderBy?: SubmissionGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -6167,20 +5063,20 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, CommunityMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCommunityMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, SubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the CommunityMember model
+   * Fields of the Submission model
    */
-  readonly fields: CommunityMemberFieldRefs;
+  readonly fields: SubmissionFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for CommunityMember.
+   * The delegate class that acts as a "Promise-like" for Submission.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__CommunityMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__SubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     community<T extends CommunityDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CommunityDefaultArgs<ExtArgs>>): Prisma__CommunityClient<$Result.GetResult<Prisma.$CommunityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -6209,1488 +5105,433 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the CommunityMember model
+   * Fields of the Submission model
    */
-  interface CommunityMemberFieldRefs {
-    readonly id: FieldRef<"CommunityMember", 'String'>
-    readonly communityId: FieldRef<"CommunityMember", 'String'>
-    readonly name: FieldRef<"CommunityMember", 'String'>
-    readonly email: FieldRef<"CommunityMember", 'String'>
-    readonly notificationsEnabled: FieldRef<"CommunityMember", 'Boolean'>
-    readonly deletedAt: FieldRef<"CommunityMember", 'DateTime'>
-    readonly deletedBy: FieldRef<"CommunityMember", 'String'>
-    readonly createdAt: FieldRef<"CommunityMember", 'DateTime'>
+  interface SubmissionFieldRefs {
+    readonly id: FieldRef<"Submission", 'String'>
+    readonly communityId: FieldRef<"Submission", 'String'>
+    readonly authorName: FieldRef<"Submission", 'String'>
+    readonly authorContact: FieldRef<"Submission", 'String'>
+    readonly submissionType: FieldRef<"Submission", 'String'>
+    readonly title: FieldRef<"Submission", 'String'>
+    readonly content: FieldRef<"Submission", 'String'>
+    readonly eventDate: FieldRef<"Submission", 'DateTime'>
+    readonly mediaUrls: FieldRef<"Submission", 'String'>
+    readonly status: FieldRef<"Submission", 'String'>
+    readonly reviewedAt: FieldRef<"Submission", 'DateTime'>
+    readonly reviewedBy: FieldRef<"Submission", 'String'>
+    readonly createdAt: FieldRef<"Submission", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * CommunityMember findUnique
+   * Submission findUnique
    */
-  export type CommunityMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * Filter, which CommunityMember to fetch.
+     * Filter, which Submission to fetch.
      */
-    where: CommunityMemberWhereUniqueInput
+    where: SubmissionWhereUniqueInput
   }
 
   /**
-   * CommunityMember findUniqueOrThrow
+   * Submission findUniqueOrThrow
    */
-  export type CommunityMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * Filter, which CommunityMember to fetch.
+     * Filter, which Submission to fetch.
      */
-    where: CommunityMemberWhereUniqueInput
+    where: SubmissionWhereUniqueInput
   }
 
   /**
-   * CommunityMember findFirst
+   * Submission findFirst
    */
-  export type CommunityMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * Filter, which CommunityMember to fetch.
+     * Filter, which Submission to fetch.
      */
-    where?: CommunityMemberWhereInput
+    where?: SubmissionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CommunityMembers to fetch.
+     * Determine the order of Submissions to fetch.
      */
-    orderBy?: CommunityMemberOrderByWithRelationInput | CommunityMemberOrderByWithRelationInput[]
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for CommunityMembers.
+     * Sets the position for searching for Submissions.
      */
-    cursor?: CommunityMemberWhereUniqueInput
+    cursor?: SubmissionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CommunityMembers from the position of the cursor.
+     * Take `±n` Submissions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CommunityMembers.
+     * Skip the first `n` Submissions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of CommunityMembers.
+     * Filter by unique combinations of Submissions.
      */
-    distinct?: CommunityMemberScalarFieldEnum | CommunityMemberScalarFieldEnum[]
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
   }
 
   /**
-   * CommunityMember findFirstOrThrow
+   * Submission findFirstOrThrow
    */
-  export type CommunityMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * Filter, which CommunityMember to fetch.
+     * Filter, which Submission to fetch.
      */
-    where?: CommunityMemberWhereInput
+    where?: SubmissionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CommunityMembers to fetch.
+     * Determine the order of Submissions to fetch.
      */
-    orderBy?: CommunityMemberOrderByWithRelationInput | CommunityMemberOrderByWithRelationInput[]
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for CommunityMembers.
+     * Sets the position for searching for Submissions.
      */
-    cursor?: CommunityMemberWhereUniqueInput
+    cursor?: SubmissionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CommunityMembers from the position of the cursor.
+     * Take `±n` Submissions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CommunityMembers.
+     * Skip the first `n` Submissions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of CommunityMembers.
+     * Filter by unique combinations of Submissions.
      */
-    distinct?: CommunityMemberScalarFieldEnum | CommunityMemberScalarFieldEnum[]
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
   }
 
   /**
-   * CommunityMember findMany
+   * Submission findMany
    */
-  export type CommunityMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * Filter, which CommunityMembers to fetch.
+     * Filter, which Submissions to fetch.
      */
-    where?: CommunityMemberWhereInput
+    where?: SubmissionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CommunityMembers to fetch.
+     * Determine the order of Submissions to fetch.
      */
-    orderBy?: CommunityMemberOrderByWithRelationInput | CommunityMemberOrderByWithRelationInput[]
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing CommunityMembers.
+     * Sets the position for listing Submissions.
      */
-    cursor?: CommunityMemberWhereUniqueInput
+    cursor?: SubmissionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CommunityMembers from the position of the cursor.
+     * Take `±n` Submissions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CommunityMembers.
+     * Skip the first `n` Submissions.
      */
     skip?: number
-    distinct?: CommunityMemberScalarFieldEnum | CommunityMemberScalarFieldEnum[]
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
   }
 
   /**
-   * CommunityMember create
+   * Submission create
    */
-  export type CommunityMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * The data needed to create a CommunityMember.
+     * The data needed to create a Submission.
      */
-    data: XOR<CommunityMemberCreateInput, CommunityMemberUncheckedCreateInput>
+    data: XOR<SubmissionCreateInput, SubmissionUncheckedCreateInput>
   }
 
   /**
-   * CommunityMember createMany
+   * Submission createMany
    */
-  export type CommunityMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many CommunityMembers.
+     * The data used to create many Submissions.
      */
-    data: CommunityMemberCreateManyInput | CommunityMemberCreateManyInput[]
+    data: SubmissionCreateManyInput | SubmissionCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * CommunityMember createManyAndReturn
+   * Submission createManyAndReturn
    */
-  export type CommunityMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelectCreateManyAndReturn<ExtArgs> | null
+    select?: SubmissionSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
-     * The data used to create many CommunityMembers.
+     * The data used to create many Submissions.
      */
-    data: CommunityMemberCreateManyInput | CommunityMemberCreateManyInput[]
+    data: SubmissionCreateManyInput | SubmissionCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: SubmissionIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * CommunityMember update
+   * Submission update
    */
-  export type CommunityMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * The data needed to update a CommunityMember.
+     * The data needed to update a Submission.
      */
-    data: XOR<CommunityMemberUpdateInput, CommunityMemberUncheckedUpdateInput>
+    data: XOR<SubmissionUpdateInput, SubmissionUncheckedUpdateInput>
     /**
-     * Choose, which CommunityMember to update.
+     * Choose, which Submission to update.
      */
-    where: CommunityMemberWhereUniqueInput
+    where: SubmissionWhereUniqueInput
   }
 
   /**
-   * CommunityMember updateMany
+   * Submission updateMany
    */
-  export type CommunityMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update CommunityMembers.
+     * The data used to update Submissions.
      */
-    data: XOR<CommunityMemberUpdateManyMutationInput, CommunityMemberUncheckedUpdateManyInput>
+    data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyInput>
     /**
-     * Filter which CommunityMembers to update
+     * Filter which Submissions to update
      */
-    where?: CommunityMemberWhereInput
+    where?: SubmissionWhereInput
     /**
-     * Limit how many CommunityMembers to update.
+     * Limit how many Submissions to update.
      */
     limit?: number
   }
 
   /**
-   * CommunityMember updateManyAndReturn
+   * Submission updateManyAndReturn
    */
-  export type CommunityMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: SubmissionSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
-     * The data used to update CommunityMembers.
+     * The data used to update Submissions.
      */
-    data: XOR<CommunityMemberUpdateManyMutationInput, CommunityMemberUncheckedUpdateManyInput>
+    data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyInput>
     /**
-     * Filter which CommunityMembers to update
+     * Filter which Submissions to update
      */
-    where?: CommunityMemberWhereInput
+    where?: SubmissionWhereInput
     /**
-     * Limit how many CommunityMembers to update.
+     * Limit how many Submissions to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: SubmissionIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * CommunityMember upsert
+   * Submission upsert
    */
-  export type CommunityMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * The filter to search for the CommunityMember to update in case it exists.
+     * The filter to search for the Submission to update in case it exists.
      */
-    where: CommunityMemberWhereUniqueInput
+    where: SubmissionWhereUniqueInput
     /**
-     * In case the CommunityMember found by the `where` argument doesn't exist, create a new CommunityMember with this data.
+     * In case the Submission found by the `where` argument doesn't exist, create a new Submission with this data.
      */
-    create: XOR<CommunityMemberCreateInput, CommunityMemberUncheckedCreateInput>
+    create: XOR<SubmissionCreateInput, SubmissionUncheckedCreateInput>
     /**
-     * In case the CommunityMember was found with the provided `where` argument, update it with this data.
+     * In case the Submission was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<CommunityMemberUpdateInput, CommunityMemberUncheckedUpdateInput>
+    update: XOR<SubmissionUpdateInput, SubmissionUncheckedUpdateInput>
   }
 
   /**
-   * CommunityMember delete
+   * Submission delete
    */
-  export type CommunityMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
     /**
-     * Filter which CommunityMember to delete.
+     * Filter which Submission to delete.
      */
-    where: CommunityMemberWhereUniqueInput
+    where: SubmissionWhereUniqueInput
   }
 
   /**
-   * CommunityMember deleteMany
+   * Submission deleteMany
    */
-  export type CommunityMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which CommunityMembers to delete
+     * Filter which Submissions to delete
      */
-    where?: CommunityMemberWhereInput
+    where?: SubmissionWhereInput
     /**
-     * Limit how many CommunityMembers to delete.
+     * Limit how many Submissions to delete.
      */
     limit?: number
   }
 
   /**
-   * CommunityMember without action
+   * Submission without action
    */
-  export type CommunityMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type SubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CommunityMember
+     * Select specific fields to fetch from the Submission
      */
-    select?: CommunityMemberSelect<ExtArgs> | null
+    select?: SubmissionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CommunityMember
+     * Omit specific fields from the Submission
      */
-    omit?: CommunityMemberOmit<ExtArgs> | null
+    omit?: SubmissionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommunityMemberInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model CommunityOtp
-   */
-
-  export type AggregateCommunityOtp = {
-    _count: CommunityOtpCountAggregateOutputType | null
-    _min: CommunityOtpMinAggregateOutputType | null
-    _max: CommunityOtpMaxAggregateOutputType | null
-  }
-
-  export type CommunityOtpMinAggregateOutputType = {
-    id: string | null
-    communityId: string | null
-    email: string | null
-    name: string | null
-    otp: string | null
-    action: string | null
-    expiresAt: Date | null
-    verified: boolean | null
-    verifiedAt: Date | null
-    createdAt: Date | null
-  }
-
-  export type CommunityOtpMaxAggregateOutputType = {
-    id: string | null
-    communityId: string | null
-    email: string | null
-    name: string | null
-    otp: string | null
-    action: string | null
-    expiresAt: Date | null
-    verified: boolean | null
-    verifiedAt: Date | null
-    createdAt: Date | null
-  }
-
-  export type CommunityOtpCountAggregateOutputType = {
-    id: number
-    communityId: number
-    email: number
-    name: number
-    otp: number
-    action: number
-    expiresAt: number
-    verified: number
-    verifiedAt: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type CommunityOtpMinAggregateInputType = {
-    id?: true
-    communityId?: true
-    email?: true
-    name?: true
-    otp?: true
-    action?: true
-    expiresAt?: true
-    verified?: true
-    verifiedAt?: true
-    createdAt?: true
-  }
-
-  export type CommunityOtpMaxAggregateInputType = {
-    id?: true
-    communityId?: true
-    email?: true
-    name?: true
-    otp?: true
-    action?: true
-    expiresAt?: true
-    verified?: true
-    verifiedAt?: true
-    createdAt?: true
-  }
-
-  export type CommunityOtpCountAggregateInputType = {
-    id?: true
-    communityId?: true
-    email?: true
-    name?: true
-    otp?: true
-    action?: true
-    expiresAt?: true
-    verified?: true
-    verifiedAt?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type CommunityOtpAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CommunityOtp to aggregate.
-     */
-    where?: CommunityOtpWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CommunityOtps to fetch.
-     */
-    orderBy?: CommunityOtpOrderByWithRelationInput | CommunityOtpOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CommunityOtpWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CommunityOtps from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CommunityOtps.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned CommunityOtps
-    **/
-    _count?: true | CommunityOtpCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CommunityOtpMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CommunityOtpMaxAggregateInputType
-  }
-
-  export type GetCommunityOtpAggregateType<T extends CommunityOtpAggregateArgs> = {
-        [P in keyof T & keyof AggregateCommunityOtp]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCommunityOtp[P]>
-      : GetScalarType<T[P], AggregateCommunityOtp[P]>
-  }
-
-
-
-
-  export type CommunityOtpGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CommunityOtpWhereInput
-    orderBy?: CommunityOtpOrderByWithAggregationInput | CommunityOtpOrderByWithAggregationInput[]
-    by: CommunityOtpScalarFieldEnum[] | CommunityOtpScalarFieldEnum
-    having?: CommunityOtpScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CommunityOtpCountAggregateInputType | true
-    _min?: CommunityOtpMinAggregateInputType
-    _max?: CommunityOtpMaxAggregateInputType
-  }
-
-  export type CommunityOtpGroupByOutputType = {
-    id: string
-    communityId: string
-    email: string
-    name: string | null
-    otp: string
-    action: string
-    expiresAt: Date
-    verified: boolean
-    verifiedAt: Date | null
-    createdAt: Date
-    _count: CommunityOtpCountAggregateOutputType | null
-    _min: CommunityOtpMinAggregateOutputType | null
-    _max: CommunityOtpMaxAggregateOutputType | null
-  }
-
-  type GetCommunityOtpGroupByPayload<T extends CommunityOtpGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CommunityOtpGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CommunityOtpGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CommunityOtpGroupByOutputType[P]>
-            : GetScalarType<T[P], CommunityOtpGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CommunityOtpSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    communityId?: boolean
-    email?: boolean
-    name?: boolean
-    otp?: boolean
-    action?: boolean
-    expiresAt?: boolean
-    verified?: boolean
-    verifiedAt?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["communityOtp"]>
-
-  export type CommunityOtpSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    communityId?: boolean
-    email?: boolean
-    name?: boolean
-    otp?: boolean
-    action?: boolean
-    expiresAt?: boolean
-    verified?: boolean
-    verifiedAt?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["communityOtp"]>
-
-  export type CommunityOtpSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    communityId?: boolean
-    email?: boolean
-    name?: boolean
-    otp?: boolean
-    action?: boolean
-    expiresAt?: boolean
-    verified?: boolean
-    verifiedAt?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["communityOtp"]>
-
-  export type CommunityOtpSelectScalar = {
-    id?: boolean
-    communityId?: boolean
-    email?: boolean
-    name?: boolean
-    otp?: boolean
-    action?: boolean
-    expiresAt?: boolean
-    verified?: boolean
-    verifiedAt?: boolean
-    createdAt?: boolean
-  }
-
-  export type CommunityOtpOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "communityId" | "email" | "name" | "otp" | "action" | "expiresAt" | "verified" | "verifiedAt" | "createdAt", ExtArgs["result"]["communityOtp"]>
-
-  export type $CommunityOtpPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CommunityOtp"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      communityId: string
-      email: string
-      name: string | null
-      otp: string
-      action: string
-      expiresAt: Date
-      verified: boolean
-      verifiedAt: Date | null
-      createdAt: Date
-    }, ExtArgs["result"]["communityOtp"]>
-    composites: {}
-  }
-
-  type CommunityOtpGetPayload<S extends boolean | null | undefined | CommunityOtpDefaultArgs> = $Result.GetResult<Prisma.$CommunityOtpPayload, S>
-
-  type CommunityOtpCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CommunityOtpFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CommunityOtpCountAggregateInputType | true
-    }
-
-  export interface CommunityOtpDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CommunityOtp'], meta: { name: 'CommunityOtp' } }
-    /**
-     * Find zero or one CommunityOtp that matches the filter.
-     * @param {CommunityOtpFindUniqueArgs} args - Arguments to find a CommunityOtp
-     * @example
-     * // Get one CommunityOtp
-     * const communityOtp = await prisma.communityOtp.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CommunityOtpFindUniqueArgs>(args: SelectSubset<T, CommunityOtpFindUniqueArgs<ExtArgs>>): Prisma__CommunityOtpClient<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one CommunityOtp that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CommunityOtpFindUniqueOrThrowArgs} args - Arguments to find a CommunityOtp
-     * @example
-     * // Get one CommunityOtp
-     * const communityOtp = await prisma.communityOtp.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CommunityOtpFindUniqueOrThrowArgs>(args: SelectSubset<T, CommunityOtpFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CommunityOtpClient<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CommunityOtp that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityOtpFindFirstArgs} args - Arguments to find a CommunityOtp
-     * @example
-     * // Get one CommunityOtp
-     * const communityOtp = await prisma.communityOtp.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CommunityOtpFindFirstArgs>(args?: SelectSubset<T, CommunityOtpFindFirstArgs<ExtArgs>>): Prisma__CommunityOtpClient<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CommunityOtp that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityOtpFindFirstOrThrowArgs} args - Arguments to find a CommunityOtp
-     * @example
-     * // Get one CommunityOtp
-     * const communityOtp = await prisma.communityOtp.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CommunityOtpFindFirstOrThrowArgs>(args?: SelectSubset<T, CommunityOtpFindFirstOrThrowArgs<ExtArgs>>): Prisma__CommunityOtpClient<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more CommunityOtps that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityOtpFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all CommunityOtps
-     * const communityOtps = await prisma.communityOtp.findMany()
-     * 
-     * // Get first 10 CommunityOtps
-     * const communityOtps = await prisma.communityOtp.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const communityOtpWithIdOnly = await prisma.communityOtp.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends CommunityOtpFindManyArgs>(args?: SelectSubset<T, CommunityOtpFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a CommunityOtp.
-     * @param {CommunityOtpCreateArgs} args - Arguments to create a CommunityOtp.
-     * @example
-     * // Create one CommunityOtp
-     * const CommunityOtp = await prisma.communityOtp.create({
-     *   data: {
-     *     // ... data to create a CommunityOtp
-     *   }
-     * })
-     * 
-     */
-    create<T extends CommunityOtpCreateArgs>(args: SelectSubset<T, CommunityOtpCreateArgs<ExtArgs>>): Prisma__CommunityOtpClient<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many CommunityOtps.
-     * @param {CommunityOtpCreateManyArgs} args - Arguments to create many CommunityOtps.
-     * @example
-     * // Create many CommunityOtps
-     * const communityOtp = await prisma.communityOtp.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CommunityOtpCreateManyArgs>(args?: SelectSubset<T, CommunityOtpCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many CommunityOtps and returns the data saved in the database.
-     * @param {CommunityOtpCreateManyAndReturnArgs} args - Arguments to create many CommunityOtps.
-     * @example
-     * // Create many CommunityOtps
-     * const communityOtp = await prisma.communityOtp.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many CommunityOtps and only return the `id`
-     * const communityOtpWithIdOnly = await prisma.communityOtp.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends CommunityOtpCreateManyAndReturnArgs>(args?: SelectSubset<T, CommunityOtpCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a CommunityOtp.
-     * @param {CommunityOtpDeleteArgs} args - Arguments to delete one CommunityOtp.
-     * @example
-     * // Delete one CommunityOtp
-     * const CommunityOtp = await prisma.communityOtp.delete({
-     *   where: {
-     *     // ... filter to delete one CommunityOtp
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CommunityOtpDeleteArgs>(args: SelectSubset<T, CommunityOtpDeleteArgs<ExtArgs>>): Prisma__CommunityOtpClient<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one CommunityOtp.
-     * @param {CommunityOtpUpdateArgs} args - Arguments to update one CommunityOtp.
-     * @example
-     * // Update one CommunityOtp
-     * const communityOtp = await prisma.communityOtp.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CommunityOtpUpdateArgs>(args: SelectSubset<T, CommunityOtpUpdateArgs<ExtArgs>>): Prisma__CommunityOtpClient<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more CommunityOtps.
-     * @param {CommunityOtpDeleteManyArgs} args - Arguments to filter CommunityOtps to delete.
-     * @example
-     * // Delete a few CommunityOtps
-     * const { count } = await prisma.communityOtp.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CommunityOtpDeleteManyArgs>(args?: SelectSubset<T, CommunityOtpDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CommunityOtps.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityOtpUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many CommunityOtps
-     * const communityOtp = await prisma.communityOtp.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CommunityOtpUpdateManyArgs>(args: SelectSubset<T, CommunityOtpUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CommunityOtps and returns the data updated in the database.
-     * @param {CommunityOtpUpdateManyAndReturnArgs} args - Arguments to update many CommunityOtps.
-     * @example
-     * // Update many CommunityOtps
-     * const communityOtp = await prisma.communityOtp.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more CommunityOtps and only return the `id`
-     * const communityOtpWithIdOnly = await prisma.communityOtp.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends CommunityOtpUpdateManyAndReturnArgs>(args: SelectSubset<T, CommunityOtpUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one CommunityOtp.
-     * @param {CommunityOtpUpsertArgs} args - Arguments to update or create a CommunityOtp.
-     * @example
-     * // Update or create a CommunityOtp
-     * const communityOtp = await prisma.communityOtp.upsert({
-     *   create: {
-     *     // ... data to create a CommunityOtp
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the CommunityOtp we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CommunityOtpUpsertArgs>(args: SelectSubset<T, CommunityOtpUpsertArgs<ExtArgs>>): Prisma__CommunityOtpClient<$Result.GetResult<Prisma.$CommunityOtpPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of CommunityOtps.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityOtpCountArgs} args - Arguments to filter CommunityOtps to count.
-     * @example
-     * // Count the number of CommunityOtps
-     * const count = await prisma.communityOtp.count({
-     *   where: {
-     *     // ... the filter for the CommunityOtps we want to count
-     *   }
-     * })
-    **/
-    count<T extends CommunityOtpCountArgs>(
-      args?: Subset<T, CommunityOtpCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CommunityOtpCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a CommunityOtp.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityOtpAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CommunityOtpAggregateArgs>(args: Subset<T, CommunityOtpAggregateArgs>): Prisma.PrismaPromise<GetCommunityOtpAggregateType<T>>
-
-    /**
-     * Group by CommunityOtp.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CommunityOtpGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CommunityOtpGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CommunityOtpGroupByArgs['orderBy'] }
-        : { orderBy?: CommunityOtpGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CommunityOtpGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCommunityOtpGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the CommunityOtp model
-   */
-  readonly fields: CommunityOtpFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for CommunityOtp.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CommunityOtpClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the CommunityOtp model
-   */
-  interface CommunityOtpFieldRefs {
-    readonly id: FieldRef<"CommunityOtp", 'String'>
-    readonly communityId: FieldRef<"CommunityOtp", 'String'>
-    readonly email: FieldRef<"CommunityOtp", 'String'>
-    readonly name: FieldRef<"CommunityOtp", 'String'>
-    readonly otp: FieldRef<"CommunityOtp", 'String'>
-    readonly action: FieldRef<"CommunityOtp", 'String'>
-    readonly expiresAt: FieldRef<"CommunityOtp", 'DateTime'>
-    readonly verified: FieldRef<"CommunityOtp", 'Boolean'>
-    readonly verifiedAt: FieldRef<"CommunityOtp", 'DateTime'>
-    readonly createdAt: FieldRef<"CommunityOtp", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * CommunityOtp findUnique
-   */
-  export type CommunityOtpFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunityOtp to fetch.
-     */
-    where: CommunityOtpWhereUniqueInput
-  }
-
-  /**
-   * CommunityOtp findUniqueOrThrow
-   */
-  export type CommunityOtpFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunityOtp to fetch.
-     */
-    where: CommunityOtpWhereUniqueInput
-  }
-
-  /**
-   * CommunityOtp findFirst
-   */
-  export type CommunityOtpFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunityOtp to fetch.
-     */
-    where?: CommunityOtpWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CommunityOtps to fetch.
-     */
-    orderBy?: CommunityOtpOrderByWithRelationInput | CommunityOtpOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CommunityOtps.
-     */
-    cursor?: CommunityOtpWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CommunityOtps from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CommunityOtps.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CommunityOtps.
-     */
-    distinct?: CommunityOtpScalarFieldEnum | CommunityOtpScalarFieldEnum[]
-  }
-
-  /**
-   * CommunityOtp findFirstOrThrow
-   */
-  export type CommunityOtpFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunityOtp to fetch.
-     */
-    where?: CommunityOtpWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CommunityOtps to fetch.
-     */
-    orderBy?: CommunityOtpOrderByWithRelationInput | CommunityOtpOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CommunityOtps.
-     */
-    cursor?: CommunityOtpWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CommunityOtps from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CommunityOtps.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CommunityOtps.
-     */
-    distinct?: CommunityOtpScalarFieldEnum | CommunityOtpScalarFieldEnum[]
-  }
-
-  /**
-   * CommunityOtp findMany
-   */
-  export type CommunityOtpFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * Filter, which CommunityOtps to fetch.
-     */
-    where?: CommunityOtpWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CommunityOtps to fetch.
-     */
-    orderBy?: CommunityOtpOrderByWithRelationInput | CommunityOtpOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing CommunityOtps.
-     */
-    cursor?: CommunityOtpWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CommunityOtps from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CommunityOtps.
-     */
-    skip?: number
-    distinct?: CommunityOtpScalarFieldEnum | CommunityOtpScalarFieldEnum[]
-  }
-
-  /**
-   * CommunityOtp create
-   */
-  export type CommunityOtpCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * The data needed to create a CommunityOtp.
-     */
-    data: XOR<CommunityOtpCreateInput, CommunityOtpUncheckedCreateInput>
-  }
-
-  /**
-   * CommunityOtp createMany
-   */
-  export type CommunityOtpCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many CommunityOtps.
-     */
-    data: CommunityOtpCreateManyInput | CommunityOtpCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * CommunityOtp createManyAndReturn
-   */
-  export type CommunityOtpCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * The data used to create many CommunityOtps.
-     */
-    data: CommunityOtpCreateManyInput | CommunityOtpCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * CommunityOtp update
-   */
-  export type CommunityOtpUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * The data needed to update a CommunityOtp.
-     */
-    data: XOR<CommunityOtpUpdateInput, CommunityOtpUncheckedUpdateInput>
-    /**
-     * Choose, which CommunityOtp to update.
-     */
-    where: CommunityOtpWhereUniqueInput
-  }
-
-  /**
-   * CommunityOtp updateMany
-   */
-  export type CommunityOtpUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update CommunityOtps.
-     */
-    data: XOR<CommunityOtpUpdateManyMutationInput, CommunityOtpUncheckedUpdateManyInput>
-    /**
-     * Filter which CommunityOtps to update
-     */
-    where?: CommunityOtpWhereInput
-    /**
-     * Limit how many CommunityOtps to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * CommunityOtp updateManyAndReturn
-   */
-  export type CommunityOtpUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * The data used to update CommunityOtps.
-     */
-    data: XOR<CommunityOtpUpdateManyMutationInput, CommunityOtpUncheckedUpdateManyInput>
-    /**
-     * Filter which CommunityOtps to update
-     */
-    where?: CommunityOtpWhereInput
-    /**
-     * Limit how many CommunityOtps to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * CommunityOtp upsert
-   */
-  export type CommunityOtpUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * The filter to search for the CommunityOtp to update in case it exists.
-     */
-    where: CommunityOtpWhereUniqueInput
-    /**
-     * In case the CommunityOtp found by the `where` argument doesn't exist, create a new CommunityOtp with this data.
-     */
-    create: XOR<CommunityOtpCreateInput, CommunityOtpUncheckedCreateInput>
-    /**
-     * In case the CommunityOtp was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CommunityOtpUpdateInput, CommunityOtpUncheckedUpdateInput>
-  }
-
-  /**
-   * CommunityOtp delete
-   */
-  export type CommunityOtpDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
-    /**
-     * Filter which CommunityOtp to delete.
-     */
-    where: CommunityOtpWhereUniqueInput
-  }
-
-  /**
-   * CommunityOtp deleteMany
-   */
-  export type CommunityOtpDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CommunityOtps to delete
-     */
-    where?: CommunityOtpWhereInput
-    /**
-     * Limit how many CommunityOtps to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * CommunityOtp without action
-   */
-  export type CommunityOtpDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CommunityOtp
-     */
-    select?: CommunityOtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CommunityOtp
-     */
-    omit?: CommunityOtpOmit<ExtArgs> | null
+    include?: SubmissionInclude<ExtArgs> | null
   }
 
 
@@ -7737,58 +5578,37 @@ export namespace Prisma {
   export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
 
 
-  export const CommunitySubmissionScalarFieldEnum: {
-    id: 'id',
-    organizerName: 'organizerName',
-    organizerEmail: 'organizerEmail',
-    communityName: 'communityName',
-    description: 'description',
-    status: 'status',
-    createdAt: 'createdAt'
-  };
-
-  export type CommunitySubmissionScalarFieldEnum = (typeof CommunitySubmissionScalarFieldEnum)[keyof typeof CommunitySubmissionScalarFieldEnum]
-
-
   export const CommunityScalarFieldEnum: {
     id: 'id',
     name: 'name',
     slug: 'slug',
     description: 'description',
-    createdAt: 'createdAt'
+    logoUrl: 'logoUrl',
+    contactEmail: 'contactEmail',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type CommunityScalarFieldEnum = (typeof CommunityScalarFieldEnum)[keyof typeof CommunityScalarFieldEnum]
 
 
-  export const CommunityMemberScalarFieldEnum: {
+  export const SubmissionScalarFieldEnum: {
     id: 'id',
     communityId: 'communityId',
-    name: 'name',
-    email: 'email',
-    notificationsEnabled: 'notificationsEnabled',
-    deletedAt: 'deletedAt',
-    deletedBy: 'deletedBy',
+    authorName: 'authorName',
+    authorContact: 'authorContact',
+    submissionType: 'submissionType',
+    title: 'title',
+    content: 'content',
+    eventDate: 'eventDate',
+    mediaUrls: 'mediaUrls',
+    status: 'status',
+    reviewedAt: 'reviewedAt',
+    reviewedBy: 'reviewedBy',
     createdAt: 'createdAt'
   };
 
-  export type CommunityMemberScalarFieldEnum = (typeof CommunityMemberScalarFieldEnum)[keyof typeof CommunityMemberScalarFieldEnum]
-
-
-  export const CommunityOtpScalarFieldEnum: {
-    id: 'id',
-    communityId: 'communityId',
-    email: 'email',
-    name: 'name',
-    otp: 'otp',
-    action: 'action',
-    expiresAt: 'expiresAt',
-    verified: 'verified',
-    verifiedAt: 'verifiedAt',
-    createdAt: 'createdAt'
-  };
-
-  export type CommunityOtpScalarFieldEnum = (typeof CommunityOtpScalarFieldEnum)[keyof typeof CommunityOtpScalarFieldEnum]
+  export type SubmissionScalarFieldEnum = (typeof SubmissionScalarFieldEnum)[keyof typeof SubmissionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7852,20 +5672,6 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
-   * Reference to a field of type 'SubmissionStatus'
-   */
-  export type EnumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubmissionStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'SubmissionStatus[]'
-   */
-  export type ListEnumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubmissionStatus[]'>
     
 
 
@@ -8025,68 +5831,6 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
   }
 
-  export type CommunitySubmissionWhereInput = {
-    AND?: CommunitySubmissionWhereInput | CommunitySubmissionWhereInput[]
-    OR?: CommunitySubmissionWhereInput[]
-    NOT?: CommunitySubmissionWhereInput | CommunitySubmissionWhereInput[]
-    id?: StringFilter<"CommunitySubmission"> | string
-    organizerName?: StringFilter<"CommunitySubmission"> | string
-    organizerEmail?: StringFilter<"CommunitySubmission"> | string
-    communityName?: StringFilter<"CommunitySubmission"> | string
-    description?: StringNullableFilter<"CommunitySubmission"> | string | null
-    status?: EnumSubmissionStatusFilter<"CommunitySubmission"> | $Enums.SubmissionStatus
-    createdAt?: DateTimeFilter<"CommunitySubmission"> | Date | string
-  }
-
-  export type CommunitySubmissionOrderByWithRelationInput = {
-    id?: SortOrder
-    organizerName?: SortOrder
-    organizerEmail?: SortOrder
-    communityName?: SortOrder
-    description?: SortOrderInput | SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type CommunitySubmissionWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: CommunitySubmissionWhereInput | CommunitySubmissionWhereInput[]
-    OR?: CommunitySubmissionWhereInput[]
-    NOT?: CommunitySubmissionWhereInput | CommunitySubmissionWhereInput[]
-    organizerName?: StringFilter<"CommunitySubmission"> | string
-    organizerEmail?: StringFilter<"CommunitySubmission"> | string
-    communityName?: StringFilter<"CommunitySubmission"> | string
-    description?: StringNullableFilter<"CommunitySubmission"> | string | null
-    status?: EnumSubmissionStatusFilter<"CommunitySubmission"> | $Enums.SubmissionStatus
-    createdAt?: DateTimeFilter<"CommunitySubmission"> | Date | string
-  }, "id">
-
-  export type CommunitySubmissionOrderByWithAggregationInput = {
-    id?: SortOrder
-    organizerName?: SortOrder
-    organizerEmail?: SortOrder
-    communityName?: SortOrder
-    description?: SortOrderInput | SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    _count?: CommunitySubmissionCountOrderByAggregateInput
-    _max?: CommunitySubmissionMaxOrderByAggregateInput
-    _min?: CommunitySubmissionMinOrderByAggregateInput
-  }
-
-  export type CommunitySubmissionScalarWhereWithAggregatesInput = {
-    AND?: CommunitySubmissionScalarWhereWithAggregatesInput | CommunitySubmissionScalarWhereWithAggregatesInput[]
-    OR?: CommunitySubmissionScalarWhereWithAggregatesInput[]
-    NOT?: CommunitySubmissionScalarWhereWithAggregatesInput | CommunitySubmissionScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"CommunitySubmission"> | string
-    organizerName?: StringWithAggregatesFilter<"CommunitySubmission"> | string
-    organizerEmail?: StringWithAggregatesFilter<"CommunitySubmission"> | string
-    communityName?: StringWithAggregatesFilter<"CommunitySubmission"> | string
-    description?: StringNullableWithAggregatesFilter<"CommunitySubmission"> | string | null
-    status?: EnumSubmissionStatusWithAggregatesFilter<"CommunitySubmission"> | $Enums.SubmissionStatus
-    createdAt?: DateTimeWithAggregatesFilter<"CommunitySubmission"> | Date | string
-  }
-
   export type CommunityWhereInput = {
     AND?: CommunityWhereInput | CommunityWhereInput[]
     OR?: CommunityWhereInput[]
@@ -8095,8 +5839,11 @@ export namespace Prisma {
     name?: StringFilter<"Community"> | string
     slug?: StringFilter<"Community"> | string
     description?: StringNullableFilter<"Community"> | string | null
+    logoUrl?: StringNullableFilter<"Community"> | string | null
+    contactEmail?: StringNullableFilter<"Community"> | string | null
     createdAt?: DateTimeFilter<"Community"> | Date | string
-    members?: CommunityMemberListRelationFilter
+    updatedAt?: DateTimeFilter<"Community"> | Date | string
+    submissions?: SubmissionListRelationFilter
   }
 
   export type CommunityOrderByWithRelationInput = {
@@ -8104,8 +5851,11 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     description?: SortOrderInput | SortOrder
+    logoUrl?: SortOrderInput | SortOrder
+    contactEmail?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    members?: CommunityMemberOrderByRelationAggregateInput
+    updatedAt?: SortOrder
+    submissions?: SubmissionOrderByRelationAggregateInput
   }
 
   export type CommunityWhereUniqueInput = Prisma.AtLeast<{
@@ -8116,8 +5866,11 @@ export namespace Prisma {
     NOT?: CommunityWhereInput | CommunityWhereInput[]
     name?: StringFilter<"Community"> | string
     description?: StringNullableFilter<"Community"> | string | null
+    logoUrl?: StringNullableFilter<"Community"> | string | null
+    contactEmail?: StringNullableFilter<"Community"> | string | null
     createdAt?: DateTimeFilter<"Community"> | Date | string
-    members?: CommunityMemberListRelationFilter
+    updatedAt?: DateTimeFilter<"Community"> | Date | string
+    submissions?: SubmissionListRelationFilter
   }, "id" | "slug">
 
   export type CommunityOrderByWithAggregationInput = {
@@ -8125,7 +5878,10 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     description?: SortOrderInput | SortOrder
+    logoUrl?: SortOrderInput | SortOrder
+    contactEmail?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: CommunityCountOrderByAggregateInput
     _max?: CommunityMaxOrderByAggregateInput
     _min?: CommunityMinOrderByAggregateInput
@@ -8139,155 +5895,105 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Community"> | string
     slug?: StringWithAggregatesFilter<"Community"> | string
     description?: StringNullableWithAggregatesFilter<"Community"> | string | null
+    logoUrl?: StringNullableWithAggregatesFilter<"Community"> | string | null
+    contactEmail?: StringNullableWithAggregatesFilter<"Community"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Community"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Community"> | Date | string
   }
 
-  export type CommunityMemberWhereInput = {
-    AND?: CommunityMemberWhereInput | CommunityMemberWhereInput[]
-    OR?: CommunityMemberWhereInput[]
-    NOT?: CommunityMemberWhereInput | CommunityMemberWhereInput[]
-    id?: StringFilter<"CommunityMember"> | string
-    communityId?: StringFilter<"CommunityMember"> | string
-    name?: StringFilter<"CommunityMember"> | string
-    email?: StringFilter<"CommunityMember"> | string
-    notificationsEnabled?: BoolFilter<"CommunityMember"> | boolean
-    deletedAt?: DateTimeNullableFilter<"CommunityMember"> | Date | string | null
-    deletedBy?: StringNullableFilter<"CommunityMember"> | string | null
-    createdAt?: DateTimeFilter<"CommunityMember"> | Date | string
+  export type SubmissionWhereInput = {
+    AND?: SubmissionWhereInput | SubmissionWhereInput[]
+    OR?: SubmissionWhereInput[]
+    NOT?: SubmissionWhereInput | SubmissionWhereInput[]
+    id?: StringFilter<"Submission"> | string
+    communityId?: StringFilter<"Submission"> | string
+    authorName?: StringFilter<"Submission"> | string
+    authorContact?: StringFilter<"Submission"> | string
+    submissionType?: StringFilter<"Submission"> | string
+    title?: StringFilter<"Submission"> | string
+    content?: StringFilter<"Submission"> | string
+    eventDate?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    mediaUrls?: StringNullableFilter<"Submission"> | string | null
+    status?: StringFilter<"Submission"> | string
+    reviewedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    reviewedBy?: StringNullableFilter<"Submission"> | string | null
+    createdAt?: DateTimeFilter<"Submission"> | Date | string
     community?: XOR<CommunityScalarRelationFilter, CommunityWhereInput>
   }
 
-  export type CommunityMemberOrderByWithRelationInput = {
+  export type SubmissionOrderByWithRelationInput = {
     id?: SortOrder
     communityId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    notificationsEnabled?: SortOrder
-    deletedAt?: SortOrderInput | SortOrder
-    deletedBy?: SortOrderInput | SortOrder
+    authorName?: SortOrder
+    authorContact?: SortOrder
+    submissionType?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    eventDate?: SortOrderInput | SortOrder
+    mediaUrls?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    reviewedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     community?: CommunityOrderByWithRelationInput
   }
 
-  export type CommunityMemberWhereUniqueInput = Prisma.AtLeast<{
+  export type SubmissionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    communityId_email?: CommunityMemberCommunityIdEmailCompoundUniqueInput
-    AND?: CommunityMemberWhereInput | CommunityMemberWhereInput[]
-    OR?: CommunityMemberWhereInput[]
-    NOT?: CommunityMemberWhereInput | CommunityMemberWhereInput[]
-    communityId?: StringFilter<"CommunityMember"> | string
-    name?: StringFilter<"CommunityMember"> | string
-    email?: StringFilter<"CommunityMember"> | string
-    notificationsEnabled?: BoolFilter<"CommunityMember"> | boolean
-    deletedAt?: DateTimeNullableFilter<"CommunityMember"> | Date | string | null
-    deletedBy?: StringNullableFilter<"CommunityMember"> | string | null
-    createdAt?: DateTimeFilter<"CommunityMember"> | Date | string
+    AND?: SubmissionWhereInput | SubmissionWhereInput[]
+    OR?: SubmissionWhereInput[]
+    NOT?: SubmissionWhereInput | SubmissionWhereInput[]
+    communityId?: StringFilter<"Submission"> | string
+    authorName?: StringFilter<"Submission"> | string
+    authorContact?: StringFilter<"Submission"> | string
+    submissionType?: StringFilter<"Submission"> | string
+    title?: StringFilter<"Submission"> | string
+    content?: StringFilter<"Submission"> | string
+    eventDate?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    mediaUrls?: StringNullableFilter<"Submission"> | string | null
+    status?: StringFilter<"Submission"> | string
+    reviewedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    reviewedBy?: StringNullableFilter<"Submission"> | string | null
+    createdAt?: DateTimeFilter<"Submission"> | Date | string
     community?: XOR<CommunityScalarRelationFilter, CommunityWhereInput>
-  }, "id" | "communityId_email">
-
-  export type CommunityMemberOrderByWithAggregationInput = {
-    id?: SortOrder
-    communityId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    notificationsEnabled?: SortOrder
-    deletedAt?: SortOrderInput | SortOrder
-    deletedBy?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    _count?: CommunityMemberCountOrderByAggregateInput
-    _max?: CommunityMemberMaxOrderByAggregateInput
-    _min?: CommunityMemberMinOrderByAggregateInput
-  }
-
-  export type CommunityMemberScalarWhereWithAggregatesInput = {
-    AND?: CommunityMemberScalarWhereWithAggregatesInput | CommunityMemberScalarWhereWithAggregatesInput[]
-    OR?: CommunityMemberScalarWhereWithAggregatesInput[]
-    NOT?: CommunityMemberScalarWhereWithAggregatesInput | CommunityMemberScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"CommunityMember"> | string
-    communityId?: StringWithAggregatesFilter<"CommunityMember"> | string
-    name?: StringWithAggregatesFilter<"CommunityMember"> | string
-    email?: StringWithAggregatesFilter<"CommunityMember"> | string
-    notificationsEnabled?: BoolWithAggregatesFilter<"CommunityMember"> | boolean
-    deletedAt?: DateTimeNullableWithAggregatesFilter<"CommunityMember"> | Date | string | null
-    deletedBy?: StringNullableWithAggregatesFilter<"CommunityMember"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"CommunityMember"> | Date | string
-  }
-
-  export type CommunityOtpWhereInput = {
-    AND?: CommunityOtpWhereInput | CommunityOtpWhereInput[]
-    OR?: CommunityOtpWhereInput[]
-    NOT?: CommunityOtpWhereInput | CommunityOtpWhereInput[]
-    id?: StringFilter<"CommunityOtp"> | string
-    communityId?: StringFilter<"CommunityOtp"> | string
-    email?: StringFilter<"CommunityOtp"> | string
-    name?: StringNullableFilter<"CommunityOtp"> | string | null
-    otp?: StringFilter<"CommunityOtp"> | string
-    action?: StringFilter<"CommunityOtp"> | string
-    expiresAt?: DateTimeFilter<"CommunityOtp"> | Date | string
-    verified?: BoolFilter<"CommunityOtp"> | boolean
-    verifiedAt?: DateTimeNullableFilter<"CommunityOtp"> | Date | string | null
-    createdAt?: DateTimeFilter<"CommunityOtp"> | Date | string
-  }
-
-  export type CommunityOtpOrderByWithRelationInput = {
-    id?: SortOrder
-    communityId?: SortOrder
-    email?: SortOrder
-    name?: SortOrderInput | SortOrder
-    otp?: SortOrder
-    action?: SortOrder
-    expiresAt?: SortOrder
-    verified?: SortOrder
-    verifiedAt?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type CommunityOtpWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: CommunityOtpWhereInput | CommunityOtpWhereInput[]
-    OR?: CommunityOtpWhereInput[]
-    NOT?: CommunityOtpWhereInput | CommunityOtpWhereInput[]
-    communityId?: StringFilter<"CommunityOtp"> | string
-    email?: StringFilter<"CommunityOtp"> | string
-    name?: StringNullableFilter<"CommunityOtp"> | string | null
-    otp?: StringFilter<"CommunityOtp"> | string
-    action?: StringFilter<"CommunityOtp"> | string
-    expiresAt?: DateTimeFilter<"CommunityOtp"> | Date | string
-    verified?: BoolFilter<"CommunityOtp"> | boolean
-    verifiedAt?: DateTimeNullableFilter<"CommunityOtp"> | Date | string | null
-    createdAt?: DateTimeFilter<"CommunityOtp"> | Date | string
   }, "id">
 
-  export type CommunityOtpOrderByWithAggregationInput = {
+  export type SubmissionOrderByWithAggregationInput = {
     id?: SortOrder
     communityId?: SortOrder
-    email?: SortOrder
-    name?: SortOrderInput | SortOrder
-    otp?: SortOrder
-    action?: SortOrder
-    expiresAt?: SortOrder
-    verified?: SortOrder
-    verifiedAt?: SortOrderInput | SortOrder
+    authorName?: SortOrder
+    authorContact?: SortOrder
+    submissionType?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    eventDate?: SortOrderInput | SortOrder
+    mediaUrls?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    reviewedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    _count?: CommunityOtpCountOrderByAggregateInput
-    _max?: CommunityOtpMaxOrderByAggregateInput
-    _min?: CommunityOtpMinOrderByAggregateInput
+    _count?: SubmissionCountOrderByAggregateInput
+    _max?: SubmissionMaxOrderByAggregateInput
+    _min?: SubmissionMinOrderByAggregateInput
   }
 
-  export type CommunityOtpScalarWhereWithAggregatesInput = {
-    AND?: CommunityOtpScalarWhereWithAggregatesInput | CommunityOtpScalarWhereWithAggregatesInput[]
-    OR?: CommunityOtpScalarWhereWithAggregatesInput[]
-    NOT?: CommunityOtpScalarWhereWithAggregatesInput | CommunityOtpScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"CommunityOtp"> | string
-    communityId?: StringWithAggregatesFilter<"CommunityOtp"> | string
-    email?: StringWithAggregatesFilter<"CommunityOtp"> | string
-    name?: StringNullableWithAggregatesFilter<"CommunityOtp"> | string | null
-    otp?: StringWithAggregatesFilter<"CommunityOtp"> | string
-    action?: StringWithAggregatesFilter<"CommunityOtp"> | string
-    expiresAt?: DateTimeWithAggregatesFilter<"CommunityOtp"> | Date | string
-    verified?: BoolWithAggregatesFilter<"CommunityOtp"> | boolean
-    verifiedAt?: DateTimeNullableWithAggregatesFilter<"CommunityOtp"> | Date | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"CommunityOtp"> | Date | string
+  export type SubmissionScalarWhereWithAggregatesInput = {
+    AND?: SubmissionScalarWhereWithAggregatesInput | SubmissionScalarWhereWithAggregatesInput[]
+    OR?: SubmissionScalarWhereWithAggregatesInput[]
+    NOT?: SubmissionScalarWhereWithAggregatesInput | SubmissionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Submission"> | string
+    communityId?: StringWithAggregatesFilter<"Submission"> | string
+    authorName?: StringWithAggregatesFilter<"Submission"> | string
+    authorContact?: StringWithAggregatesFilter<"Submission"> | string
+    submissionType?: StringWithAggregatesFilter<"Submission"> | string
+    title?: StringWithAggregatesFilter<"Submission"> | string
+    content?: StringWithAggregatesFilter<"Submission"> | string
+    eventDate?: DateTimeNullableWithAggregatesFilter<"Submission"> | Date | string | null
+    mediaUrls?: StringNullableWithAggregatesFilter<"Submission"> | string | null
+    status?: StringWithAggregatesFilter<"Submission"> | string
+    reviewedAt?: DateTimeNullableWithAggregatesFilter<"Submission"> | Date | string | null
+    reviewedBy?: StringNullableWithAggregatesFilter<"Submission"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Submission"> | Date | string
   }
 
   export type AdminCreateInput = {
@@ -8451,83 +6157,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommunitySubmissionCreateInput = {
-    id?: string
-    organizerName: string
-    organizerEmail: string
-    communityName: string
-    description?: string | null
-    status?: $Enums.SubmissionStatus
-    createdAt?: Date | string
-  }
-
-  export type CommunitySubmissionUncheckedCreateInput = {
-    id?: string
-    organizerName: string
-    organizerEmail: string
-    communityName: string
-    description?: string | null
-    status?: $Enums.SubmissionStatus
-    createdAt?: Date | string
-  }
-
-  export type CommunitySubmissionUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organizerName?: StringFieldUpdateOperationsInput | string
-    organizerEmail?: StringFieldUpdateOperationsInput | string
-    communityName?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CommunitySubmissionUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organizerName?: StringFieldUpdateOperationsInput | string
-    organizerEmail?: StringFieldUpdateOperationsInput | string
-    communityName?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CommunitySubmissionCreateManyInput = {
-    id?: string
-    organizerName: string
-    organizerEmail: string
-    communityName: string
-    description?: string | null
-    status?: $Enums.SubmissionStatus
-    createdAt?: Date | string
-  }
-
-  export type CommunitySubmissionUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organizerName?: StringFieldUpdateOperationsInput | string
-    organizerEmail?: StringFieldUpdateOperationsInput | string
-    communityName?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CommunitySubmissionUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organizerName?: StringFieldUpdateOperationsInput | string
-    organizerEmail?: StringFieldUpdateOperationsInput | string
-    communityName?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type CommunityCreateInput = {
     id?: string
     name: string
     slug: string
     description?: string | null
+    logoUrl?: string | null
+    contactEmail?: string | null
     createdAt?: Date | string
-    members?: CommunityMemberCreateNestedManyWithoutCommunityInput
+    updatedAt?: Date | string
+    submissions?: SubmissionCreateNestedManyWithoutCommunityInput
   }
 
   export type CommunityUncheckedCreateInput = {
@@ -8535,8 +6174,11 @@ export namespace Prisma {
     name: string
     slug: string
     description?: string | null
+    logoUrl?: string | null
+    contactEmail?: string | null
     createdAt?: Date | string
-    members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
+    updatedAt?: Date | string
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutCommunityInput
   }
 
   export type CommunityUpdateInput = {
@@ -8544,8 +6186,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUpdateManyWithoutCommunityNestedInput
   }
 
   export type CommunityUncheckedUpdateInput = {
@@ -8553,8 +6198,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUncheckedUpdateManyWithoutCommunityNestedInput
   }
 
   export type CommunityCreateManyInput = {
@@ -8562,7 +6210,10 @@ export namespace Prisma {
     name: string
     slug: string
     description?: string | null
+    logoUrl?: string | null
+    contactEmail?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type CommunityUpdateManyMutationInput = {
@@ -8570,7 +6221,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CommunityUncheckedUpdateManyInput = {
@@ -8578,173 +6232,120 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommunityMemberCreateInput = {
+  export type SubmissionCreateInput = {
     id?: string
-    name: string
-    email: string
-    notificationsEnabled?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
+    authorName: string
+    authorContact: string
+    submissionType: string
+    title: string
+    content: string
+    eventDate?: Date | string | null
+    mediaUrls?: string | null
+    status?: string
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
     createdAt?: Date | string
-    community: CommunityCreateNestedOneWithoutMembersInput
+    community: CommunityCreateNestedOneWithoutSubmissionsInput
   }
 
-  export type CommunityMemberUncheckedCreateInput = {
-    id?: string
-    communityId: string
-    name: string
-    email: string
-    notificationsEnabled?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
-    createdAt?: Date | string
-  }
-
-  export type CommunityMemberUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    notificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    community?: CommunityUpdateOneRequiredWithoutMembersNestedInput
-  }
-
-  export type CommunityMemberUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    communityId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    notificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CommunityMemberCreateManyInput = {
+  export type SubmissionUncheckedCreateInput = {
     id?: string
     communityId: string
-    name: string
-    email: string
-    notificationsEnabled?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
+    authorName: string
+    authorContact: string
+    submissionType: string
+    title: string
+    content: string
+    eventDate?: Date | string | null
+    mediaUrls?: string | null
+    status?: string
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
     createdAt?: Date | string
   }
 
-  export type CommunityMemberUpdateManyMutationInput = {
+  export type SubmissionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    notificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorContact?: StringFieldUpdateOperationsInput | string
+    submissionType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mediaUrls?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    community?: CommunityUpdateOneRequiredWithoutSubmissionsNestedInput
   }
 
-  export type CommunityMemberUncheckedUpdateManyInput = {
+  export type SubmissionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     communityId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    notificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorContact?: StringFieldUpdateOperationsInput | string
+    submissionType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mediaUrls?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommunityOtpCreateInput = {
+  export type SubmissionCreateManyInput = {
     id?: string
     communityId: string
-    email: string
-    name?: string | null
-    otp: string
-    action: string
-    expiresAt: Date | string
-    verified?: boolean
-    verifiedAt?: Date | string | null
+    authorName: string
+    authorContact: string
+    submissionType: string
+    title: string
+    content: string
+    eventDate?: Date | string | null
+    mediaUrls?: string | null
+    status?: string
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
     createdAt?: Date | string
   }
 
-  export type CommunityOtpUncheckedCreateInput = {
-    id?: string
-    communityId: string
-    email: string
-    name?: string | null
-    otp: string
-    action: string
-    expiresAt: Date | string
-    verified?: boolean
-    verifiedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type CommunityOtpUpdateInput = {
+  export type SubmissionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    communityId?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    otp?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorContact?: StringFieldUpdateOperationsInput | string
+    submissionType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mediaUrls?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommunityOtpUncheckedUpdateInput = {
+  export type SubmissionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     communityId?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    otp?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CommunityOtpCreateManyInput = {
-    id?: string
-    communityId: string
-    email: string
-    name?: string | null
-    otp: string
-    action: string
-    expiresAt: Date | string
-    verified?: boolean
-    verifiedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type CommunityOtpUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    communityId?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    otp?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CommunityOtpUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    communityId?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    otp?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorContact?: StringFieldUpdateOperationsInput | string
+    submissionType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mediaUrls?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8926,60 +6527,13 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type EnumSubmissionStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSubmissionStatusFilter<$PrismaModel> | $Enums.SubmissionStatus
+  export type SubmissionListRelationFilter = {
+    every?: SubmissionWhereInput
+    some?: SubmissionWhereInput
+    none?: SubmissionWhereInput
   }
 
-  export type CommunitySubmissionCountOrderByAggregateInput = {
-    id?: SortOrder
-    organizerName?: SortOrder
-    organizerEmail?: SortOrder
-    communityName?: SortOrder
-    description?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type CommunitySubmissionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    organizerName?: SortOrder
-    organizerEmail?: SortOrder
-    communityName?: SortOrder
-    description?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type CommunitySubmissionMinOrderByAggregateInput = {
-    id?: SortOrder
-    organizerName?: SortOrder
-    organizerEmail?: SortOrder
-    communityName?: SortOrder
-    description?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type EnumSubmissionStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSubmissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SubmissionStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSubmissionStatusFilter<$PrismaModel>
-    _max?: NestedEnumSubmissionStatusFilter<$PrismaModel>
-  }
-
-  export type CommunityMemberListRelationFilter = {
-    every?: CommunityMemberWhereInput
-    some?: CommunityMemberWhereInput
-    none?: CommunityMemberWhereInput
-  }
-
-  export type CommunityMemberOrderByRelationAggregateInput = {
+  export type SubmissionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8988,7 +6542,10 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     description?: SortOrder
+    logoUrl?: SortOrder
+    contactEmail?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type CommunityMaxOrderByAggregateInput = {
@@ -8996,7 +6553,10 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     description?: SortOrder
+    logoUrl?: SortOrder
+    contactEmail?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type CommunityMinOrderByAggregateInput = {
@@ -9004,7 +6564,10 @@ export namespace Prisma {
     name?: SortOrder
     slug?: SortOrder
     description?: SortOrder
+    logoUrl?: SortOrder
+    contactEmail?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -9023,41 +6586,51 @@ export namespace Prisma {
     isNot?: CommunityWhereInput
   }
 
-  export type CommunityMemberCommunityIdEmailCompoundUniqueInput = {
-    communityId: string
-    email: string
-  }
-
-  export type CommunityMemberCountOrderByAggregateInput = {
+  export type SubmissionCountOrderByAggregateInput = {
     id?: SortOrder
     communityId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    notificationsEnabled?: SortOrder
-    deletedAt?: SortOrder
-    deletedBy?: SortOrder
+    authorName?: SortOrder
+    authorContact?: SortOrder
+    submissionType?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    eventDate?: SortOrder
+    mediaUrls?: SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrder
+    reviewedBy?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type CommunityMemberMaxOrderByAggregateInput = {
+  export type SubmissionMaxOrderByAggregateInput = {
     id?: SortOrder
     communityId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    notificationsEnabled?: SortOrder
-    deletedAt?: SortOrder
-    deletedBy?: SortOrder
+    authorName?: SortOrder
+    authorContact?: SortOrder
+    submissionType?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    eventDate?: SortOrder
+    mediaUrls?: SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrder
+    reviewedBy?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type CommunityMemberMinOrderByAggregateInput = {
+  export type SubmissionMinOrderByAggregateInput = {
     id?: SortOrder
     communityId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    notificationsEnabled?: SortOrder
-    deletedAt?: SortOrder
-    deletedBy?: SortOrder
+    authorName?: SortOrder
+    authorContact?: SortOrder
+    submissionType?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    eventDate?: SortOrder
+    mediaUrls?: SortOrder
+    status?: SortOrder
+    reviewedAt?: SortOrder
+    reviewedBy?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -9073,45 +6646,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type CommunityOtpCountOrderByAggregateInput = {
-    id?: SortOrder
-    communityId?: SortOrder
-    email?: SortOrder
-    name?: SortOrder
-    otp?: SortOrder
-    action?: SortOrder
-    expiresAt?: SortOrder
-    verified?: SortOrder
-    verifiedAt?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type CommunityOtpMaxOrderByAggregateInput = {
-    id?: SortOrder
-    communityId?: SortOrder
-    email?: SortOrder
-    name?: SortOrder
-    otp?: SortOrder
-    action?: SortOrder
-    expiresAt?: SortOrder
-    verified?: SortOrder
-    verifiedAt?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type CommunityOtpMinOrderByAggregateInput = {
-    id?: SortOrder
-    communityId?: SortOrder
-    email?: SortOrder
-    name?: SortOrder
-    otp?: SortOrder
-    action?: SortOrder
-    expiresAt?: SortOrder
-    verified?: SortOrder
-    verifiedAt?: SortOrder
-    createdAt?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -9130,55 +6664,51 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type EnumSubmissionStatusFieldUpdateOperationsInput = {
-    set?: $Enums.SubmissionStatus
+  export type SubmissionCreateNestedManyWithoutCommunityInput = {
+    create?: XOR<SubmissionCreateWithoutCommunityInput, SubmissionUncheckedCreateWithoutCommunityInput> | SubmissionCreateWithoutCommunityInput[] | SubmissionUncheckedCreateWithoutCommunityInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutCommunityInput | SubmissionCreateOrConnectWithoutCommunityInput[]
+    createMany?: SubmissionCreateManyCommunityInputEnvelope
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
   }
 
-  export type CommunityMemberCreateNestedManyWithoutCommunityInput = {
-    create?: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput> | CommunityMemberCreateWithoutCommunityInput[] | CommunityMemberUncheckedCreateWithoutCommunityInput[]
-    connectOrCreate?: CommunityMemberCreateOrConnectWithoutCommunityInput | CommunityMemberCreateOrConnectWithoutCommunityInput[]
-    createMany?: CommunityMemberCreateManyCommunityInputEnvelope
-    connect?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
+  export type SubmissionUncheckedCreateNestedManyWithoutCommunityInput = {
+    create?: XOR<SubmissionCreateWithoutCommunityInput, SubmissionUncheckedCreateWithoutCommunityInput> | SubmissionCreateWithoutCommunityInput[] | SubmissionUncheckedCreateWithoutCommunityInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutCommunityInput | SubmissionCreateOrConnectWithoutCommunityInput[]
+    createMany?: SubmissionCreateManyCommunityInputEnvelope
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
   }
 
-  export type CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput = {
-    create?: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput> | CommunityMemberCreateWithoutCommunityInput[] | CommunityMemberUncheckedCreateWithoutCommunityInput[]
-    connectOrCreate?: CommunityMemberCreateOrConnectWithoutCommunityInput | CommunityMemberCreateOrConnectWithoutCommunityInput[]
-    createMany?: CommunityMemberCreateManyCommunityInputEnvelope
-    connect?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
+  export type SubmissionUpdateManyWithoutCommunityNestedInput = {
+    create?: XOR<SubmissionCreateWithoutCommunityInput, SubmissionUncheckedCreateWithoutCommunityInput> | SubmissionCreateWithoutCommunityInput[] | SubmissionUncheckedCreateWithoutCommunityInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutCommunityInput | SubmissionCreateOrConnectWithoutCommunityInput[]
+    upsert?: SubmissionUpsertWithWhereUniqueWithoutCommunityInput | SubmissionUpsertWithWhereUniqueWithoutCommunityInput[]
+    createMany?: SubmissionCreateManyCommunityInputEnvelope
+    set?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    disconnect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    delete?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    update?: SubmissionUpdateWithWhereUniqueWithoutCommunityInput | SubmissionUpdateWithWhereUniqueWithoutCommunityInput[]
+    updateMany?: SubmissionUpdateManyWithWhereWithoutCommunityInput | SubmissionUpdateManyWithWhereWithoutCommunityInput[]
+    deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
   }
 
-  export type CommunityMemberUpdateManyWithoutCommunityNestedInput = {
-    create?: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput> | CommunityMemberCreateWithoutCommunityInput[] | CommunityMemberUncheckedCreateWithoutCommunityInput[]
-    connectOrCreate?: CommunityMemberCreateOrConnectWithoutCommunityInput | CommunityMemberCreateOrConnectWithoutCommunityInput[]
-    upsert?: CommunityMemberUpsertWithWhereUniqueWithoutCommunityInput | CommunityMemberUpsertWithWhereUniqueWithoutCommunityInput[]
-    createMany?: CommunityMemberCreateManyCommunityInputEnvelope
-    set?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
-    disconnect?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
-    delete?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
-    connect?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
-    update?: CommunityMemberUpdateWithWhereUniqueWithoutCommunityInput | CommunityMemberUpdateWithWhereUniqueWithoutCommunityInput[]
-    updateMany?: CommunityMemberUpdateManyWithWhereWithoutCommunityInput | CommunityMemberUpdateManyWithWhereWithoutCommunityInput[]
-    deleteMany?: CommunityMemberScalarWhereInput | CommunityMemberScalarWhereInput[]
+  export type SubmissionUncheckedUpdateManyWithoutCommunityNestedInput = {
+    create?: XOR<SubmissionCreateWithoutCommunityInput, SubmissionUncheckedCreateWithoutCommunityInput> | SubmissionCreateWithoutCommunityInput[] | SubmissionUncheckedCreateWithoutCommunityInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutCommunityInput | SubmissionCreateOrConnectWithoutCommunityInput[]
+    upsert?: SubmissionUpsertWithWhereUniqueWithoutCommunityInput | SubmissionUpsertWithWhereUniqueWithoutCommunityInput[]
+    createMany?: SubmissionCreateManyCommunityInputEnvelope
+    set?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    disconnect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    delete?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    update?: SubmissionUpdateWithWhereUniqueWithoutCommunityInput | SubmissionUpdateWithWhereUniqueWithoutCommunityInput[]
+    updateMany?: SubmissionUpdateManyWithWhereWithoutCommunityInput | SubmissionUpdateManyWithWhereWithoutCommunityInput[]
+    deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
   }
 
-  export type CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput = {
-    create?: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput> | CommunityMemberCreateWithoutCommunityInput[] | CommunityMemberUncheckedCreateWithoutCommunityInput[]
-    connectOrCreate?: CommunityMemberCreateOrConnectWithoutCommunityInput | CommunityMemberCreateOrConnectWithoutCommunityInput[]
-    upsert?: CommunityMemberUpsertWithWhereUniqueWithoutCommunityInput | CommunityMemberUpsertWithWhereUniqueWithoutCommunityInput[]
-    createMany?: CommunityMemberCreateManyCommunityInputEnvelope
-    set?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
-    disconnect?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
-    delete?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
-    connect?: CommunityMemberWhereUniqueInput | CommunityMemberWhereUniqueInput[]
-    update?: CommunityMemberUpdateWithWhereUniqueWithoutCommunityInput | CommunityMemberUpdateWithWhereUniqueWithoutCommunityInput[]
-    updateMany?: CommunityMemberUpdateManyWithWhereWithoutCommunityInput | CommunityMemberUpdateManyWithWhereWithoutCommunityInput[]
-    deleteMany?: CommunityMemberScalarWhereInput | CommunityMemberScalarWhereInput[]
-  }
-
-  export type CommunityCreateNestedOneWithoutMembersInput = {
-    create?: XOR<CommunityCreateWithoutMembersInput, CommunityUncheckedCreateWithoutMembersInput>
-    connectOrCreate?: CommunityCreateOrConnectWithoutMembersInput
+  export type CommunityCreateNestedOneWithoutSubmissionsInput = {
+    create?: XOR<CommunityCreateWithoutSubmissionsInput, CommunityUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: CommunityCreateOrConnectWithoutSubmissionsInput
     connect?: CommunityWhereUniqueInput
   }
 
@@ -9186,12 +6716,12 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type CommunityUpdateOneRequiredWithoutMembersNestedInput = {
-    create?: XOR<CommunityCreateWithoutMembersInput, CommunityUncheckedCreateWithoutMembersInput>
-    connectOrCreate?: CommunityCreateOrConnectWithoutMembersInput
-    upsert?: CommunityUpsertWithoutMembersInput
+  export type CommunityUpdateOneRequiredWithoutSubmissionsNestedInput = {
+    create?: XOR<CommunityCreateWithoutSubmissionsInput, CommunityUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: CommunityCreateOrConnectWithoutSubmissionsInput
+    upsert?: CommunityUpsertWithoutSubmissionsInput
     connect?: CommunityWhereUniqueInput
-    update?: XOR<XOR<CommunityUpdateToOneWithWhereWithoutMembersInput, CommunityUpdateWithoutMembersInput>, CommunityUncheckedUpdateWithoutMembersInput>
+    update?: XOR<XOR<CommunityUpdateToOneWithWhereWithoutSubmissionsInput, CommunityUpdateWithoutSubmissionsInput>, CommunityUncheckedUpdateWithoutSubmissionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -9316,23 +6846,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedEnumSubmissionStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSubmissionStatusFilter<$PrismaModel> | $Enums.SubmissionStatus
-  }
-
-  export type NestedEnumSubmissionStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSubmissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SubmissionStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSubmissionStatusFilter<$PrismaModel>
-    _max?: NestedEnumSubmissionStatusFilter<$PrismaModel>
-  }
-
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -9358,151 +6871,198 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type CommunityMemberCreateWithoutCommunityInput = {
+  export type SubmissionCreateWithoutCommunityInput = {
     id?: string
-    name: string
-    email: string
-    notificationsEnabled?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
+    authorName: string
+    authorContact: string
+    submissionType: string
+    title: string
+    content: string
+    eventDate?: Date | string | null
+    mediaUrls?: string | null
+    status?: string
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
     createdAt?: Date | string
   }
 
-  export type CommunityMemberUncheckedCreateWithoutCommunityInput = {
+  export type SubmissionUncheckedCreateWithoutCommunityInput = {
     id?: string
-    name: string
-    email: string
-    notificationsEnabled?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
+    authorName: string
+    authorContact: string
+    submissionType: string
+    title: string
+    content: string
+    eventDate?: Date | string | null
+    mediaUrls?: string | null
+    status?: string
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
     createdAt?: Date | string
   }
 
-  export type CommunityMemberCreateOrConnectWithoutCommunityInput = {
-    where: CommunityMemberWhereUniqueInput
-    create: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput>
+  export type SubmissionCreateOrConnectWithoutCommunityInput = {
+    where: SubmissionWhereUniqueInput
+    create: XOR<SubmissionCreateWithoutCommunityInput, SubmissionUncheckedCreateWithoutCommunityInput>
   }
 
-  export type CommunityMemberCreateManyCommunityInputEnvelope = {
-    data: CommunityMemberCreateManyCommunityInput | CommunityMemberCreateManyCommunityInput[]
+  export type SubmissionCreateManyCommunityInputEnvelope = {
+    data: SubmissionCreateManyCommunityInput | SubmissionCreateManyCommunityInput[]
     skipDuplicates?: boolean
   }
 
-  export type CommunityMemberUpsertWithWhereUniqueWithoutCommunityInput = {
-    where: CommunityMemberWhereUniqueInput
-    update: XOR<CommunityMemberUpdateWithoutCommunityInput, CommunityMemberUncheckedUpdateWithoutCommunityInput>
-    create: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput>
+  export type SubmissionUpsertWithWhereUniqueWithoutCommunityInput = {
+    where: SubmissionWhereUniqueInput
+    update: XOR<SubmissionUpdateWithoutCommunityInput, SubmissionUncheckedUpdateWithoutCommunityInput>
+    create: XOR<SubmissionCreateWithoutCommunityInput, SubmissionUncheckedCreateWithoutCommunityInput>
   }
 
-  export type CommunityMemberUpdateWithWhereUniqueWithoutCommunityInput = {
-    where: CommunityMemberWhereUniqueInput
-    data: XOR<CommunityMemberUpdateWithoutCommunityInput, CommunityMemberUncheckedUpdateWithoutCommunityInput>
+  export type SubmissionUpdateWithWhereUniqueWithoutCommunityInput = {
+    where: SubmissionWhereUniqueInput
+    data: XOR<SubmissionUpdateWithoutCommunityInput, SubmissionUncheckedUpdateWithoutCommunityInput>
   }
 
-  export type CommunityMemberUpdateManyWithWhereWithoutCommunityInput = {
-    where: CommunityMemberScalarWhereInput
-    data: XOR<CommunityMemberUpdateManyMutationInput, CommunityMemberUncheckedUpdateManyWithoutCommunityInput>
+  export type SubmissionUpdateManyWithWhereWithoutCommunityInput = {
+    where: SubmissionScalarWhereInput
+    data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyWithoutCommunityInput>
   }
 
-  export type CommunityMemberScalarWhereInput = {
-    AND?: CommunityMemberScalarWhereInput | CommunityMemberScalarWhereInput[]
-    OR?: CommunityMemberScalarWhereInput[]
-    NOT?: CommunityMemberScalarWhereInput | CommunityMemberScalarWhereInput[]
-    id?: StringFilter<"CommunityMember"> | string
-    communityId?: StringFilter<"CommunityMember"> | string
-    name?: StringFilter<"CommunityMember"> | string
-    email?: StringFilter<"CommunityMember"> | string
-    notificationsEnabled?: BoolFilter<"CommunityMember"> | boolean
-    deletedAt?: DateTimeNullableFilter<"CommunityMember"> | Date | string | null
-    deletedBy?: StringNullableFilter<"CommunityMember"> | string | null
-    createdAt?: DateTimeFilter<"CommunityMember"> | Date | string
+  export type SubmissionScalarWhereInput = {
+    AND?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+    OR?: SubmissionScalarWhereInput[]
+    NOT?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+    id?: StringFilter<"Submission"> | string
+    communityId?: StringFilter<"Submission"> | string
+    authorName?: StringFilter<"Submission"> | string
+    authorContact?: StringFilter<"Submission"> | string
+    submissionType?: StringFilter<"Submission"> | string
+    title?: StringFilter<"Submission"> | string
+    content?: StringFilter<"Submission"> | string
+    eventDate?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    mediaUrls?: StringNullableFilter<"Submission"> | string | null
+    status?: StringFilter<"Submission"> | string
+    reviewedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    reviewedBy?: StringNullableFilter<"Submission"> | string | null
+    createdAt?: DateTimeFilter<"Submission"> | Date | string
   }
 
-  export type CommunityCreateWithoutMembersInput = {
+  export type CommunityCreateWithoutSubmissionsInput = {
     id?: string
     name: string
     slug: string
     description?: string | null
+    logoUrl?: string | null
+    contactEmail?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type CommunityUncheckedCreateWithoutMembersInput = {
+  export type CommunityUncheckedCreateWithoutSubmissionsInput = {
     id?: string
     name: string
     slug: string
     description?: string | null
+    logoUrl?: string | null
+    contactEmail?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type CommunityCreateOrConnectWithoutMembersInput = {
+  export type CommunityCreateOrConnectWithoutSubmissionsInput = {
     where: CommunityWhereUniqueInput
-    create: XOR<CommunityCreateWithoutMembersInput, CommunityUncheckedCreateWithoutMembersInput>
+    create: XOR<CommunityCreateWithoutSubmissionsInput, CommunityUncheckedCreateWithoutSubmissionsInput>
   }
 
-  export type CommunityUpsertWithoutMembersInput = {
-    update: XOR<CommunityUpdateWithoutMembersInput, CommunityUncheckedUpdateWithoutMembersInput>
-    create: XOR<CommunityCreateWithoutMembersInput, CommunityUncheckedCreateWithoutMembersInput>
+  export type CommunityUpsertWithoutSubmissionsInput = {
+    update: XOR<CommunityUpdateWithoutSubmissionsInput, CommunityUncheckedUpdateWithoutSubmissionsInput>
+    create: XOR<CommunityCreateWithoutSubmissionsInput, CommunityUncheckedCreateWithoutSubmissionsInput>
     where?: CommunityWhereInput
   }
 
-  export type CommunityUpdateToOneWithWhereWithoutMembersInput = {
+  export type CommunityUpdateToOneWithWhereWithoutSubmissionsInput = {
     where?: CommunityWhereInput
-    data: XOR<CommunityUpdateWithoutMembersInput, CommunityUncheckedUpdateWithoutMembersInput>
+    data: XOR<CommunityUpdateWithoutSubmissionsInput, CommunityUncheckedUpdateWithoutSubmissionsInput>
   }
 
-  export type CommunityUpdateWithoutMembersInput = {
+  export type CommunityUpdateWithoutSubmissionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommunityUncheckedUpdateWithoutMembersInput = {
+  export type CommunityUncheckedUpdateWithoutSubmissionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommunityMemberCreateManyCommunityInput = {
+  export type SubmissionCreateManyCommunityInput = {
     id?: string
-    name: string
-    email: string
-    notificationsEnabled?: boolean
-    deletedAt?: Date | string | null
-    deletedBy?: string | null
+    authorName: string
+    authorContact: string
+    submissionType: string
+    title: string
+    content: string
+    eventDate?: Date | string | null
+    mediaUrls?: string | null
+    status?: string
+    reviewedAt?: Date | string | null
+    reviewedBy?: string | null
     createdAt?: Date | string
   }
 
-  export type CommunityMemberUpdateWithoutCommunityInput = {
+  export type SubmissionUpdateWithoutCommunityInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    notificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorContact?: StringFieldUpdateOperationsInput | string
+    submissionType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mediaUrls?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommunityMemberUncheckedUpdateWithoutCommunityInput = {
+  export type SubmissionUncheckedUpdateWithoutCommunityInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    notificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorContact?: StringFieldUpdateOperationsInput | string
+    submissionType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mediaUrls?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CommunityMemberUncheckedUpdateManyWithoutCommunityInput = {
+  export type SubmissionUncheckedUpdateManyWithoutCommunityInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    notificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorContact?: StringFieldUpdateOperationsInput | string
+    submissionType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mediaUrls?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

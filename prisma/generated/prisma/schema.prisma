@@ -48,58 +48,40 @@ model Article {
   @@map("articles")
 }
 
-model CommunitySubmission {
-  id             String           @id @default(uuid())
-  organizerName  String           @map("organizer_name")
-  organizerEmail String           @map("organizer_email")
-  communityName  String           @map("community_name")
-  description    String?
-  status         SubmissionStatus @default(pending) // 'pending', 'approved', 'rejected'
-  createdAt      DateTime         @default(now()) @map("created_at")
-
-  @@map("community_submissions")
-}
-
 model Community {
-  id          String   @id @default(uuid())
-  name        String
-  slug        String   @unique
-  description String?
-  createdAt   DateTime @default(now()) @map("created_at")
+  id           String   @id @default(uuid())
+  name         String
+  slug         String   @unique
+  description  String?
+  logoUrl      String?  @map("logo_url")
+  contactEmail String?  @map("contact_email")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  members CommunityMember[]
+  submissions Submission[]
 
   @@map("communities")
 }
 
-model CommunityMember {
-  id                   String    @id @default(uuid())
-  communityId          String    @map("community_id")
-  name                 String
-  email                String
-  notificationsEnabled Boolean   @default(true) @map("notifications_enabled")
-  deletedAt            DateTime? @map("deleted_at")
-  deletedBy            String?   @map("deleted_by") // Admin ID who deleted, or 'self' for voluntary exit
-  createdAt            DateTime  @default(now()) @map("created_at")
+model Submission {
+  id             String    @id @default(uuid())
+  communityId    String    @map("community_id")
+  authorName     String    @map("author_name")
+  authorContact  String    @map("author_contact")
+  submissionType String    @map("submission_type") // 'news', 'event', 'announcement'
+  title          String
+  content        String
+  eventDate      DateTime? @map("event_date") // Only for events
+  mediaUrls      String?   @map("media_urls") // JSON array stored as string
+  status         String    @default("pending") // 'pending', 'reviewed', 'rejected'
+  reviewedAt     DateTime? @map("reviewed_at")
+  reviewedBy     String?   @map("reviewed_by") // Admin ID
+  createdAt      DateTime  @default(now()) @map("created_at")
 
   community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
 
-  @@unique([communityId, email])
-  @@map("community_members")
-}
-
-model CommunityOtp {
-  id          String    @id @default(uuid())
-  communityId String    @map("community_id")
-  email       String
-  name        String? // For join requests
-  otp         String
-  action      String // 'join' or 'leave'
-  expiresAt   DateTime  @map("expires_at")
-  verified    Boolean   @default(false)
-  verifiedAt  DateTime? @map("verified_at")
-  createdAt   DateTime  @default(now()) @map("created_at")
-
-  @@index([communityId, email, action])
-  @@map("community_otps")
+  @@index([communityId])
+  @@index([status])
+  @@index([submissionType])
+  @@map("submissions")
 }

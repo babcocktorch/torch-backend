@@ -143,45 +143,30 @@ exports.Prisma.ArticleScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.CommunitySubmissionScalarFieldEnum = {
-  id: 'id',
-  organizerName: 'organizerName',
-  organizerEmail: 'organizerEmail',
-  communityName: 'communityName',
-  description: 'description',
-  status: 'status',
-  createdAt: 'createdAt'
-};
-
 exports.Prisma.CommunityScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
   description: 'description',
-  createdAt: 'createdAt'
+  logoUrl: 'logoUrl',
+  contactEmail: 'contactEmail',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.CommunityMemberScalarFieldEnum = {
+exports.Prisma.SubmissionScalarFieldEnum = {
   id: 'id',
   communityId: 'communityId',
-  name: 'name',
-  email: 'email',
-  notificationsEnabled: 'notificationsEnabled',
-  deletedAt: 'deletedAt',
-  deletedBy: 'deletedBy',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.CommunityOtpScalarFieldEnum = {
-  id: 'id',
-  communityId: 'communityId',
-  email: 'email',
-  name: 'name',
-  otp: 'otp',
-  action: 'action',
-  expiresAt: 'expiresAt',
-  verified: 'verified',
-  verifiedAt: 'verifiedAt',
+  authorName: 'authorName',
+  authorContact: 'authorContact',
+  submissionType: 'submissionType',
+  title: 'title',
+  content: 'content',
+  eventDate: 'eventDate',
+  mediaUrls: 'mediaUrls',
+  status: 'status',
+  reviewedAt: 'reviewedAt',
+  reviewedBy: 'reviewedBy',
   createdAt: 'createdAt'
 };
 
@@ -199,19 +184,13 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.SubmissionStatus = exports.$Enums.SubmissionStatus = {
-  pending: 'pending',
-  approved: 'approved',
-  rejected: 'rejected'
-};
+
 
 exports.Prisma.ModelName = {
   Admin: 'Admin',
   Article: 'Article',
-  CommunitySubmission: 'CommunitySubmission',
   Community: 'Community',
-  CommunityMember: 'CommunityMember',
-  CommunityOtp: 'CommunityOtp'
+  Submission: 'Submission'
 };
 
 /**
