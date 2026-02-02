@@ -4,7 +4,7 @@ Complete API reference for the school newspaper backend system.
 
 **Base URL:** `http://localhost:3000/api/v2/`  
 **Version:** 2.0.0  
-**Last Updated:** January 4, 2026
+**Last Updated:** February 1, 2026
 
 ---
 
@@ -851,4 +851,4 @@ For issues or questions:
 - Check server logs for details
 
 **API Version:** 2.0.0  
-**Last Updated:** January 4, 2026
+**Last Updated:** February 1, 2026
