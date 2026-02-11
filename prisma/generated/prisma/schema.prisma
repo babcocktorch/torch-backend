@@ -33,17 +33,18 @@ model Admin {
 // Add this to your existing schema.prisma
 
 model Article {
-  id            String   @id @default(uuid())
-  sanityId      String   @unique @map("sanity_id")
-  type          String
-  title         String
-  slug          String   @unique
-  author        String?
-  isPost        Boolean  @map("is_post")
-  visibility    String   @default("private") // 'public' or 'private'
-  isEditorsPick Boolean  @default(false) @map("is_editors_pick")
-  lastSyncedAt  DateTime @default(now()) @map("last_synced_at")
-  createdAt     DateTime @default(now()) @map("created_at")
+  id                String   @id @default(uuid())
+  sanityId          String   @unique @map("sanity_id")
+  type              String
+  title             String
+  slug              String   @unique
+  author            String?
+  isPost            Boolean  @map("is_post")
+  visibility        String   @default("private") // 'public' or 'private'
+  isEditorsPick     Boolean  @default(false) @map("is_editors_pick")
+  isFeaturedOpinion Boolean  @default(false) @map("is_featured_opinion")
+  lastSyncedAt      DateTime @default(now()) @map("last_synced_at")
+  createdAt         DateTime @default(now()) @map("created_at")
 
   @@map("articles")
 }

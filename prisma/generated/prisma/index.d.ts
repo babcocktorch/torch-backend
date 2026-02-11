@@ -2211,6 +2211,7 @@ export namespace Prisma {
     isPost: boolean | null
     visibility: string | null
     isEditorsPick: boolean | null
+    isFeaturedOpinion: boolean | null
     lastSyncedAt: Date | null
     createdAt: Date | null
   }
@@ -2225,6 +2226,7 @@ export namespace Prisma {
     isPost: boolean | null
     visibility: string | null
     isEditorsPick: boolean | null
+    isFeaturedOpinion: boolean | null
     lastSyncedAt: Date | null
     createdAt: Date | null
   }
@@ -2239,6 +2241,7 @@ export namespace Prisma {
     isPost: number
     visibility: number
     isEditorsPick: number
+    isFeaturedOpinion: number
     lastSyncedAt: number
     createdAt: number
     _all: number
@@ -2255,6 +2258,7 @@ export namespace Prisma {
     isPost?: true
     visibility?: true
     isEditorsPick?: true
+    isFeaturedOpinion?: true
     lastSyncedAt?: true
     createdAt?: true
   }
@@ -2269,6 +2273,7 @@ export namespace Prisma {
     isPost?: true
     visibility?: true
     isEditorsPick?: true
+    isFeaturedOpinion?: true
     lastSyncedAt?: true
     createdAt?: true
   }
@@ -2283,6 +2288,7 @@ export namespace Prisma {
     isPost?: true
     visibility?: true
     isEditorsPick?: true
+    isFeaturedOpinion?: true
     lastSyncedAt?: true
     createdAt?: true
     _all?: true
@@ -2370,6 +2376,7 @@ export namespace Prisma {
     isPost: boolean
     visibility: string
     isEditorsPick: boolean
+    isFeaturedOpinion: boolean
     lastSyncedAt: Date
     createdAt: Date
     _count: ArticleCountAggregateOutputType | null
@@ -2401,6 +2408,7 @@ export namespace Prisma {
     isPost?: boolean
     visibility?: boolean
     isEditorsPick?: boolean
+    isFeaturedOpinion?: boolean
     lastSyncedAt?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["article"]>
@@ -2415,6 +2423,7 @@ export namespace Prisma {
     isPost?: boolean
     visibility?: boolean
     isEditorsPick?: boolean
+    isFeaturedOpinion?: boolean
     lastSyncedAt?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["article"]>
@@ -2429,6 +2438,7 @@ export namespace Prisma {
     isPost?: boolean
     visibility?: boolean
     isEditorsPick?: boolean
+    isFeaturedOpinion?: boolean
     lastSyncedAt?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["article"]>
@@ -2443,11 +2453,12 @@ export namespace Prisma {
     isPost?: boolean
     visibility?: boolean
     isEditorsPick?: boolean
+    isFeaturedOpinion?: boolean
     lastSyncedAt?: boolean
     createdAt?: boolean
   }
 
-  export type ArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sanityId" | "type" | "title" | "slug" | "author" | "isPost" | "visibility" | "isEditorsPick" | "lastSyncedAt" | "createdAt", ExtArgs["result"]["article"]>
+  export type ArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sanityId" | "type" | "title" | "slug" | "author" | "isPost" | "visibility" | "isEditorsPick" | "isFeaturedOpinion" | "lastSyncedAt" | "createdAt", ExtArgs["result"]["article"]>
 
   export type $ArticlePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Article"
@@ -2462,6 +2473,7 @@ export namespace Prisma {
       isPost: boolean
       visibility: string
       isEditorsPick: boolean
+      isFeaturedOpinion: boolean
       lastSyncedAt: Date
       createdAt: Date
     }, ExtArgs["result"]["article"]>
@@ -2896,6 +2908,7 @@ export namespace Prisma {
     readonly isPost: FieldRef<"Article", 'Boolean'>
     readonly visibility: FieldRef<"Article", 'String'>
     readonly isEditorsPick: FieldRef<"Article", 'Boolean'>
+    readonly isFeaturedOpinion: FieldRef<"Article", 'Boolean'>
     readonly lastSyncedAt: FieldRef<"Article", 'DateTime'>
     readonly createdAt: FieldRef<"Article", 'DateTime'>
   }
@@ -5571,6 +5584,7 @@ export namespace Prisma {
     isPost: 'isPost',
     visibility: 'visibility',
     isEditorsPick: 'isEditorsPick',
+    isFeaturedOpinion: 'isFeaturedOpinion',
     lastSyncedAt: 'lastSyncedAt',
     createdAt: 'createdAt'
   };
@@ -5762,6 +5776,7 @@ export namespace Prisma {
     isPost?: BoolFilter<"Article"> | boolean
     visibility?: StringFilter<"Article"> | string
     isEditorsPick?: BoolFilter<"Article"> | boolean
+    isFeaturedOpinion?: BoolFilter<"Article"> | boolean
     lastSyncedAt?: DateTimeFilter<"Article"> | Date | string
     createdAt?: DateTimeFilter<"Article"> | Date | string
   }
@@ -5776,6 +5791,7 @@ export namespace Prisma {
     isPost?: SortOrder
     visibility?: SortOrder
     isEditorsPick?: SortOrder
+    isFeaturedOpinion?: SortOrder
     lastSyncedAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -5793,6 +5809,7 @@ export namespace Prisma {
     isPost?: BoolFilter<"Article"> | boolean
     visibility?: StringFilter<"Article"> | string
     isEditorsPick?: BoolFilter<"Article"> | boolean
+    isFeaturedOpinion?: BoolFilter<"Article"> | boolean
     lastSyncedAt?: DateTimeFilter<"Article"> | Date | string
     createdAt?: DateTimeFilter<"Article"> | Date | string
   }, "id" | "sanityId" | "slug">
@@ -5807,6 +5824,7 @@ export namespace Prisma {
     isPost?: SortOrder
     visibility?: SortOrder
     isEditorsPick?: SortOrder
+    isFeaturedOpinion?: SortOrder
     lastSyncedAt?: SortOrder
     createdAt?: SortOrder
     _count?: ArticleCountOrderByAggregateInput
@@ -5827,6 +5845,7 @@ export namespace Prisma {
     isPost?: BoolWithAggregatesFilter<"Article"> | boolean
     visibility?: StringWithAggregatesFilter<"Article"> | string
     isEditorsPick?: BoolWithAggregatesFilter<"Article"> | boolean
+    isFeaturedOpinion?: BoolWithAggregatesFilter<"Article"> | boolean
     lastSyncedAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
   }
@@ -6069,6 +6088,7 @@ export namespace Prisma {
     isPost: boolean
     visibility?: string
     isEditorsPick?: boolean
+    isFeaturedOpinion?: boolean
     lastSyncedAt?: Date | string
     createdAt?: Date | string
   }
@@ -6083,6 +6103,7 @@ export namespace Prisma {
     isPost: boolean
     visibility?: string
     isEditorsPick?: boolean
+    isFeaturedOpinion?: boolean
     lastSyncedAt?: Date | string
     createdAt?: Date | string
   }
@@ -6097,6 +6118,7 @@ export namespace Prisma {
     isPost?: BoolFieldUpdateOperationsInput | boolean
     visibility?: StringFieldUpdateOperationsInput | string
     isEditorsPick?: BoolFieldUpdateOperationsInput | boolean
+    isFeaturedOpinion?: BoolFieldUpdateOperationsInput | boolean
     lastSyncedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6111,6 +6133,7 @@ export namespace Prisma {
     isPost?: BoolFieldUpdateOperationsInput | boolean
     visibility?: StringFieldUpdateOperationsInput | string
     isEditorsPick?: BoolFieldUpdateOperationsInput | boolean
+    isFeaturedOpinion?: BoolFieldUpdateOperationsInput | boolean
     lastSyncedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6125,6 +6148,7 @@ export namespace Prisma {
     isPost: boolean
     visibility?: string
     isEditorsPick?: boolean
+    isFeaturedOpinion?: boolean
     lastSyncedAt?: Date | string
     createdAt?: Date | string
   }
@@ -6139,6 +6163,7 @@ export namespace Prisma {
     isPost?: BoolFieldUpdateOperationsInput | boolean
     visibility?: StringFieldUpdateOperationsInput | string
     isEditorsPick?: BoolFieldUpdateOperationsInput | boolean
+    isFeaturedOpinion?: BoolFieldUpdateOperationsInput | boolean
     lastSyncedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6153,6 +6178,7 @@ export namespace Prisma {
     isPost?: BoolFieldUpdateOperationsInput | boolean
     visibility?: StringFieldUpdateOperationsInput | string
     isEditorsPick?: BoolFieldUpdateOperationsInput | boolean
+    isFeaturedOpinion?: BoolFieldUpdateOperationsInput | boolean
     lastSyncedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6487,6 +6513,7 @@ export namespace Prisma {
     isPost?: SortOrder
     visibility?: SortOrder
     isEditorsPick?: SortOrder
+    isFeaturedOpinion?: SortOrder
     lastSyncedAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -6501,6 +6528,7 @@ export namespace Prisma {
     isPost?: SortOrder
     visibility?: SortOrder
     isEditorsPick?: SortOrder
+    isFeaturedOpinion?: SortOrder
     lastSyncedAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -6515,6 +6543,7 @@ export namespace Prisma {
     isPost?: SortOrder
     visibility?: SortOrder
     isEditorsPick?: SortOrder
+    isFeaturedOpinion?: SortOrder
     lastSyncedAt?: SortOrder
     createdAt?: SortOrder
   }

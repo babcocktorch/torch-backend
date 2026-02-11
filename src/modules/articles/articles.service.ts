@@ -34,6 +34,7 @@ export class ArticlesService {
           isPost,
           visibility: "private", // Default to private
           isEditorsPick: false,
+          isFeaturedOpinion: false,
           lastSyncedAt: new Date(),
         },
       });
@@ -79,6 +80,7 @@ export class ArticlesService {
         isPost: true,
         visibility: true,
         isEditorsPick: true,
+        isFeaturedOpinion: true,
         lastSyncedAt: true,
       },
     });
@@ -103,7 +105,7 @@ export class ArticlesService {
   }
 
   /**
-   * Set article as Editor's Pick (exclusive - only one at a time)
+   * Set article as Editor's Pick (exclusive - max three per time)
    * Only posts (type === 'post') can be set as Editor's Pick
    */
   async setEditorsPick(articleId: string) {
@@ -120,13 +122,38 @@ export class ArticlesService {
       throw new Error("Only posts can be set as Editor's Pick");
     }
 
+    // Check if article is already an Editor's Pick
+    if (article.isEditorsPick) {
+      throw new Error('This article is already an Editor\'s Pick');
+    }
+
     // Use transaction to ensure atomicity
     return prisma.$transaction(async (tx: any) => {
-      // Unset previous editor's pick
-      await tx.article.updateMany({
+      // Count current editor's picks
+      const currentCount = await tx.article.count({
         where: { isEditorsPick: true },
-        data: { isEditorsPick: false },
       });
+
+      // If we already have 3, find the oldest and remove it
+      if (currentCount >= 3) {
+        const oldestPick = await tx.article.findFirst({
+          where: { isEditorsPick: true },
+          orderBy: { lastSyncedAt: 'asc' }, // Oldest first
+        });
+
+        if (oldestPick) {
+          await tx.article.update({
+            where: { id: oldestPick.id },
+            data: { isEditorsPick: false },
+          });
+        }
+      }
+
+      // Unset previous editor's pick
+      // await tx.article.updateMany({
+      //   where: { isEditorsPick: true },
+      //   data: { isEditorsPick: false },
+      // });
 
       // Set new editor's pick
       return tx.article.update({
@@ -135,6 +162,85 @@ export class ArticlesService {
       });
     });
   }
+
+  /**
+   * Remove article from Editor's Pick
+   */
+  async removeEditorsPick(articleId: string) {
+    const article = await prisma.article.findUnique({
+      where: { id: articleId },
+    });
+
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    if (!article.isEditorsPick) {
+      throw new Error('This article is not an Editor\'s Pick');
+    }
+
+    return prisma.article.update({
+      where: { id: articleId },
+      data: { isEditorsPick: false },
+    });
+  }
+
+  /**
+   * Set article as Featured Opinion (exclusive - only one at a time)
+   * Only opinions (type === 'opinion') can be set as Featured Opinion
+   */
+  async setFeaturedOpinion(articleId: string) {
+    const article = await prisma.article.findUnique({
+      where: { id: articleId },
+    });
+
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    // Check if article is an opinion
+    if (article.type.toLowerCase() !== 'opinion') {
+      throw new Error('Only opinions can be set as Featured Opinion');
+    }
+
+    // Use transaction to ensure atomicity
+    return prisma.$transaction(async (tx) => {
+      // Unset previous featured opinion
+      await tx.article.updateMany({
+        where: { isFeaturedOpinion: true },
+        data: { isFeaturedOpinion: false },
+      });
+
+      // Set new featured opinion
+      return tx.article.update({
+        where: { id: articleId },
+        data: { isFeaturedOpinion: true },
+      });
+    });
+  }
+
+  /**
+   * Remove article from Featured Opinion
+   */
+  async removeFeaturedOpinion(articleId: string) {
+    const article = await prisma.article.findUnique({
+      where: { id: articleId },
+    });
+
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    if (!article.isFeaturedOpinion) {
+      throw new Error('This article is not a Featured Opinion');
+    }
+
+    return prisma.article.update({
+      where: { id: articleId },
+      data: { isFeaturedOpinion: false },
+    });
+  }
+
 
   /**
    * Get public articles (for frontend)
@@ -152,6 +258,7 @@ export class ArticlesService {
         type: true,
         isPost: true,
         isEditorsPick: true,
+        isFeaturedOpinion: true,
         lastSyncedAt: true,
       },
     });
@@ -172,6 +279,7 @@ export class ArticlesService {
         type: true,
         isPost: true,
         isEditorsPick: true,
+        isFeaturedOpinion: true,
         lastSyncedAt: true,
       },
     });

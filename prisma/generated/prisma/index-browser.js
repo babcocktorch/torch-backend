@@ -139,6 +139,7 @@ exports.Prisma.ArticleScalarFieldEnum = {
   isPost: 'isPost',
   visibility: 'visibility',
   isEditorsPick: 'isEditorsPick',
+  isFeaturedOpinion: 'isFeaturedOpinion',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt'
 };
