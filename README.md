@@ -4,14 +4,14 @@ Complete API reference for the school newspaper backend system.
 
 **Base URL:** `http://localhost:3000api/v2/`  
 **Version:** 2.0.0  
-**Last Updated:** January 4, 2026
+**Last Updated:** February 12, 2026
 
 ---
 
 ## Quick Navigation
 
 - [Authentication](#authentication) - Login, setup, logout
-- [Articles](#articles) - Sanity sync, visibility, editor's pick
+- [Articles](#articles) - Sanity sync, visibility, editor's pick, features opinions
 - [Communities](#communities) - Directory CRUD
 - [Submissions](#submissions) - Community content submissions
 - [Response Format](#standard-response-format)
@@ -233,15 +233,15 @@ Change article visibility.
 - `404` - Article not found
 
 ---
+### 8. Set Article as Editor's Pick
 
-### 8. Set Editor's Pick
+**Endpoint:** `POST /admin/articles/:id/editors-pick` - Protected  
 
-**POST** `/admin/articles/:id/editors-pick` - Protected
+Add article to Editor's Picks (max 3 posts)
 
-Set article as Editor's Pick (only ONE at a time, posts only).
-
-**Headers:** `Authorization: Bearer TOKEN`  
+**Headers:** `Authorization: Bearer <token>`\
 **URL Params:** `id` (UUID)
+
 
 **Success (200):**
 ```json
@@ -249,23 +249,128 @@ Set article as Editor's Pick (only ONE at a time, posts only).
   "success": true,
   "data": {
     "message": "Article set as Editor's Pick",
-    "article": { "id": "uuid", "isEditorsPick": true, ... }
+    "article": {
+      "id": "uuid",
+      "title": "Article Title",
+      "isEditorsPick": true,
+      ...
+    }
   }
 }
 ```
 
-**Errors:**
+**Error Responses:**
+- `400` - Only posts can be set as Editor's Pick
+- `400` - This article is already an Editor's Pick
 - `404` - Article not found
-- `400` - Only posts can be Editor's Pick (when `isPost === false`)
+
 
 **Business Rules:**
-- Only ONE article can be Editor's Pick
-- Only articles with `type === "post"` allowed
-- Previous pick automatically unset
+- **Maximum 3 Editor's Picks at a time** (changed from 1)
+- Automatically removes oldest pick when adding 4th
+- Only posts (`type === 'post'`) can be Editor's Picks
+- Cannot set same article twice
+---
+
+### 9. Remove Article from Editor's Pick
+
+**Endpoint:** `DELETE /admin/articles/:id/editors-pick` - Protected  
+
+Remove article from Editor's Picks
+
+**Headers:** `Authorization: Bearer <token>`\
+**URL Params:** `id` (UUID)
+
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Article removed from Editor's Pick",
+    "article": {
+      "id": "uuid",
+      "isEditorsPick": false,
+      ...
+    }
+  }
+}
+```
+
+**Error Responses:**
+- `400` - This article is not an Editor's Pick
+- `404` - Article not found
 
 ---
 
-### 9. Get Public Articles
+### 10. Set Article as Featured Opinion
+
+**Endpoint:** `POST /admin/articles/:id/featured-opinion` - Protected  
+
+Set article as Featured Opinion (exclusive - only one at a time)
+
+**Headers:** `Authorization: Bearer <token>`\
+**URL Params:** `id` (UUID)
+
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Article set as Featured Opinion",
+    "article": {
+      "id": "uuid",
+      "title": "Opinion Title",
+      "isFeaturedOpinion": true,
+      ...
+    }
+  }
+}
+```
+
+
+**Error Responses:**
+- `400` - Only opinions can be set as Featured Opinion
+- `404` - Article not found
+
+**Business Rules:**
+- Only ONE Featured Opinion at a time
+- Automatically removes previous featured opinion
+- Only opinions (`type === 'opinion'`) can be Featured Opinions
+---
+
+### 11. Remove Article from Featured Opinion
+
+**DELETE** ` /admin/articles/:id/featured-opinion` - Protected
+
+Remove article from Featured Opinion
+
+**Headers:** `Authorization: Bearer <token>`\
+**URL Params:** `id` (UUID)
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Article removed from Featured Opinion",
+    "article": {
+      "id": "uuid",
+      "isFeaturedOpinion": false,
+      ...
+    }
+  }
+}
+```
+
+**Error Responses:**
+- `400` - This article is not a Featured Opinion
+- `404` - Article not found
+
+---
+
+### 12. Get Public Articles
 
 **GET** `/articles` - Public
 
@@ -294,7 +399,7 @@ Get all public articles for frontend.
 
 ---
 
-### 10. Get Single Article
+### 13. Get Single Article
 
 **GET** `/articles/:slug` - Public
 
@@ -315,7 +420,7 @@ Get single article by slug.
 
 ---
 
-### 11. Internal Sync (Cron)
+### 14. Internal Sync (Cron)
 
 **POST** `/internal/articles/sync` - Internal
 
@@ -329,7 +434,7 @@ Automated sync endpoint for cron jobs.
 
 ## Communities
 
-### 12. List Communities (Public)
+### 15. List Communities (Public)
 
 **GET** `/communities` - Public
 
@@ -357,7 +462,7 @@ Get all communities for dropdown selection.
 
 ---
 
-### 13. Get Community by Slug
+### 16. Get Community by Slug
 
 **GET** `/communities/:slug` - Public
 
@@ -389,7 +494,7 @@ Get single community details.
 
 ---
 
-### 14. List Communities (Admin)
+### 17. List Communities (Admin)
 
 **GET** `/admin/communities` - Protected
 
@@ -419,7 +524,7 @@ Get all communities with admin metadata.
 
 ---
 
-### 15. Get Community by ID (Admin)
+### 18. Get Community by ID (Admin)
 
 **GET** `/admin/communities/:id` - Protected
 
@@ -435,7 +540,7 @@ Get single community by ID.
 
 ---
 
-### 16. Create Community
+### 19. Create Community
 
 **POST** `/admin/communities` - Protected
 
@@ -476,7 +581,7 @@ Create a new community.
 
 ---
 
-### 17. Update Community
+### 20. Update Community
 
 **PATCH** `/admin/communities/:id` - Protected
 
@@ -515,7 +620,7 @@ Update community (partial update).
 
 ---
 
-### 18. Delete Community
+### 21. Delete Community
 
 **DELETE** `/admin/communities/:id` - Protected
 
@@ -542,7 +647,7 @@ Delete community (cascades to submissions).
 
 ## Submissions
 
-### 19. Submit Community Content
+### 22. Submit Community Content
 
 **POST** `/submissions/community` - Public
 
@@ -610,7 +715,7 @@ curl -X POST http://localhost:3000/api/v2/submissions/community \
 
 ---
 
-### 20. List Submissions (Admin)
+### 23. List Submissions (Admin)
 
 **GET** `/admin/submissions` - Protected
 
@@ -663,7 +768,7 @@ curl -X GET "http://localhost:3000/api/v2/admin/submissions?community_id=UUID" \
 
 ---
 
-### 21. Get Submission by ID
+### 24. Get Submission by ID
 
 **GET** `/admin/submissions/:id` - Protected
 
@@ -705,7 +810,7 @@ Get single submission details.
 
 ---
 
-### 22. Update Submission Status
+### 25. Update Submission Status
 
 **PATCH** `/admin/submissions/:id/status` - Protected
 
@@ -746,7 +851,7 @@ Update submission status.
 
 ---
 
-### 23. Delete Submission
+### 26. Delete Submission
 
 **DELETE** `/admin/submissions/:id` - Protected
 
@@ -851,4 +956,4 @@ For issues or questions:
 - Check server logs for details
 
 **API Version:** 2.0.0  
-**Last Updated:** January 4, 2026
+**Last Updated:** February 12, 2026
