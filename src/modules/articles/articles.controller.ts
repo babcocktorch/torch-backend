@@ -92,6 +92,67 @@ export class ArticlesController {
   }
 
   /**
+   * DELETE /admin/articles/:id/editors-pick
+   * Unset article as Editor's Pick (exclusive)
+   */
+  async removeEditorsPick(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const article = await articlesService.removeEditorsPick(id);
+      return ResponseUtil.success(res, {
+        message: "Article removed from Editor's Pick",
+        article,
+      });
+    } catch (error: any) {
+      const message = error instanceof Error ? error.message : "Failed to remove Editor's Pick";
+      
+      if (message === 'Article not found') {
+        return ResponseUtil.error(res, message, 404);
+      }
+
+      if (message === 'This article is not an Editor\'s Pick') {
+        return ResponseUtil.error(res, message, 400);
+      }
+      
+      return ResponseUtil.error(res, message, 500);
+    }
+  }
+
+  /**
+   * POST /admin/articles/:id/featured-opinion
+   * Set article as Featured Opinion (exclusive)
+   */
+  async setFeaturedOpinion(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const article = await articlesService.setFeaturedOpinion(id);
+      return ResponseUtil.success(res, {
+        message: 'Article set as Featured Opinion',
+        article,
+      });
+    } catch (error: any) {
+      return ResponseUtil.error(res, error.message, 400);
+    }
+  }
+
+  /**
+   * DELETE /admin/articles/:id/featured-opinion
+   * Unset article as Featured Opinion (exclusive)
+   */
+  async removeFeaturedOpinion(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const article = await articlesService.removeFeaturedOpinion(id);
+      return ResponseUtil.success(res, {
+        message: 'Article removed from Featured Opinion',
+        article,
+      });
+    } catch (error: any) {
+      return ResponseUtil.error(res, error.message, 400);
+    }
+  }
+
+  /**
    * GET /articles
    * Get public articles (frontend)
    */

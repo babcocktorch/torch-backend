@@ -21,6 +21,7 @@ export interface Article {
   isPost: boolean;
   visibility: 'public' | 'private';
   isEditorsPick: boolean;
+  isFeaturedOpinion: boolean;
   lastSyncedAt: Date;
   createdAt: Date;
 }
@@ -36,6 +37,7 @@ export interface ArticleListItem {
   isPost: boolean;
   visibility: 'public' | 'private';
   isEditorsPick: boolean;
+  isFeaturedOpinion: boolean;
   lastSyncedAt: Date;
 }
 
