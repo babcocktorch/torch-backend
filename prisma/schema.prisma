@@ -87,6 +87,11 @@ model Community {
   description   String?
   logoUrl       String?   @map("logo_url")
   contactEmail  String?   @map("contact_email")
+  category      String?
+  memberCount   Int       @default(0)
+  openToJoin    Boolean   @default(false)
+  bannerURL     String?
+
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
