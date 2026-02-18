@@ -4,7 +4,7 @@ Complete API reference for the school newspaper backend system.
 
 **Base URL:** `http://localhost:3000/api/v2/`  
 **Version:** 2.0.0  
-**Last Updated:** February 12, 2026
+**Last Updated:** February 18, 2026
 
 ---
 
@@ -420,21 +420,204 @@ Get single article by slug.
 
 ---
 
-### 14. Internal Sync (Cron)
+### 14. Track Article Read
 
-**POST** `/internal/articles/sync` - Internal
+**Endpoint:** `POST /articles/:slug/read`  
+**Access:** Public  
+**Purpose:** Track article view (with 24-hour debouncing per IP)
 
-Automated sync endpoint for cron jobs.
+**Success Response (201):**
+```json
+{
+  "success": true,
+  "data": {
+    "tracked": true,
+    "message": "Read tracked successfully"
+  }
+}
+```
 
-**Success:** Same as `/admin/articles/sync`
+**If Already Tracked (201):**
+```json
+{
+  "success": true,
+  "data": {
+    "tracked": false,
+    "message": "Read already tracked in the last 24 hours"
+  }
+}
+```
 
-**Security:** Protect with IP allowlist or secret token in production
+**Business Rules:**
+- IP-based tracking (automatically extracted from request)
+- Debounced: Same IP can only be counted once per 24 hours
+- Only tracks reads for public articles
+- No authentication required
+
+**Error Responses:**
+- `404` - Article not found
+- `400` - Cannot track reads for non-public articles
+
+---
+
+### 15. Get Article Read Statistics (Admin)
+
+**Endpoint:** `GET /admin/articles/:id/stats`  
+**Access:** Protected  
+**Purpose:** Get detailed read statistics for an article
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "stats": {
+      "totalReads": 150,
+      "uniqueReads": 87,
+      "readsLast24h": 12,
+      "readsLast7d": 45,
+      "readsLast30d": 120
+    }
+  }
+}
+```
+
+**Response Fields:**
+- `totalReads` - Total number of read events
+- `uniqueReads` - Number of unique IP addresses
+- `readsLast24h` - Reads in the last 24 hours
+- `readsLast7d` - Reads in the last 7 days
+- `readsLast30d` - Reads in the last 30 days
+
+**Error Responses:**
+- `404` - Article not found
+- `401` - Authorization required
+
+---
+
+### 16. Add/Update Reaction
+
+**Endpoint:** `POST /articles/:slug/react`  
+**Access:** Public  
+**Purpose:** Add or update reaction to an article
+
+**Request Body:**
+```json
+{
+  "reactionType": "upvote"
+}
+```
+
+**Valid Reaction Types:**
+- `upvote` 
+- `downvote`
+
+**Success Response (201):**
+```json
+{
+  "success": true,
+  "data": {
+    "reactions": {
+      "upvote": 44,
+      "downvote": 23
+    },
+    "total": 67,
+    "userReaction": "upvote"
+  }
+}
+```
+
+**Response Fields:**
+- `reactions` - Count for each reaction type
+- `total` - Total number of reactions
+- `userReaction` - Current user's reaction (null if none)
+
+**Business Rules:**
+- IP-based identification (automatically extracted)
+- Upsert behavior: Creates new or updates existing reaction
+- One reaction per IP per article
+- User can change reaction by submitting different type
+- Only works on public articles
+
+**Error Responses:**
+- `400` - Reaction type is required
+- `400` - Invalid reaction type (must be: upvote, downvote)
+- `400` - Cannot react to non-public articles
+- `404` - Article not found
+
+---
+
+### 17. Remove Reaction
+
+**Endpoint:** `DELETE /articles/:slug/react`  
+**Access:** Public  
+**Purpose:** Remove user's reaction from an article
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "reactions": {
+      "upvote": 44,
+      "downvote": 23
+    },
+    "total": 67,
+    "userReaction": null
+  }
+}
+```
+
+**Business Rules:**
+- Removes reaction based on user's IP address
+- Returns updated reaction counts
+- Silently succeeds even if user had no reaction
+
+**Error Responses:**
+- `404` - Article not found
+
+---
+
+### 18. Get Article Reactions
+
+**Endpoint:** `GET /articles/:slug/reactions`  
+**Access:** Public  
+**Purpose:** Get reaction counts for an article
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "reactions": {
+      "upvote": 45,
+      "downvote": 23
+    },
+    "total": 67,
+    "userReaction": "upvote"
+  }
+}
+```
+
+**Business Rules:**
+- Returns counts even if no reactions exist (all counts will be 0)
+- Shows current user's reaction based on IP
+- Only works on public articles
+
+**Error Responses:**
+- `400` - Cannot get reactions for non-public articles
+- `404` - Article not found
 
 ---
 
 ## Communities
 
-### 15. List Communities (Public)
+### 19. List Communities (Public)
 
 **GET** `/communities` - Public
 
@@ -462,7 +645,7 @@ Get all communities for dropdown selection.
 
 ---
 
-### 16. Get Community by Slug
+### 20. Get Community by Slug
 
 **GET** `/communities/:slug` - Public
 
@@ -494,7 +677,7 @@ Get single community details.
 
 ---
 
-### 17. List Communities (Admin)
+### 21. List Communities (Admin)
 
 **GET** `/admin/communities` - Protected
 
@@ -524,7 +707,7 @@ Get all communities with admin metadata.
 
 ---
 
-### 18. Get Community by ID (Admin)
+### 22. Get Community by ID (Admin)
 
 **GET** `/admin/communities/:id` - Protected
 
@@ -540,7 +723,7 @@ Get single community by ID.
 
 ---
 
-### 19. Create Community
+### 23. Create Community
 
 **POST** `/admin/communities` - Protected
 
@@ -581,7 +764,7 @@ Create a new community.
 
 ---
 
-### 20. Update Community
+### 24. Update Community
 
 **PATCH** `/admin/communities/:id` - Protected
 
@@ -620,7 +803,7 @@ Update community (partial update).
 
 ---
 
-### 21. Delete Community
+### 25. Delete Community
 
 **DELETE** `/admin/communities/:id` - Protected
 
@@ -647,7 +830,7 @@ Delete community (cascades to submissions).
 
 ## Submissions
 
-### 22. Submit Community Content
+### 26. Submit Community Content
 
 **POST** `/submissions/community` - Public
 
@@ -715,7 +898,7 @@ curl -X POST http://localhost:3000/api/v2/submissions/community \
 
 ---
 
-### 23. List Submissions (Admin)
+### 27. List Submissions (Admin)
 
 **GET** `/admin/submissions` - Protected
 
@@ -768,7 +951,7 @@ curl -X GET "http://localhost:3000/api/v2/admin/submissions?community_id=UUID" \
 
 ---
 
-### 24. Get Submission by ID
+### 28. Get Submission by ID
 
 **GET** `/admin/submissions/:id` - Protected
 
@@ -810,7 +993,7 @@ Get single submission details.
 
 ---
 
-### 25. Update Submission Status
+### 29. Update Submission Status
 
 **PATCH** `/admin/submissions/:id/status` - Protected
 
@@ -851,7 +1034,7 @@ Update submission status.
 
 ---
 
-### 26. Delete Submission
+### 30. Delete Submission
 
 **DELETE** `/admin/submissions/:id` - Protected
 
