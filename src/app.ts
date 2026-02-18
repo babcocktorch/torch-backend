@@ -1,15 +1,15 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import authRoutes from './modules/auth/auth.routes';
-import readRoutes from './modules/reads/reads.routes'
+import readRoutes from './modules/reads/reads.routes';
 import articleRoutes from './modules/articles/articles.routes';
 import publicArticleRoutes from './modules/articles/public.routes';
 import communityRoutes from './modules/communities/communities.routes';
 import publicCommunityRoutes from './modules/communities/public.routes';
 import submissionRoutes from './modules/submissions/submissions.routes';
 import publicSubmissionRoutes from './modules/submissions/public.routes';
-import publicReactionRoutes from './modules/reactions/public.routes'
-import publicReadRoutes from './modules/reads/public.routes'
+import publicReactionRoutes from './modules/reactions/public.routes';
+import publicReadRoutes from './modules/reads/public.routes';
 import { errorMiddleware } from './middleware/error.middleware';
 
 const app: Application = express();
