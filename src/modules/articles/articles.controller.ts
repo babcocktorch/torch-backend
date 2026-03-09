@@ -39,6 +39,21 @@ export class ArticlesController {
   }
 
   /**
+   * GET /admin/articles
+   * OrderBy readcount
+   * List all public articles 
+   */
+  async listArticlesByReadCount(req: Request, res: Response) {
+    try {
+      const articles = await articlesService.listArticlesByReadCount();
+      return ResponseUtil.success(res, { articles }, 200);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to fetch articles';
+      return ResponseUtil.error(res, message, 500);
+    }
+  }
+
+  /**
    * PATCH /admin/articles/:id/visibility
    * Update article visibility
    */

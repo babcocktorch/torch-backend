@@ -86,6 +86,41 @@ export class ArticlesService {
     });
   }
 
+
+  /**
+   * List all articles (admin view)
+   */
+  async listArticlesByReadCount() {
+    const articles = await prisma.article.findMany({
+      where: {
+        visibility: "public"
+      },
+      include: {
+        _count: {
+          select: { reads: true }
+        }
+      },
+      orderBy: { reads: {
+        _count: "desc",
+      } },
+    });
+
+    return articles.map((articles) => ({
+      id: articles.id,
+      sanityId: articles.sanityId,
+      title: articles.title,
+      slug: articles.slug,
+      author: articles.author,
+      type: articles.type,
+      isPost: articles.isPost,
+      visibility: articles.visibility,
+      isEditorsPick: articles.isEditorsPick,
+      isFeaturedOpinion: articles.isFeaturedOpinion,
+      lastSyncedAt: articles.lastSyncedAt,
+      readCount: articles._count.reads
+    }))
+  }
+
   /**
    * Update article visibility
    */
@@ -203,13 +238,32 @@ export class ArticlesService {
       throw new Error('Only opinions can be set as Featured Opinion');
     }
 
+     // Check if article is already a Featured Opinion
+    if (article.isFeaturedOpinion) {
+      throw new Error("This article is already a Featured Opinion");
+    }
+
     // Use transaction to ensure atomicity
     return prisma.$transaction(async (tx) => {
-      // Unset previous featured opinion
-      await tx.article.updateMany({
+      // Count current editor's picks
+      const currentCount = await tx.article.count({
         where: { isFeaturedOpinion: true },
-        data: { isFeaturedOpinion: false },
       });
+
+      // If we already have 2, find the oldest and remove it
+      if (currentCount >= 2) {
+        const oldestPick = await tx.article.findFirst({
+          where: { isEditorsPick: true },
+          orderBy: { lastSyncedAt: "asc" }, // Oldest first
+        });
+
+        if (oldestPick) {
+          await tx.article.update({
+            where: { id: articleId },
+            data: { isFeaturedOpinion: false },
+          });
+        }
+      }
 
       // Set new featured opinion
       return tx.article.update({
