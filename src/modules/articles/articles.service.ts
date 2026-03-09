@@ -7,62 +7,62 @@ export class ArticlesService {
    * Fetch articles from Sanity and sync to database
    */
   async syncFromSanity(): Promise<SyncResult> {
-  // Fetch articles from Sanity
-  const sanityArticles: SanityArticle[] = await sanityClient.fetch(ARTICLES_QUERY);
+    // Fetch articles from Sanity
+    const sanityArticles: SanityArticle[] =
+      await sanityClient.fetch(ARTICLES_QUERY);
 
-  let created = 0;
-  let updated = 0;
+    let created = 0;
+    let updated = 0;
 
-  for (const sanityArticle of sanityArticles) {
-    const existingArticle = await prisma.article.findUnique({
-      where: { sanityId: sanityArticle._id },
-    });
-
-    // Use 'let' for variables we may derive or reassign
-    let isPost = sanityArticle.isPost === true? true : false;
-    let type = isPost ? "post" : "opinion"; // lowercase for API response
-
-    if (!existingArticle) {
-      // Create new article
-      await prisma.article.create({
-        data: {
-          sanityId: sanityArticle._id,
-          title: sanityArticle.title,
-          slug: sanityArticle.slug,
-          author: sanityArticle.author || null,
-          type,
-          isPost,
-          visibility: "private", // Default to private
-          isEditorsPick: false,
-          isFeaturedOpinion: false,
-          lastSyncedAt: new Date(),
-        },
-      });
-      created++;
-    } else {
-      // Update existing article metadata (preserve visibility and editor's pick)
-      await prisma.article.update({
+    for (const sanityArticle of sanityArticles) {
+      const existingArticle = await prisma.article.findUnique({
         where: { sanityId: sanityArticle._id },
-        data: {
-          title: sanityArticle.title,
-          slug: sanityArticle.slug,
-          author: sanityArticle.author || null,
-          type,
-          isPost,
-          lastSyncedAt: new Date(),
-        },
       });
-      updated++;
+
+      // Use 'let' for variables we may derive or reassign
+      let isPost = sanityArticle.isPost === true ? true : false;
+      let type = isPost ? "post" : "opinion"; // lowercase for API response
+
+      if (!existingArticle) {
+        // Create new article
+        await prisma.article.create({
+          data: {
+            sanityId: sanityArticle._id,
+            title: sanityArticle.title,
+            slug: sanityArticle.slug,
+            author: sanityArticle.author || null,
+            type,
+            isPost,
+            visibility: "private", // Default to private
+            isEditorsPick: false,
+            isFeaturedOpinion: false,
+            lastSyncedAt: new Date(),
+          },
+        });
+        created++;
+      } else {
+        // Update existing article metadata (preserve visibility and editor's pick)
+        await prisma.article.update({
+          where: { sanityId: sanityArticle._id },
+          data: {
+            title: sanityArticle.title,
+            slug: sanityArticle.slug,
+            author: sanityArticle.author || null,
+            type,
+            isPost,
+            lastSyncedAt: new Date(),
+          },
+        });
+        updated++;
+      }
     }
+
+    return {
+      created,
+      updated,
+      total: sanityArticles.length,
+    };
   }
-
-  return {
-    created,
-    updated,
-    total: sanityArticles.length,
-  };
-}
-
 
   /**
    * List all articles (admin view)
@@ -159,7 +159,7 @@ export class ArticlesService {
 
     // Check if article is already an Editor's Pick
     if (article.isEditorsPick) {
-      throw new Error('This article is already an Editor\'s Pick');
+      throw new Error("This article is already an Editor's Pick");
     }
 
     // Use transaction to ensure atomicity
@@ -173,7 +173,7 @@ export class ArticlesService {
       if (currentCount >= 3) {
         const oldestPick = await tx.article.findFirst({
           where: { isEditorsPick: true },
-          orderBy: { lastSyncedAt: 'asc' }, // Oldest first
+          orderBy: { lastSyncedAt: "asc" }, // Oldest first
         });
 
         if (oldestPick) {
@@ -207,11 +207,11 @@ export class ArticlesService {
     });
 
     if (!article) {
-      throw new Error('Article not found');
+      throw new Error("Article not found");
     }
 
     if (!article.isEditorsPick) {
-      throw new Error('This article is not an Editor\'s Pick');
+      throw new Error("This article is not an Editor's Pick");
     }
 
     return prisma.article.update({
@@ -230,12 +230,12 @@ export class ArticlesService {
     });
 
     if (!article) {
-      throw new Error('Article not found');
+      throw new Error("Article not found");
     }
 
     // Check if article is an opinion
-    if (article.type.toLowerCase() !== 'opinion') {
-      throw new Error('Only opinions can be set as Featured Opinion');
+    if (article.type.toLowerCase() !== "opinion") {
+      throw new Error("Only opinions can be set as Featured Opinion");
     }
 
      // Check if article is already a Featured Opinion
@@ -282,11 +282,11 @@ export class ArticlesService {
     });
 
     if (!article) {
-      throw new Error('Article not found');
+      throw new Error("Article not found");
     }
 
     if (!article.isFeaturedOpinion) {
-      throw new Error('This article is not a Featured Opinion');
+      throw new Error("This article is not a Featured Opinion");
     }
 
     return prisma.article.update({
@@ -294,7 +294,6 @@ export class ArticlesService {
       data: { isFeaturedOpinion: false },
     });
   }
-
 
   /**
    * Get public articles (for frontend)
