@@ -422,7 +422,7 @@ Get single article by slug.
 
 ### 14. Track Article Read
 
-**Endpoint:** `POST /articles/:slug/read`  
+**Endpoint:** `POST /reads/:slug/read`  
 **Access:** Public  
 **Purpose:** Track article view (with 24-hour debouncing per IP)
 
@@ -462,7 +462,7 @@ Get single article by slug.
 
 ### 15. Get Article Read Statistics (Admin)
 
-**Endpoint:** `GET /admin/articles/:id/stats`  
+**Endpoint:** `GET /admin/reads/:id/stats`  
 **Access:** Protected  
 **Purpose:** Get detailed read statistics for an article
 
@@ -502,7 +502,7 @@ Authorization: Bearer <token>
 
 ### 16. Add/Update Reaction
 
-**Endpoint:** `POST /articles/:slug/react`  
+**Endpoint:** `POST /reactions/:slug/react`  
 **Access:** Public  
 **Purpose:** Add or update reaction to an article
 
@@ -554,7 +554,7 @@ Authorization: Bearer <token>
 
 ### 17. Remove Reaction
 
-**Endpoint:** `DELETE /articles/:slug/react`  
+**Endpoint:** `DELETE /reactions/:slug/react`  
 **Access:** Public  
 **Purpose:** Remove user's reaction from an article
 
@@ -585,7 +585,7 @@ Authorization: Bearer <token>
 
 ### 18. Get Article Reactions
 
-**Endpoint:** `GET /articles/:slug/reactions`  
+**Endpoint:** `GET /reactions/:slug/reactions`  
 **Access:** Public  
 **Purpose:** Get reaction counts for an article
 
