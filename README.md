@@ -233,6 +233,7 @@ Change article visibility.
 - `404` - Article not found
 
 ---
+
 ### 8. Set Article as Editor's Pick
 
 **Endpoint:** `POST /admin/articles/:id/editors-pick` - Protected  
@@ -395,6 +396,38 @@ Get all public articles for frontend.
 }
 ```
 
+**Note:** Only returns `visibility === "public"` articles
+
+---
+
+### 12.1.  Get Public Articles (sorted by readcount)
+
+**GET** `/articles/sort`
+
+
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "articles": [{
+      "id": "uuid",
+      "sanityId": "sanity-id",
+      "title": "Article Title",
+      "slug": "article-slug",
+      "author": "John Doe",
+      "type": "post",
+      "isPost": true,
+      "visibility": "public",
+      "isEditorsPick": true,
+      "lastSyncedAt": "2026-01-04T10:00:00Z",
+      "readCount": 7000000
+    }]
+  }
+}
+```
+
 **Notes:** Only returns `visibility === "public"` articles
 
 ---
@@ -422,7 +455,7 @@ Get single article by slug.
 
 ### 14. Track Article Read
 
-**Endpoint:** `POST /articles/:slug/read`  
+**Endpoint:** `POST /reads/:slug/read`  
 **Access:** Public  
 **Purpose:** Track article view (with 24-hour debouncing per IP)
 
@@ -462,7 +495,7 @@ Get single article by slug.
 
 ### 15. Get Article Read Statistics (Admin)
 
-**Endpoint:** `GET /admin/articles/:id/stats`  
+**Endpoint:** `GET /admin/reads/:id/stats`  
 **Access:** Protected  
 **Purpose:** Get detailed read statistics for an article
 
@@ -502,7 +535,7 @@ Authorization: Bearer <token>
 
 ### 16. Add/Update Reaction
 
-**Endpoint:** `POST /articles/:slug/react`  
+**Endpoint:** `POST /reactions/:slug/react`  
 **Access:** Public  
 **Purpose:** Add or update reaction to an article
 
@@ -554,7 +587,7 @@ Authorization: Bearer <token>
 
 ### 17. Remove Reaction
 
-**Endpoint:** `DELETE /articles/:slug/react`  
+**Endpoint:** `DELETE /reactions/:slug/react`  
 **Access:** Public  
 **Purpose:** Remove user's reaction from an article
 
@@ -585,7 +618,7 @@ Authorization: Bearer <token>
 
 ### 18. Get Article Reactions
 
-**Endpoint:** `GET /articles/:slug/reactions`  
+**Endpoint:** `GET /reactions/:slug/reactions`  
 **Access:** Public  
 **Purpose:** Get reaction counts for an article
 

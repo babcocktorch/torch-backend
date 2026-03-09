@@ -9,8 +9,6 @@ export const errorMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error('Error:', error);
-
   const statusCode = (error as any).statusCode || 500;
   const message = error.message || 'Internal server error';
 

@@ -6,6 +6,7 @@ const articlesController = new ArticlesController();
 
 // Public routes (no auth required)
 router.get('/', (req, res) => articlesController.getPublicArticles(req, res));
+router.get('/sort', (req, res) => articlesController.listArticlesByReadCount(req, res));
 router.get('/:slug', (req, res) => articlesController.getPublicArticleBySlug(req, res));
 
 export default router;
