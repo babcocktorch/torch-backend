@@ -233,6 +233,7 @@ Change article visibility.
 - `404` - Article not found
 
 ---
+
 ### 8. Set Article as Editor's Pick
 
 **Endpoint:** `POST /admin/articles/:id/editors-pick` - Protected  
@@ -390,6 +391,38 @@ Get all public articles for frontend.
       "isPost": true,
       "isEditorsPick": true,
       "lastSyncedAt": "2026-01-04T10:00:00Z"
+    }]
+  }
+}
+```
+
+**Note:** Only returns `visibility === "public"` articles
+
+---
+
+### 12.1.  Get Public Articles (sorted by readcount)
+
+**GET** `/articles/sort`
+
+
+
+**Success (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "articles": [{
+      "id": "uuid",
+      "sanityId": "sanity-id",
+      "title": "Article Title",
+      "slug": "article-slug",
+      "author": "John Doe",
+      "type": "post",
+      "isPost": true,
+      "visibility": "public",
+      "isEditorsPick": true,
+      "lastSyncedAt": "2026-01-04T10:00:00Z",
+      "readCount": 7000000
     }]
   }
 }
