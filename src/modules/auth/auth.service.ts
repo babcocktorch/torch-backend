@@ -41,6 +41,7 @@ export class AuthService {
     const token = JwtUtil.generate({
       adminId: updatedAdmin.id,
       email: updatedAdmin.email,
+      version: updatedAdmin.tokenVersion,
     });
 
     return {
@@ -83,6 +84,7 @@ export class AuthService {
     const token = JwtUtil.generate({
       adminId: admin.id,
       email: admin.email,
+      version: admin.tokenVersion,
     });
 
     return {
@@ -113,5 +115,15 @@ export class AuthService {
     }
 
     return admin;
+  }
+
+  /**
+   * Logout user by incrementing token version
+   */
+  async logout(adminId: string): Promise<void> {
+    await prisma.admin.update({
+      where: { id: adminId },
+      data: { tokenVersion: { increment: 1 } },
+    });
   }
 }
