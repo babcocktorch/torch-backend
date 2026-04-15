@@ -57,6 +57,17 @@ export class ArticlesService {
       }
     }
 
+    if (sanityArticles.length > 0) {
+      const fetchedSanityIds = sanityArticles.map((a: any) => a._id);
+      await prisma.article.updateMany({
+        where: {
+          sanityId: { notIn: fetchedSanityIds },
+          visibility: "public",
+        },
+        data: { visibility: "private" },
+      });
+    }
+
     return {
       created,
       updated,
@@ -86,26 +97,27 @@ export class ArticlesService {
     });
   }
 
-
   /**
    * List all articles (admin view)
    */
   async listArticlesByReadCount() {
     const articles = await prisma.article.findMany({
       where: {
-        visibility: "public"
+        visibility: "public",
       },
       include: {
         _count: {
-          select: { reads: true }
-        }
+          select: { reads: true },
+        },
       },
-      orderBy: { reads: {
-        _count: "desc",
-      } },
+      orderBy: {
+        reads: {
+          _count: "desc",
+        },
+      },
     });
 
-    return articles.map((articles) => ({
+    return articles.map((articles: any) => ({
       id: articles.id,
       sanityId: articles.sanityId,
       title: articles.title,
@@ -117,8 +129,8 @@ export class ArticlesService {
       isEditorsPick: articles.isEditorsPick,
       isFeaturedOpinion: articles.isFeaturedOpinion,
       lastSyncedAt: articles.lastSyncedAt,
-      readCount: articles._count.reads
-    }))
+      readCount: articles._count.reads,
+    }));
   }
 
   /**
@@ -171,14 +183,16 @@ export class ArticlesService {
 
       // If we already have 3, find the oldest and remove it
       if (currentCount >= 3) {
-        const oldestPick = await tx.article.findFirst({
+        const excessCount = currentCount - 2;
+        const oldestPicks = await tx.article.findMany({
           where: { isEditorsPick: true },
           orderBy: { lastSyncedAt: "asc" }, // Oldest first
+          take: excessCount,
         });
 
-        if (oldestPick) {
+        for (const pick of oldestPicks) {
           await tx.article.update({
-            where: { id: oldestPick.id },
+            where: { id: pick.id },
             data: { isEditorsPick: false },
           });
         }
@@ -238,13 +252,13 @@ export class ArticlesService {
       throw new Error("Only opinions can be set as Featured Opinion");
     }
 
-     // Check if article is already a Featured Opinion
+    // Check if article is already a Featured Opinion
     if (article.isFeaturedOpinion) {
       throw new Error("This article is already a Featured Opinion");
     }
 
     // Use transaction to ensure atomicity
-    return prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async (tx: any) => {
       // Count current editor's picks
       const currentCount = await tx.article.count({
         where: { isFeaturedOpinion: true },
@@ -252,14 +266,16 @@ export class ArticlesService {
 
       // If we already have 2, find the oldest and remove it
       if (currentCount >= 2) {
-        const oldestPick = await tx.article.findFirst({
-          where: { isEditorsPick: true },
+        const excessCount = currentCount - 1;
+        const oldestPicks = await tx.article.findMany({
+          where: { isFeaturedOpinion: true },
           orderBy: { lastSyncedAt: "asc" }, // Oldest first
+          take: excessCount,
         });
 
-        if (oldestPick) {
+        for (const pick of oldestPicks) {
           await tx.article.update({
-            where: { id: articleId },
+            where: { id: pick.id },
             data: { isFeaturedOpinion: false },
           });
         }
