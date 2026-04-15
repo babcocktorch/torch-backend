@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { JwtUtil } from '../utils/jwt.util';
 import { ResponseUtil } from '../utils/response.util';
+import prisma from '../config/database';
 
 /**
  * Middleware to protect admin routes
  * Verifies JWT token and adds adminId to request
  */
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Get token from Authorization header
     const authHeader = req.headers.authorization;
@@ -19,6 +20,16 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
 
     // Verify token
     const payload = JwtUtil.verify(token);
+
+    // Verify token version server-side
+    const admin = await prisma.admin.findUnique({
+      where: { id: payload.adminId },
+      select: { tokenVersion: true }
+    });
+
+    if (!admin || admin.tokenVersion !== payload.version) {
+      return ResponseUtil.error(res, 'Session expired. Please log in again.', 401);
+    }
 
     // Add adminId to request object
     (req as any).adminId = payload.adminId;
