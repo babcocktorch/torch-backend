@@ -78,10 +78,17 @@ export class AuthController {
 
   /**
    * POST /admin/auth/logout
-   * Logout (client-side token deletion)
+   * Logout (server-side invalidation and client-side deletion)
    */
   async logout(req: Request, res: Response) {
-    // With JWT, logout is handled client-side by deleting the token
-    return ResponseUtil.success(res, { message: 'Logged out successfully' }, 200);
+    try {
+      const adminId = (req as any).adminId;
+      if (adminId) {
+        await authService.logout(adminId);
+      }
+      return ResponseUtil.success(res, { message: 'Logged out successfully' }, 200);
+    } catch(error) {
+      return ResponseUtil.error(res, 'Failed to logout', 500);
+    }
   }
 }
