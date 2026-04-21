@@ -1,12 +1,17 @@
-import prisma from "../src/config/database"
+import { PrismaClient } from "../prisma/generated/prisma/client"
+import { PrismaPg } from "@prisma/adapter-pg"
+import { env } from "../src/config/env"
+
+const adapter = new PrismaPg({ connectionString: env.DIRECT_URL })
+const prisma = new PrismaClient({ adapter })
 
 async function main() {
   console.log('🌱 Seeding database...');
 
   // Add allowlisted admin emails
   const allowlistedEmails = [
-    { email: 'admin@school.edu', name: 'Admin User' },
-    { email: 'editor@school.edu', name: 'Editor User' },
+    { email: 'admin@babcocktorch.com', name: 'Admin User' },
+    { email: 'editor@babcocktorch.com', name: 'Editor User' },
   ];
 
   for (const admin of allowlistedEmails) {
