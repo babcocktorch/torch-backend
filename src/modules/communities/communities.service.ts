@@ -1,9 +1,9 @@
-import prisma from '../../config/database';
-import { SlugUtil } from '../../utils/slug.util';
+import prisma from "../../config/database";
+import { SlugUtil } from "../../utils/slug.util";
 import {
   CreateCommunityRequest,
   UpdateCommunityRequest,
-} from './communities.types';
+} from "./communities.types";
 
 export class CommunitiesService {
   /**
@@ -11,7 +11,7 @@ export class CommunitiesService {
    */
   async listCommunities() {
     return prisma.community.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         name: true,
@@ -19,6 +19,10 @@ export class CommunitiesService {
         description: true,
         logoUrl: true,
         contactEmail: true,
+        category: true,
+        memberCount: true,
+        openToJoin: true,
+        bannerURL: true,
         createdAt: true,
         updatedAt: true,
         _count: {
@@ -46,7 +50,7 @@ export class CommunitiesService {
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     return community;
@@ -58,13 +62,16 @@ export class CommunitiesService {
    */
   async getPublicCommunities() {
     return prisma.community.findMany({
-      orderBy: { name: 'asc' }, // Alphabetical for dropdown
+      orderBy: { name: "asc" }, // Alphabetical for dropdown
       select: {
         id: true,
         name: true,
         slug: true,
         description: true,
         logoUrl: true,
+        category: true,
+        memberCount: true,
+        openToJoin: true,
         createdAt: true,
         _count: {
           select: {
@@ -88,6 +95,10 @@ export class CommunitiesService {
         description: true,
         logoUrl: true,
         contactEmail: true,
+        category: true,
+        memberCount: true,
+        openToJoin: true,
+        bannerURL: true,
         createdAt: true,
         _count: {
           select: {
@@ -98,7 +109,7 @@ export class CommunitiesService {
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     return community;
@@ -108,22 +119,30 @@ export class CommunitiesService {
    * Admin: Create community
    */
   async createCommunity(data: CreateCommunityRequest) {
-    const { name, slug, description, logoUrl, contactEmail } = data;
+    const {
+      name,
+      slug,
+      description,
+      logoUrl,
+      contactEmail,
+      category,
+      openToJoin,
+      bannerURL,
+    } = data;
 
     // Generate slug if not provided
-    const finalSlug = slug || await SlugUtil.generateUnique(
-      name,
-      async (slug) => {
+    const finalSlug =
+      slug ||
+      (await SlugUtil.generateUnique(name, async (slug) => {
         const existing = await prisma.community.findUnique({ where: { slug } });
         return !!existing;
-      }
-    );
+      }));
 
     // Validate email if provided
     if (contactEmail) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(contactEmail)) {
-        throw new Error('Invalid contact email address');
+        throw new Error("Invalid contact email address");
       }
     }
 
@@ -135,6 +154,9 @@ export class CommunitiesService {
         description: description || null,
         logoUrl: logoUrl || null,
         contactEmail: contactEmail || null,
+        category: category || null,
+        openToJoin: openToJoin ?? false,
+        bannerURL: bannerURL || null,
       },
     });
 
@@ -145,7 +167,16 @@ export class CommunitiesService {
    * Admin: Update community
    */
   async updateCommunity(id: string, data: UpdateCommunityRequest) {
-    const { name, slug, description, logoUrl, contactEmail } = data;
+    const {
+      name,
+      slug,
+      description,
+      logoUrl,
+      contactEmail,
+      category,
+      openToJoin,
+      bannerURL,
+    } = data;
 
     // Check if community exists
     const community = await prisma.community.findUnique({
@@ -153,7 +184,7 @@ export class CommunitiesService {
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     // If updating slug, check uniqueness
@@ -162,7 +193,7 @@ export class CommunitiesService {
         where: { slug },
       });
       if (existing) {
-        throw new Error('Slug already in use');
+        throw new Error("Slug already in use");
       }
     }
 
@@ -170,7 +201,7 @@ export class CommunitiesService {
     if (contactEmail !== undefined && contactEmail !== null) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(contactEmail)) {
-        throw new Error('Invalid contact email address');
+        throw new Error("Invalid contact email address");
       }
     }
 
@@ -180,7 +211,11 @@ export class CommunitiesService {
     if (slug !== undefined) updateData.slug = slug;
     if (description !== undefined) updateData.description = description || null;
     if (logoUrl !== undefined) updateData.logoUrl = logoUrl || null;
-    if (contactEmail !== undefined) updateData.contactEmail = contactEmail || null;
+    if (contactEmail !== undefined)
+      updateData.contactEmail = contactEmail || null;
+    if (category !== undefined) updateData.category = category || null;
+    if (openToJoin !== undefined) updateData.openToJoin = openToJoin;
+    if (bannerURL !== undefined) updateData.bannerURL = bannerURL || null;
 
     return prisma.community.update({
       where: { id },
@@ -202,7 +237,7 @@ export class CommunitiesService {
     });
 
     if (!community) {
-      throw new Error('Community not found');
+      throw new Error("Community not found");
     }
 
     // Delete community (cascade will delete submissions)
@@ -211,7 +246,7 @@ export class CommunitiesService {
     });
 
     return {
-      message: 'Community deleted successfully',
+      message: "Community deleted successfully",
       deletedSubmissions: community._count.submissions,
     };
   }
