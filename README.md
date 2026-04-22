@@ -22,6 +22,7 @@ Complete API reference for the school newspaper backend system.
 ## Authentication
 
 All admin endpoints (`/admin/*`) require JWT authentication via the `Authorization` header:
+
 ```
 Authorization: Bearer YOUR_JWT_TOKEN
 ```
@@ -33,14 +34,16 @@ Authorization: Bearer YOUR_JWT_TOKEN
 First-time password setup for allowlisted admin emails.
 
 **Request:**
+
 ```json
 {
-  "email": "admin@school.edu",     // Required: Must be pre-approved
-  "password": "SecurePass123"      // Required: 8+ chars, 1 upper, 1 lower, 1 number
+  "email": "admin@school.edu", // Required: Must be pre-approved
+  "password": "SecurePass123" // Required: 8+ chars, 1 upper, 1 lower, 1 number
 }
 ```
 
 **Success (201):**
+
 ```json
 {
   "success": true,
@@ -56,11 +59,13 @@ First-time password setup for allowlisted admin emails.
 ```
 
 **Errors:**
+
 - `400` - Weak password or missing fields
 - `403` - Email not allowlisted
 - `400` - Account already activated
 
 **cURL:**
+
 ```bash
 curl -X POST http://localhost:3000/api/v2/admin/auth/setup \
   -H "Content-Type: application/json" \
@@ -76,6 +81,7 @@ curl -X POST http://localhost:3000/api/v2/admin/auth/setup \
 Standard login after password is set.
 
 **Request:**
+
 ```json
 {
   "email": "admin@school.edu",
@@ -84,6 +90,7 @@ Standard login after password is set.
 ```
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -95,6 +102,7 @@ Standard login after password is set.
 ```
 
 **Errors:**
+
 - `401` - Invalid credentials
 - `403` - Account not activated (password not set)
 
@@ -109,6 +117,7 @@ Get currently authenticated admin details.
 **Headers:** `Authorization: Bearer TOKEN`
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -119,6 +128,7 @@ Get currently authenticated admin details.
 ```
 
 **Errors:**
+
 - `401` - Missing or invalid token
 
 ---
@@ -132,6 +142,7 @@ Logout (client-side token deletion).
 **Headers:** `Authorization: Bearer TOKEN`
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -152,6 +163,7 @@ Manual sync of articles from Sanity CMS.
 **Headers:** `Authorization: Bearer TOKEN`
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -165,6 +177,7 @@ Manual sync of articles from Sanity CMS.
 ```
 
 **Notes:**
+
 - Fetches articles with `_type` in `["post", "opinion"]`
 - Uses pagination (100 per batch)
 - New articles default to `private`
@@ -182,22 +195,25 @@ Get all articles with admin metadata.
 **Headers:** `Authorization: Bearer TOKEN`
 
 **Success (200):**
+
 ```json
 {
   "success": true,
   "data": {
-    "articles": [{
-      "id": "uuid",
-      "sanityId": "sanity-id",
-      "title": "Article Title",
-      "slug": "article-slug",
-      "author": "John Doe",
-      "type": "post",
-      "isPost": true,
-      "visibility": "public",
-      "isEditorsPick": true,
-      "lastSyncedAt": "2026-01-04T10:00:00Z"
-    }]
+    "articles": [
+      {
+        "id": "uuid",
+        "sanityId": "sanity-id",
+        "title": "Article Title",
+        "slug": "article-slug",
+        "author": "John Doe",
+        "type": "post",
+        "isPost": true,
+        "visibility": "public",
+        "isEditorsPick": true,
+        "lastSyncedAt": "2026-01-04T10:00:00Z"
+      }
+    ]
   }
 }
 ```
@@ -214,13 +230,15 @@ Change article visibility.
 **URL Params:** `id` (UUID)
 
 **Request:**
+
 ```json
 {
-  "visibility": "public"  // "public" or "private"
+  "visibility": "public" // "public" or "private"
 }
 ```
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -229,6 +247,7 @@ Change article visibility.
 ```
 
 **Errors:**
+
 - `400` - Invalid visibility value
 - `404` - Article not found
 
@@ -236,15 +255,15 @@ Change article visibility.
 
 ### 8. Set Article as Editor's Pick
 
-**Endpoint:** `POST /admin/articles/:id/editors-pick` - Protected  
+**Endpoint:** `POST /admin/articles/:id/editors-pick` - Protected
 
 Add article to Editor's Picks (max 3 posts)
 
 **Headers:** `Authorization: Bearer <token>`\
 **URL Params:** `id` (UUID)
 
-
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -261,29 +280,31 @@ Add article to Editor's Picks (max 3 posts)
 ```
 
 **Error Responses:**
+
 - `400` - Only posts can be set as Editor's Pick
 - `400` - This article is already an Editor's Pick
 - `404` - Article not found
 
-
 **Business Rules:**
+
 - **Maximum 3 Editor's Picks at a time** (changed from 1)
 - Automatically removes oldest pick when adding 4th
 - Only posts (`type === 'post'`) can be Editor's Picks
 - Cannot set same article twice
+
 ---
 
 ### 9. Remove Article from Editor's Pick
 
-**Endpoint:** `DELETE /admin/articles/:id/editors-pick` - Protected  
+**Endpoint:** `DELETE /admin/articles/:id/editors-pick` - Protected
 
 Remove article from Editor's Picks
 
 **Headers:** `Authorization: Bearer <token>`\
 **URL Params:** `id` (UUID)
 
-
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -299,6 +320,7 @@ Remove article from Editor's Picks
 ```
 
 **Error Responses:**
+
 - `400` - This article is not an Editor's Pick
 - `404` - Article not found
 
@@ -306,15 +328,15 @@ Remove article from Editor's Picks
 
 ### 10. Set Article as Featured Opinion
 
-**Endpoint:** `POST /admin/articles/:id/featured-opinion` - Protected  
+**Endpoint:** `POST /admin/articles/:id/featured-opinion` - Protected
 
 Set article as Featured Opinion (exclusive - only one at a time)
 
 **Headers:** `Authorization: Bearer <token>`\
 **URL Params:** `id` (UUID)
 
-
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -330,15 +352,17 @@ Set article as Featured Opinion (exclusive - only one at a time)
 }
 ```
 
-
 **Error Responses:**
+
 - `400` - Only opinions can be set as Featured Opinion
 - `404` - Article not found
 
 **Business Rules:**
+
 - Only ONE Featured Opinion at a time
 - Automatically removes previous featured opinion
 - Only opinions (`type === 'opinion'`) can be Featured Opinions
+
 ---
 
 ### 11. Remove Article from Featured Opinion
@@ -351,6 +375,7 @@ Remove article from Featured Opinion
 **URL Params:** `id` (UUID)
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -366,6 +391,7 @@ Remove article from Featured Opinion
 ```
 
 **Error Responses:**
+
 - `400` - This article is not a Featured Opinion
 - `404` - Article not found
 
@@ -378,20 +404,23 @@ Remove article from Featured Opinion
 Get all public articles for frontend.
 
 **Success (200):**
+
 ```json
 {
   "success": true,
   "data": {
-    "articles": [{
-      "id": "uuid",
-      "title": "Article Title",
-      "slug": "article-slug",
-      "author": "John Doe",
-      "type": "post",
-      "isPost": true,
-      "isEditorsPick": true,
-      "lastSyncedAt": "2026-01-04T10:00:00Z"
-    }]
+    "articles": [
+      {
+        "id": "uuid",
+        "title": "Article Title",
+        "slug": "article-slug",
+        "author": "John Doe",
+        "type": "post",
+        "isPost": true,
+        "isEditorsPick": true,
+        "lastSyncedAt": "2026-01-04T10:00:00Z"
+      }
+    ]
   }
 }
 ```
@@ -400,30 +429,31 @@ Get all public articles for frontend.
 
 ---
 
-### 12.1.  Get Public Articles (sorted by readcount)
+### 12.1. Get Public Articles (sorted by readcount)
 
 **GET** `/articles/sort`
 
-
-
 **Success (200):**
+
 ```json
 {
   "success": true,
   "data": {
-    "articles": [{
-      "id": "uuid",
-      "sanityId": "sanity-id",
-      "title": "Article Title",
-      "slug": "article-slug",
-      "author": "John Doe",
-      "type": "post",
-      "isPost": true,
-      "visibility": "public",
-      "isEditorsPick": true,
-      "lastSyncedAt": "2026-01-04T10:00:00Z",
-      "readCount": 7000000
-    }]
+    "articles": [
+      {
+        "id": "uuid",
+        "sanityId": "sanity-id",
+        "title": "Article Title",
+        "slug": "article-slug",
+        "author": "John Doe",
+        "type": "post",
+        "isPost": true,
+        "visibility": "public",
+        "isEditorsPick": true,
+        "lastSyncedAt": "2026-01-04T10:00:00Z",
+        "readCount": 7000000
+      }
+    ]
   }
 }
 ```
@@ -441,6 +471,7 @@ Get single article by slug.
 **URL Params:** `slug` (string)
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -449,6 +480,7 @@ Get single article by slug.
 ```
 
 **Errors:**
+
 - `404` - Article not found or not public
 
 ---
@@ -460,6 +492,7 @@ Get single article by slug.
 **Purpose:** Track article view (with 24-hour debouncing per IP)
 
 **Success Response (201):**
+
 ```json
 {
   "success": true,
@@ -471,6 +504,7 @@ Get single article by slug.
 ```
 
 **If Already Tracked (201):**
+
 ```json
 {
   "success": true,
@@ -482,12 +516,14 @@ Get single article by slug.
 ```
 
 **Business Rules:**
+
 - IP-based tracking (automatically extracted from request)
 - Debounced: Same IP can only be counted once per 24 hours
 - Only tracks reads for public articles
 - No authentication required
 
 **Error Responses:**
+
 - `404` - Article not found
 - `400` - Cannot track reads for non-public articles
 
@@ -500,11 +536,13 @@ Get single article by slug.
 **Purpose:** Get detailed read statistics for an article
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -521,6 +559,7 @@ Authorization: Bearer <token>
 ```
 
 **Response Fields:**
+
 - `totalReads` - Total number of read events
 - `uniqueReads` - Number of unique IP addresses
 - `readsLast24h` - Reads in the last 24 hours
@@ -528,6 +567,7 @@ Authorization: Bearer <token>
 - `readsLast30d` - Reads in the last 30 days
 
 **Error Responses:**
+
 - `404` - Article not found
 - `401` - Authorization required
 
@@ -540,6 +580,7 @@ Authorization: Bearer <token>
 **Purpose:** Add or update reaction to an article
 
 **Request Body:**
+
 ```json
 {
   "reactionType": "upvote"
@@ -547,10 +588,12 @@ Authorization: Bearer <token>
 ```
 
 **Valid Reaction Types:**
-- `upvote` 
+
+- `upvote`
 - `downvote`
 
 **Success Response (201):**
+
 ```json
 {
   "success": true,
@@ -566,11 +609,13 @@ Authorization: Bearer <token>
 ```
 
 **Response Fields:**
+
 - `reactions` - Count for each reaction type
 - `total` - Total number of reactions
 - `userReaction` - Current user's reaction (null if none)
 
 **Business Rules:**
+
 - IP-based identification (automatically extracted)
 - Upsert behavior: Creates new or updates existing reaction
 - One reaction per IP per article
@@ -578,6 +623,7 @@ Authorization: Bearer <token>
 - Only works on public articles
 
 **Error Responses:**
+
 - `400` - Reaction type is required
 - `400` - Invalid reaction type (must be: upvote, downvote)
 - `400` - Cannot react to non-public articles
@@ -592,6 +638,7 @@ Authorization: Bearer <token>
 **Purpose:** Remove user's reaction from an article
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -607,11 +654,13 @@ Authorization: Bearer <token>
 ```
 
 **Business Rules:**
+
 - Removes reaction based on user's IP address
 - Returns updated reaction counts
 - Silently succeeds even if user had no reaction
 
 **Error Responses:**
+
 - `404` - Article not found
 
 ---
@@ -623,6 +672,7 @@ Authorization: Bearer <token>
 **Purpose:** Get reaction counts for an article
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -638,11 +688,13 @@ Authorization: Bearer <token>
 ```
 
 **Business Rules:**
+
 - Returns counts even if no reactions exist (all counts will be 0)
 - Shows current user's reaction based on IP
 - Only works on public articles
 
 **Error Responses:**
+
 - `400` - Cannot get reactions for non-public articles
 - `404` - Article not found
 
@@ -657,19 +709,25 @@ Authorization: Bearer <token>
 Get all communities for dropdown selection.
 
 **Success (200):**
+
 ```json
 {
   "success": true,
   "data": {
-    "communities": [{
-      "id": "uuid",
-      "name": "Robotics Club",
-      "slug": "robotics-club",
-      "description": "Building robots",
-      "logoUrl": "https://example.com/logo.png",
-      "createdAt": "2026-01-04T10:00:00Z",
-      "_count": { "submissions": 12 }
-    }]
+    "communities": [
+      {
+        "id": "uuid",
+        "name": "Robotics Club",
+        "slug": "robotics-club",
+        "description": "Building robots",
+        "logoUrl": "https://example.com/logo.png",
+        "category": "STEM",
+        "memberCount": 0,
+        "openToJoin": true,
+        "createdAt": "2026-01-04T10:00:00Z",
+        "_count": { "submissions": 12 }
+      }
+    ]
   }
 }
 ```
@@ -687,6 +745,7 @@ Get single community details.
 **URL Params:** `slug` (string)
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -698,6 +757,10 @@ Get single community details.
       "description": "Building robots",
       "logoUrl": "https://example.com/logo.png",
       "contactEmail": "robotics@school.edu",
+      "category": "STEM",
+      "openToJoin": true,
+      "memberCount": 0,
+      "bannerURL": "https://example.com/banner.png",
       "createdAt": "2026-01-04T10:00:00Z",
       "_count": { "submissions": 12 }
     }
@@ -706,6 +769,7 @@ Get single community details.
 ```
 
 **Errors:**
+
 - `404` - Community not found
 
 ---
@@ -719,21 +783,28 @@ Get all communities with admin metadata.
 **Headers:** `Authorization: Bearer TOKEN`
 
 **Success (200):**
+
 ```json
 {
   "success": true,
   "data": {
-    "communities": [{
-      "id": "uuid",
-      "name": "Robotics Club",
-      "slug": "robotics-club",
-      "description": "Building robots",
-      "logoUrl": "https://example.com/logo.png",
-      "contactEmail": "robotics@school.edu",
-      "createdAt": "2026-01-04T10:00:00Z",
-      "updatedAt": "2026-01-04T10:00:00Z",
-      "_count": { "submissions": 12 }
-    }]
+    "communities": [
+      {
+        "id": "uuid",
+        "name": "Robotics Club",
+        "slug": "robotics-club",
+        "description": "Building robots",
+        "logoUrl": "https://example.com/logo.png",
+        "contactEmail": "robotics@school.edu",
+        "category": "STEM",
+        "openToJoin": true,
+        "memberCount": 0,
+        "bannerURL": "https://example.com/banner.png",
+        "createdAt": "2026-01-04T10:00:00Z",
+        "updatedAt": "2026-01-04T10:00:00Z",
+        "_count": { "submissions": 12 }
+      }
+    ]
   }
 }
 ```
@@ -752,6 +823,7 @@ Get single community by ID.
 **Success (200):** Same structure as public endpoint with `updatedAt`
 
 **Errors:**
+
 - `404` - Community not found
 
 ---
@@ -765,17 +837,22 @@ Create a new community.
 **Headers:** `Authorization: Bearer TOKEN`
 
 **Request:**
+
 ```json
 {
-  "name": "Robotics Team",              // Required
-  "slug": "robotics",                   // Optional: auto-generated if missing
-  "description": "Building robots",     // Optional
+  "name": "Robotics Team", // Required
+  "slug": "robotics", // Optional: auto-generated if missing
+  "description": "Building robots", // Optional
   "logoUrl": "https://example.com/...", // Optional
-  "contactEmail": "robotics@school.edu" // Optional: must be valid email
+  "contactEmail": "robotics@school.edu", // Optional: must be valid email
+  "category": "STEM", // Optional
+  "openToJoin": true, // Optional: defaults to false
+  "bannerURL": "https://example.com/..." // Optional
 }
 ```
 
 **Success (201):**
+
 ```json
 {
   "success": true,
@@ -792,6 +869,7 @@ Create a new community.
 ```
 
 **Errors:**
+
 - `400` - Missing name or invalid email
 - Slug auto-increments if duplicate (e.g., `robotics-2`)
 
@@ -807,17 +885,19 @@ Update community (partial update).
 **URL Params:** `id` (UUID)
 
 **Request:**
+
 ```json
 {
-  "name": "Updated Name",        // Optional
-  "slug": "updated-slug",        // Optional
-  "description": "New desc",     // Optional: null to clear
-  "logoUrl": "https://...",      // Optional: null to clear
-  "contactEmail": "new@..."      // Optional: null to clear
+  "name": "Updated Name", // Optional
+  "slug": "updated-slug", // Optional
+  "description": "New desc", // Optional: null to clear
+  "logoUrl": "https://...", // Optional: null to clear
+  "contactEmail": "new@..." // Optional: null to clear
 }
 ```
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -829,6 +909,7 @@ Update community (partial update).
 ```
 
 **Errors:**
+
 - `404` - Community not found
 - `400` - Empty body, duplicate slug, or invalid email
 
@@ -846,6 +927,7 @@ Delete community (cascades to submissions).
 **URL Params:** `id` (UUID)
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -857,6 +939,7 @@ Delete community (cascades to submissions).
 ```
 
 **Errors:**
+
 - `404` - Community not found
 
 ---
@@ -870,20 +953,22 @@ Delete community (cascades to submissions).
 Submit community content (news/event/announcement).
 
 **Request:**
+
 ```json
 {
-  "communityId": "uuid",                      // Required
-  "authorName": "Jane Doe",                   // Required
-  "authorContact": "jane@school.edu",         // Required: valid email
-  "submissionType": "news",                   // Required: news|event|announcement
-  "title": "We Won!",                         // Required
-  "content": "Our team placed first...",      // Required
-  "eventDate": "2026-05-15T18:00:00Z",        // Optional: required for events
-  "mediaUrls": ["https://..."]                // Optional: array of URLs
+  "communityId": "uuid", // Required
+  "authorName": "Jane Doe", // Required
+  "authorContact": "jane@school.edu", // Required: valid email
+  "submissionType": "news", // Required: news|event|announcement
+  "title": "We Won!", // Required
+  "content": "Our team placed first...", // Required
+  "eventDate": "2026-05-15T18:00:00Z", // Optional: required for events
+  "mediaUrls": ["https://..."] // Optional: array of URLs
 }
 ```
 
 **Success (201):**
+
 ```json
 {
   "success": true,
@@ -903,18 +988,24 @@ Submit community content (news/event/announcement).
       "reviewedAt": null,
       "reviewedBy": null,
       "createdAt": "2026-01-04T10:00:00Z",
-      "community": { "id": "uuid", "name": "Robotics Club", "slug": "robotics-club" }
+      "community": {
+        "id": "uuid",
+        "name": "Robotics Club",
+        "slug": "robotics-club"
+      }
     }
   }
 }
 ```
 
 **Errors:**
+
 - `400` - Missing fields, invalid type, or invalid email
 - `404` - Community not found
 - `400` - Event date required for event type
 
 **cURL:**
+
 ```bash
 curl -X POST http://localhost:3000/api/v2/submissions/community \
   -H "Content-Type: application/json" \
@@ -940,25 +1031,34 @@ Get all submissions with filtering.
 **Headers:** `Authorization: Bearer TOKEN`
 
 **Query Params:**
+
 - `community_id` (UUID) - Filter by community
 - `status` - `pending|reviewed|rejected`
 - `submission_type` - `news|event|announcement`
 
 **Success (200):**
+
 ```json
 {
   "success": true,
   "data": {
-    "submissions": [{
-      "id": "uuid",
-      "communityId": "uuid",
-      "authorName": "Jane Doe",
-      "submissionType": "news",
-      "title": "We Won!",
-      "status": "pending",
-      "createdAt": "2026-01-04T10:00:00Z",
-      "community": { "id": "uuid", "name": "Robotics Club", "slug": "robotics-club", "logoUrl": "..." }
-    }],
+    "submissions": [
+      {
+        "id": "uuid",
+        "communityId": "uuid",
+        "authorName": "Jane Doe",
+        "submissionType": "news",
+        "title": "We Won!",
+        "status": "pending",
+        "createdAt": "2026-01-04T10:00:00Z",
+        "community": {
+          "id": "uuid",
+          "name": "Robotics Club",
+          "slug": "robotics-club",
+          "logoUrl": "..."
+        }
+      }
+    ],
     "filters": {
       "type": "community",
       "communityId": "uuid",
@@ -969,9 +1069,11 @@ Get all submissions with filtering.
 ```
 
 **Errors:**
+
 - `400` - Invalid filter values
 
 **cURL:**
+
 ```bash
 # All pending submissions
 curl -X GET "http://localhost:3000/api/v2/admin/submissions?status=pending" \
@@ -994,6 +1096,7 @@ Get single submission details.
 **URL Params:** `id` (UUID)
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -1012,7 +1115,12 @@ Get single submission details.
       "reviewedAt": null,
       "reviewedBy": null,
       "createdAt": "2026-01-04T10:00:00Z",
-      "community": { "id": "uuid", "name": "Robotics Club", "slug": "robotics-club", "logoUrl": "..." }
+      "community": {
+        "id": "uuid",
+        "name": "Robotics Club",
+        "slug": "robotics-club",
+        "logoUrl": "..."
+      }
     },
     "type": "community"
   }
@@ -1020,6 +1128,7 @@ Get single submission details.
 ```
 
 **Errors:**
+
 - `404` - Submission not found
 
 **Notes:** `mediaUrls` parsed from JSON string to array
@@ -1036,13 +1145,15 @@ Update submission status.
 **URL Params:** `id` (UUID)
 
 **Request:**
+
 ```json
 {
-  "status": "reviewed"  // "reviewed" or "rejected"
+  "status": "reviewed" // "reviewed" or "rejected"
 }
 ```
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -1060,6 +1171,7 @@ Update submission status.
 ```
 
 **Errors:**
+
 - `404` - Submission not found
 - `400` - Invalid status (must be `reviewed` or `rejected`)
 
@@ -1077,6 +1189,7 @@ Delete a submission.
 **URL Params:** `id` (UUID)
 
 **Success (200):**
+
 ```json
 {
   "success": true,
@@ -1085,6 +1198,7 @@ Delete a submission.
 ```
 
 **Errors:**
+
 - `404` - Submission not found
 
 ---
@@ -1094,6 +1208,7 @@ Delete a submission.
 All endpoints follow this structure:
 
 ### Success
+
 ```json
 {
   "success": true,
@@ -1102,6 +1217,7 @@ All endpoints follow this structure:
 ```
 
 ### Error
+
 ```json
 {
   "success": false,
@@ -1110,6 +1226,7 @@ All endpoints follow this structure:
 ```
 
 ### HTTP Status Codes
+
 - `200` - Success
 - `201` - Created
 - `400` - Bad Request (validation)
@@ -1123,6 +1240,7 @@ All endpoints follow this structure:
 ## Setup Instructions
 
 ### Prerequisites
+
 - Node.js 18+
 - PostgreSQL 14+
 - Sanity CMS project
@@ -1167,6 +1285,7 @@ SANITY_TOKEN="your-token"
 ## Support
 
 For issues or questions:
+
 - Check this documentation first
 - Review error messages (they're descriptive)
 - Check server logs for details
