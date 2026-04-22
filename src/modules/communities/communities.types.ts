@@ -7,8 +7,11 @@ export interface Community {
   description: string | null;
   logoUrl: string | null;
   contactEmail: string | null;
+  category: string | null;
+  memberCount: number;
+  openToJoin: boolean;
+  bannerURL: string | null;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 // Admin: Create Community
@@ -18,6 +21,9 @@ export interface CreateCommunityRequest {
   description?: string;
   logoUrl?: string;
   contactEmail?: string;
+  category?: string;
+  openToJoin?: boolean;
+  bannerURL?: string;
 }
 
 // Admin: Update Community
@@ -27,6 +33,9 @@ export interface UpdateCommunityRequest {
   description?: string;
   logoUrl?: string;
   contactEmail?: string;
+  category?: string;
+  openToJoin?: boolean;
+  bannerURL?: string;
 }
 
 // Public: Community List Item
@@ -35,6 +44,9 @@ export interface PublicCommunity {
   name: string;
   slug: string;
   logoUrl: string | null;
+  category: string | null;
+  openToJoin: boolean;
+  memberCount: number;
 }
 
 // Public: Community Details
@@ -45,4 +57,8 @@ export interface PublicCommunityDetails {
   description: string | null;
   logoUrl: string | null;
   contactEmail: string | null;
+  category: string | null;
+  openToJoin: boolean;
+  memberCount: number;
+  bannerURL: string | null;
 }
