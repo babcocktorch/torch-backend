@@ -1,51 +1,36 @@
 import dotenv from "dotenv";
+import { z } from "zod";
 
 dotenv.config();
 
-interface EnvConfig {
-  DATABASE_URL: string;
-  JWT_SECRET: string;
-  JWT_EXPIRES_IN: string;
-  PORT: number;
-  NODE_ENV: string;
-  SANITY_PROJECT_ID: string;
-  SANITY_DATASET: string;
-  SANITY_API_VERSION: string;
-  SANITY_TOKEN?: string;
-  EMAIL_SERVICE: string;
-  EMAIL_HOST: string;
-  EMAIL_PORT: number;
-  EMAIL_USER: string;
-  EMAIL_PASSWORD: string;
-  EMAIL_FROM: string;
-  OTP_EXPIRY_MINUTES: number;
-  ADMIN_URL: string;
+const envSchema = z.object({
+  DATABASE_URL: z.string().min(1),
+  DIRECT_URL: z.string().min(1),
+  JWT_SECRET: z.string().min(1),
+  JWT_EXPIRES_IN: z.string().default("7d"),
+  PORT: z.coerce.number().default(3000),
+  NODE_ENV: z.string().default("development"),
+  SANITY_PROJECT_ID: z.string().min(1),
+  SANITY_DATASET: z.string().min(1),
+  SANITY_API_VERSION: z.string().default("2023-05-03"),
+  SANITY_TOKEN: z.string().optional(),
+  EMAIL_SERVICE: z.string().default("smtp"),
+  EMAIL_HOST: z.string().min(1),
+  EMAIL_PORT: z.coerce.number().default(587),
+  EMAIL_USER: z.string().min(1),
+  EMAIL_PASSWORD: z.string().min(1),
+  EMAIL_FROM: z.string().min(1),
+  OTP_EXPIRY_MINUTES: z.coerce.number().default(10),
+  ADMIN_URL: z.string().default("http://localhost:3000"),
+});
+
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+  console.error("Invalid environment variables:");
+  console.error(parsed.error.flatten().fieldErrors);
+  process.exit(1);
 }
 
-const getEnvVar = (key: string, defaultValue?: string): string => {
-  const value = process.env[key] || defaultValue;
-  if (!value) {
-    throw new Error(`Environment variable ${key} is not set`);
-  }
-  return value;
-};
-
-export const env: EnvConfig = {
-  DATABASE_URL: getEnvVar("DATABASE_URL"),
-  JWT_SECRET: getEnvVar("JWT_SECRET"),
-  JWT_EXPIRES_IN: getEnvVar("JWT_EXPIRES_IN", "7d"),
-  PORT: parseInt(getEnvVar("PORT", "3000"), 10),
-  NODE_ENV: getEnvVar("NODE_ENV", "development"),
-  SANITY_PROJECT_ID: getEnvVar("SANITY_PROJECT_ID"),
-  SANITY_DATASET: getEnvVar("SANITY_DATASET"),
-  SANITY_API_VERSION: getEnvVar("SANITY_API_VERSION", "2023-05-03"),
-  SANITY_TOKEN: process.env.SANITY_TOKEN,
-  EMAIL_SERVICE: getEnvVar("EMAIL_SERVICE", "smtp"),
-  EMAIL_HOST: getEnvVar("EMAIL_HOST"),
-  EMAIL_PORT: parseInt(getEnvVar("EMAIL_PORT", "587"), 10),
-  EMAIL_USER: getEnvVar("EMAIL_USER"),
-  EMAIL_PASSWORD: getEnvVar("EMAIL_PASSWORD"),
-  EMAIL_FROM: getEnvVar("EMAIL_FROM"),
-  OTP_EXPIRY_MINUTES: parseInt(getEnvVar("OTP_EXPIRY_MINUTES", "10"), 10),
-  ADMIN_URL: getEnvVar("ADMIN_URL", "http://localhost:3000"),
-};
+export const env = parsed.data;
+export type EnvConfig = z.infer<typeof envSchema>;
