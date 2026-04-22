@@ -71,6 +71,7 @@ export class CommunitiesService {
         logoUrl: true,
         category: true,
         memberCount: true,
+        bannerURL: true,
         openToJoin: true,
         createdAt: true,
         _count: {
