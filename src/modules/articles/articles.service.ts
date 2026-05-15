@@ -30,7 +30,7 @@ export class ArticlesService {
             sanityId: sanityArticle._id,
             title: sanityArticle.title,
             slug: sanityArticle.slug,
-            author: sanityArticle.author || null,
+            author: sanityArticle.authors.map((a) => a.name).join(", ") || null,
             type,
             isPost,
             visibility: "private", // Default to private
@@ -47,7 +47,7 @@ export class ArticlesService {
           data: {
             title: sanityArticle.title,
             slug: sanityArticle.slug,
-            author: sanityArticle.author || null,
+            author: sanityArticle.authors.map((a) => a.name).join(", ") || null,
             type,
             isPost,
             lastSyncedAt: new Date(),
