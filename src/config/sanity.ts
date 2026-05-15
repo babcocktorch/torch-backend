@@ -21,7 +21,7 @@ export const ARTICLES_QUERY = `
     title,
     isPost,
     "slug": slug.current,
-    "author": authors[]->{
+    "authors": authors[]->{
       name
 },
     _createdAt,
