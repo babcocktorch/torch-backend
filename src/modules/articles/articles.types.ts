@@ -4,7 +4,7 @@ export interface SanityArticle {
   title: string;
   isPost: boolean;
   slug: string;
-  authors: {
+  authors?: {
     name: string;
     slug?: string;
     image?: any;
