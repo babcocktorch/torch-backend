@@ -2,9 +2,13 @@
 export interface SanityArticle {
   _id: string;
   title: string;
-  isPost: boolean
+  isPost: boolean;
   slug: string;
-  author?: string;
+  authors: {
+    name: string;
+    slug?: string;
+    image?: any;
+  }[];
   _type?: string; // Optional in case some articles don't have type set
   _createdAt: string;
   _updatedAt: string;
@@ -19,7 +23,7 @@ export interface Article {
   author: string | null;
   type: string;
   isPost: boolean;
-  visibility: 'public' | 'private';
+  visibility: "public" | "private";
   isEditorsPick: boolean;
   isFeaturedOpinion: boolean;
   lastSyncedAt: Date;
@@ -35,7 +39,7 @@ export interface ArticleListItem {
   author: string | null;
   type: string;
   isPost: boolean;
-  visibility: 'public' | 'private';
+  visibility: "public" | "private";
   isEditorsPick: boolean;
   isFeaturedOpinion: boolean;
   lastSyncedAt: Date;
@@ -43,7 +47,7 @@ export interface ArticleListItem {
 
 // Update visibility request
 export interface UpdateVisibilityRequest {
-  visibility: 'public' | 'private';
+  visibility: "public" | "private";
 }
 
 // Sync result
