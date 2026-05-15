@@ -1,5 +1,5 @@
-import { createClient } from '@sanity/client';
-import { env } from './env';
+import { createClient } from "@sanity/client";
+import { env } from "./env";
 
 export const sanityClient = createClient({
   projectId: env.SANITY_PROJECT_ID,
@@ -21,7 +21,9 @@ export const ARTICLES_QUERY = `
     title,
     isPost,
     "slug": slug.current,
-    "author": author->name,
+    "author": authors[]->{
+      name
+},
     _createdAt,
     _updatedAt
   }
