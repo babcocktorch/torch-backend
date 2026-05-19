@@ -137,7 +137,8 @@ export class CommunitiesController {
         data.contactEmail === undefined &&
         data.category === undefined &&
         data.openToJoin === undefined &&
-        data.bannerURL === undefined
+        data.bannerURL === undefined &&
+        data.memberCount === undefined
       ) {
         return ResponseUtil.error(
           res,
