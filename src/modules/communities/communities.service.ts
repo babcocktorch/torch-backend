@@ -129,6 +129,7 @@ export class CommunitiesService {
       category,
       openToJoin,
       bannerURL,
+      memberCount,
     } = data;
 
     // Generate slug if not provided
@@ -158,6 +159,7 @@ export class CommunitiesService {
         category: category || null,
         openToJoin: openToJoin ?? false,
         bannerURL: bannerURL || null,
+        memberCount: memberCount ?? 0,
       },
     });
 
@@ -177,6 +179,7 @@ export class CommunitiesService {
       category,
       openToJoin,
       bannerURL,
+      memberCount,
     } = data;
 
     // Check if community exists
@@ -217,6 +220,7 @@ export class CommunitiesService {
     if (category !== undefined) updateData.category = category || null;
     if (openToJoin !== undefined) updateData.openToJoin = openToJoin;
     if (bannerURL !== undefined) updateData.bannerURL = bannerURL || null;
+    if (memberCount !== undefined) updateData.memberCount = memberCount;
 
     return prisma.community.update({
       where: { id },
