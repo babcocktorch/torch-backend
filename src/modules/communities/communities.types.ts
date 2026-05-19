@@ -24,6 +24,7 @@ export interface CreateCommunityRequest {
   category?: string;
   openToJoin?: boolean;
   bannerURL?: string;
+  memberCount?: number;
 }
 
 // Admin: Update Community
@@ -36,6 +37,7 @@ export interface UpdateCommunityRequest {
   category?: string;
   openToJoin?: boolean;
   bannerURL?: string;
+  memberCount?: number;
 }
 
 // Public: Community List Item
