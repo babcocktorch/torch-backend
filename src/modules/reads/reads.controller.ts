@@ -8,7 +8,7 @@ const readsService = new ReadsService();
 export class ReadsController {
   async trackRead(req: Request, res: Response) {
     try {
-      const { slug } = req.params;
+      const { slug } = req.params as { slug: string };
       const ipAddress = getClientIp(req);
 
       const result = await readsService.trackRead(slug, ipAddress);
@@ -20,7 +20,7 @@ export class ReadsController {
 
   async getArticleStats(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const stats = await readsService.getArticleStats(id);
       return ResponseUtil.success(res, { stats });
     } catch (error: any) {
