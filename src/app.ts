@@ -14,6 +14,8 @@ import submissionRoutes from "./modules/submissions/submissions.routes";
 import publicSubmissionRoutes from "./modules/submissions/public.routes";
 import publicReactionRoutes from "./modules/reactions/public.routes";
 import publicReadRoutes from "./modules/reads/public.routes";
+import commentRoutes from "./modules/comments/comments.routes";
+import publicCommentRoutes from "./modules/comments/public.routes";
 import { errorMiddleware } from "./middleware/error.middleware";
 
 const app: Application = express();
@@ -45,6 +47,12 @@ const submissionLimiter = rateLimit({
   message: { error: "Too many submissions, please try again later." },
 });
 
+const commentLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { error: "Too many comments, please try again later." },
+});
+
 // Health check
 app.get("/health", publicCors, (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
@@ -57,6 +65,7 @@ app.use("/api/v2/admin/reads", readRoutes); // FIXED: Was incorrectly mounted as
 app.use("/api/v2/admin/articles", articleRoutes);
 app.use("/api/v2/admin/communities", communityRoutes);
 app.use("/api/v2/admin/submissions", submissionRoutes);
+app.use("/api/v2/admin/comments", commentRoutes);
 
 // Public routes (with open CORS)
 app.use("/api/v2", publicCors); // applying to all public routes
@@ -65,6 +74,7 @@ app.use("/api/v2/articles", publicArticleRoutes);
 app.use("/api/v2/reactions", publicReactionRoutes);
 app.use("/api/v2/communities", publicCommunityRoutes);
 app.use("/api/v2/submissions", submissionLimiter, publicSubmissionRoutes);
+app.use("/api/v2/comments", commentLimiter, publicCommentRoutes);
 
 // Error handling middleware (must be last)
 app.use(errorMiddleware);
