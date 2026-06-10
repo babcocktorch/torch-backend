@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import { CommentsService } from './comments.service';
-import { ResponseUtil } from '../../utils/response.util';
+import { Request, Response } from "express";
+import { CommentsService } from "./comments.service";
+import { ResponseUtil } from "../../utils/response.util";
 
 const commentsService = new CommentsService();
 
@@ -12,26 +12,35 @@ export class CommentsController {
   async addComment(req: Request, res: Response) {
     try {
       const { slug } = req.params as { slug: string };
-      const { body } = req.body;
+      const { body, parentId } = req.body;
 
       if (!body) {
-        return ResponseUtil.error(res, 'Comment body is required', 400);
+        return ResponseUtil.error(res, "Comment body is required", 400);
       }
 
-      const comment = await commentsService.addComment(slug, body);
+      const comment = await commentsService.addComment(slug, body, parentId);
 
-      return ResponseUtil.success(res, {
-        message: 'Comment submitted successfully and is pending approval',
-        comment,
-      }, 201);
+      return ResponseUtil.success(
+        res,
+        {
+          message: "Comment submitted successfully and is pending approval",
+          comment,
+        },
+        201,
+      );
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to add comment';
-      
-      if (message === 'Article not found') return ResponseUtil.error(res, message, 404);
-      if (message === 'Comment body cannot be empty' || message === 'Cannot comment on non-public articles') {
+      const message =
+        error instanceof Error ? error.message : "Failed to add comment";
+
+      if (message === "Article not found")
+        return ResponseUtil.error(res, message, 404);
+      if (
+        message === "Comment body cannot be empty" ||
+        message === "Cannot comment on non-public articles"
+      ) {
         return ResponseUtil.error(res, message, 400);
       }
-      
+
       return ResponseUtil.error(res, message, 500);
     }
   }
@@ -43,15 +52,45 @@ export class CommentsController {
   async getComments(req: Request, res: Response) {
     try {
       const { slug } = req.params as { slug: string };
-      const comments = await commentsService.getCommentsForArticle(slug);
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
 
-      return ResponseUtil.success(res, { comments }, 200);
+      const result = await commentsService.getCommentsForArticle(slug, page, limit);
+
+      return ResponseUtil.success(res, result, 200);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to get comments';
-      
-      if (message === 'Article not found') return ResponseUtil.error(res, message, 404);
-      if (message === 'Cannot get comments for non-public articles') return ResponseUtil.error(res, message, 400);
-      
+      const message =
+        error instanceof Error ? error.message : "Failed to get comments";
+
+      if (message === "Article not found")
+        return ResponseUtil.error(res, message, 404);
+      if (message === "Cannot get comments for non-public articles")
+        return ResponseUtil.error(res, message, 400);
+
+      return ResponseUtil.error(res, message, 500);
+    }
+  }
+
+  /**
+   * GET /api/v2/comments/:slug/replies/:parentId
+   * Public: Get paginated replies for a comment
+   */
+  async getReplies(req: Request, res: Response) {
+    try {
+      const { parentId } = req.params as { parentId: string };
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const result = await commentsService.getRepliesForComment(parentId, page, limit);
+
+      return ResponseUtil.success(res, result, 200);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to get replies";
+
+      if (message === "Parent comment not found")
+        return ResponseUtil.error(res, message, 404);
+
       return ResponseUtil.error(res, message, 500);
     }
   }
@@ -62,10 +101,15 @@ export class CommentsController {
    */
   async listAllComments(req: Request, res: Response) {
     try {
-      const comments = await commentsService.getAllComments();
-      return ResponseUtil.success(res, { comments }, 200);
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
+      const status = (req.query.status as string) || "all";
+
+      const result = await commentsService.getAllComments(page, limit, status);
+      return ResponseUtil.success(res, result, 200);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to list comments';
+      const message =
+        error instanceof Error ? error.message : "Failed to list comments";
       return ResponseUtil.error(res, message, 500);
     }
   }
@@ -79,19 +123,25 @@ export class CommentsController {
       const { id } = req.params as { id: string };
       const { isApproved } = req.body;
 
-      if (typeof isApproved !== 'boolean') {
-        return ResponseUtil.error(res, 'isApproved must be a boolean', 400);
+      if (typeof isApproved !== "boolean") {
+        return ResponseUtil.error(res, "isApproved must be a boolean", 400);
       }
 
       const comment = await commentsService.updateCommentStatus(id, isApproved);
 
-      return ResponseUtil.success(res, {
-        message: 'Comment status updated',
-        comment,
-      }, 200);
+      return ResponseUtil.success(
+        res,
+        {
+          message: "Comment status updated",
+          comment,
+        },
+        200,
+      );
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to update comment';
-      if (message === 'Comment not found') return ResponseUtil.error(res, message, 404);
+      const message =
+        error instanceof Error ? error.message : "Failed to update comment";
+      if (message === "Comment not found")
+        return ResponseUtil.error(res, message, 404);
       return ResponseUtil.error(res, message, 500);
     }
   }
@@ -107,8 +157,10 @@ export class CommentsController {
 
       return ResponseUtil.success(res, result, 200);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to delete comment';
-      if (message === 'Comment not found') return ResponseUtil.error(res, message, 404);
+      const message =
+        error instanceof Error ? error.message : "Failed to delete comment";
+      if (message === "Comment not found")
+        return ResponseUtil.error(res, message, 404);
       return ResponseUtil.error(res, message, 500);
     }
   }
