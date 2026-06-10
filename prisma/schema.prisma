@@ -126,15 +126,19 @@ model Submission {
 }
 
 model Comment {
-  id          String   @id @default(uuid())
-  articleId   String   @map("article_id")
+  id          String    @id @default(uuid())
+  articleId   String    @map("article_id")
+  parentId    String?   @map("parent_id")
   body        String
-  isApproved  Boolean  @default(false) @map("is_approved")
-  createdAt   DateTime @default(now()) @map("created_at")
+  isApproved  Boolean   @default(false) @map("is_approved")
+  createdAt   DateTime  @default(now()) @map("created_at")
 
-  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  article     Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  parent      Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("CommentToComment")
 
   @@index([articleId])
+  @@index([parentId])
   @@index([isApproved])
   @@map("comments")
 }
