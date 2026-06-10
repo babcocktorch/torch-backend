@@ -33,7 +33,7 @@ export class CommunitiesController {
    */
   async getPublicCommunityBySlug(req: Request, res: Response) {
     try {
-      const { slug } = req.params;
+      const { slug } = req.params as { slug: string };
       const community = await communitiesService.getPublicCommunityBySlug(slug);
       return ResponseUtil.success(res, { community }, 200);
     } catch (error) {
@@ -71,7 +71,7 @@ export class CommunitiesController {
    */
   async getCommunity(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const community = await communitiesService.getCommunity(id);
       return ResponseUtil.success(res, { community }, 200);
     } catch (error) {
@@ -125,7 +125,7 @@ export class CommunitiesController {
    */
   async updateCommunity(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const data = req.body as UpdateCommunityRequest;
 
       // At least one field must be provided
@@ -181,7 +181,7 @@ export class CommunitiesController {
    */
   async deleteCommunity(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const result = await communitiesService.deleteCommunity(id);
       return ResponseUtil.success(res, result, 200);
     } catch (error) {
