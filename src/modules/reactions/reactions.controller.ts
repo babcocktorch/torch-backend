@@ -9,7 +9,7 @@ const reactionsService = new ReactionsService();
 export class ReactionsController {
   async addReaction(req: Request, res: Response) {
     try {
-      const { slug } = req.params;
+      const { slug } = req.params as { slug: string };
       const { reactionType } = req.body as AddReactionRequest;
       const identifier = getClientIp(req);
 
@@ -26,7 +26,7 @@ export class ReactionsController {
 
   async removeReaction(req: Request, res: Response) {
     try {
-      const { slug } = req.params;
+      const { slug } = req.params as { slug: string };
       const identifier = getClientIp(req);
 
       const result = await reactionsService.removeReaction(slug, identifier);
@@ -38,7 +38,7 @@ export class ReactionsController {
 
   async getReactions(req: Request, res: Response) {
     try {
-      const { slug } = req.params;
+      const { slug } = req.params as { slug: string };
       const identifier = getClientIp(req);
 
       const result = await reactionsService.getReactions(slug, identifier);
