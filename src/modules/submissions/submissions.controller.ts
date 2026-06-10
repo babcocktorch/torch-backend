@@ -101,7 +101,7 @@ export class SubmissionsController {
    */
   async getSubmission(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const submission = await submissionsService.getSubmission(id);
 
       return ResponseUtil.success(res, {
@@ -125,7 +125,7 @@ export class SubmissionsController {
    */
   async updateSubmissionStatus(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const data = req.body as UpdateSubmissionStatusRequest;
       const adminId = (req as any).adminId; // From auth middleware
 
@@ -160,7 +160,7 @@ export class SubmissionsController {
    */
   async deleteSubmission(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const result = await submissionsService.deleteSubmission(id);
 
       return ResponseUtil.success(res, result, 200);
