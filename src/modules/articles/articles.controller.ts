@@ -59,7 +59,7 @@ export class ArticlesController {
    */
   async updateVisibility(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const { visibility } = req.body as UpdateVisibilityRequest;
 
       if (!visibility || !['public', 'private'].includes(visibility)) {
@@ -85,7 +85,7 @@ export class ArticlesController {
    */
   async setEditorsPick(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const article = await articlesService.setEditorsPick(id);
       return ResponseUtil.success(res, { 
         message: "Article set as Editor's Pick",
@@ -112,7 +112,7 @@ export class ArticlesController {
    */
   async removeEditorsPick(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const article = await articlesService.removeEditorsPick(id);
       return ResponseUtil.success(res, {
         message: "Article removed from Editor's Pick",
@@ -139,7 +139,7 @@ export class ArticlesController {
    */
   async setFeaturedOpinion(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const article = await articlesService.setFeaturedOpinion(id);
       return ResponseUtil.success(res, {
         message: 'Article set as Featured Opinion',
@@ -156,7 +156,7 @@ export class ArticlesController {
    */
   async removeFeaturedOpinion(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const article = await articlesService.removeFeaturedOpinion(id);
       return ResponseUtil.success(res, {
         message: 'Article removed from Featured Opinion',
@@ -187,7 +187,7 @@ export class ArticlesController {
    */
   async getPublicArticleBySlug(req: Request, res: Response) {
     try {
-      const { slug } = req.params;
+      const { slug } = req.params as { slug: string };
       const article = await articlesService.getPublicArticleBySlug(slug);
       return ResponseUtil.success(res, { article }, 200);
     } catch (error) {
