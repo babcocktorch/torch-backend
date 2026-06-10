@@ -49,6 +49,7 @@ model Article {
 
   reads          ArticleRead[]
   reactions      Reaction[]
+  comments       Comment[]
 
   @@map("articles")
 }
@@ -122,4 +123,18 @@ model Submission {
   @@index([status])
   @@index([submissionType])
   @@map("submissions")
+}
+
+model Comment {
+  id          String   @id @default(uuid())
+  articleId   String   @map("article_id")
+  body        String
+  isApproved  Boolean  @default(false) @map("is_approved")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+  @@index([isApproved])
+  @@map("comments")
 }
