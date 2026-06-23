@@ -20,8 +20,7 @@ export class ArticlesService {
       });
 
       // Use 'let' for variables we may derive or reassign
-      let isPost = sanityArticle.isPost === true ? true : false;
-      let type = isPost ? "post" : "opinion"; // lowercase for API response
+      let type = (sanityArticle.articleType || "Post").toLowerCase(); // lowercase for API response
 
       if (!existingArticle) {
         // Create new article
@@ -33,7 +32,6 @@ export class ArticlesService {
             author:
               sanityArticle.authors?.map((a) => a.name).join(", ") || null,
             type,
-            isPost,
             visibility: "private", // Default to private
             isEditorsPick: false,
             isFeaturedOpinion: false,
@@ -51,7 +49,6 @@ export class ArticlesService {
             author:
               sanityArticle.authors?.map((a) => a.name).join(", ") || null,
             type,
-            isPost,
             lastSyncedAt: new Date(),
           },
         });
@@ -90,7 +87,6 @@ export class ArticlesService {
         slug: true,
         author: true,
         type: true,
-        isPost: true,
         visibility: true,
         isEditorsPick: true,
         isFeaturedOpinion: true,
@@ -126,7 +122,6 @@ export class ArticlesService {
       slug: articles.slug,
       author: articles.author,
       type: articles.type,
-      isPost: articles.isPost,
       visibility: articles.visibility,
       isEditorsPick: articles.isEditorsPick,
       isFeaturedOpinion: articles.isFeaturedOpinion,
@@ -167,7 +162,7 @@ export class ArticlesService {
     }
 
     // Check if article is a post
-    if (!article.isPost) {
+    if (article.type.toLowerCase() !== "post") {
       throw new Error("Only posts can be set as Editor's Pick");
     }
 
@@ -327,7 +322,6 @@ export class ArticlesService {
         slug: true,
         author: true,
         type: true,
-        isPost: true,
         isEditorsPick: true,
         isFeaturedOpinion: true,
         lastSyncedAt: true,
@@ -348,7 +342,6 @@ export class ArticlesService {
         slug: true,
         author: true,
         type: true,
-        isPost: true,
         isEditorsPick: true,
         isFeaturedOpinion: true,
         lastSyncedAt: true,
