@@ -2,7 +2,7 @@
 export interface SanityArticle {
   _id: string;
   title: string;
-  isPost: boolean;
+  articleType: string;
   slug: string;
   authors?: {
     name: string;
@@ -22,7 +22,6 @@ export interface Article {
   slug: string;
   author: string | null;
   type: string;
-  isPost: boolean;
   visibility: "public" | "private";
   isEditorsPick: boolean;
   isFeaturedOpinion: boolean;
@@ -38,7 +37,6 @@ export interface ArticleListItem {
   slug: string;
   author: string | null;
   type: string;
-  isPost: boolean;
   visibility: "public" | "private";
   isEditorsPick: boolean;
   isFeaturedOpinion: boolean;
