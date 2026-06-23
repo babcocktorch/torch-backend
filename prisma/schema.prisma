@@ -40,7 +40,6 @@ model Article {
   title          String
   slug           String    @unique
   author         String?
-  isPost         Boolean   @map("is_post")
   visibility     String    @default("private") // 'public' or 'private'
   isEditorsPick  Boolean   @default(false) @map("is_editors_pick")
   isFeaturedOpinion Boolean   @default(false) @map("is_featured_opinion")
