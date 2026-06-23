@@ -19,7 +19,7 @@ export const ARTICLES_QUERY = `
   [0...1000] {
     _id,
     title,
-    isPost,
+    articleType,
     "slug": slug.current,
     "authors": authors[]->{
       name
