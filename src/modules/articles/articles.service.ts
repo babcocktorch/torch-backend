@@ -107,6 +107,9 @@ export class ArticlesService {
         _count: {
           select: { reads: true },
         },
+        reactions: {
+          select: { reactionType: true },
+        },
       },
       orderBy: {
         reads: {
@@ -115,19 +118,47 @@ export class ArticlesService {
       },
     });
 
-    return articles.map((articles: any) => ({
-      id: articles.id,
-      sanityId: articles.sanityId,
-      title: articles.title,
-      slug: articles.slug,
-      author: articles.author,
-      type: articles.type,
-      visibility: articles.visibility,
-      isEditorsPick: articles.isEditorsPick,
-      isFeaturedOpinion: articles.isFeaturedOpinion,
-      lastSyncedAt: articles.lastSyncedAt,
-      readCount: articles._count.reads,
-    }));
+    return articles.map((articles: any) => {
+      const upvotes = articles.reactions.filter(
+        (r: any) => r.reactionType === "upvote",
+      ).length;
+      const downvotes = articles.reactions.filter(
+        (r: any) => r.reactionType === "downvote",
+      ).length;
+      const totalReactions = upvotes + downvotes;
+
+      const agreePct =
+        totalReactions > 0 ? Math.round((upvotes / totalReactions) * 100) : 50;
+      const disagreePct = totalReactions > 0 ? 100 - agreePct : 50;
+
+      const maxReactions = Math.max(upvotes, downvotes);
+      const minReactions = Math.min(upvotes, downvotes);
+      const balance = maxReactions > 0 ? minReactions / maxReactions : 0;
+
+      // Controversial score gives primary weight to a 50/50 balance of high reactions,
+      // and secondary weight to pure reaction volume if balance is low.
+      const controversialScore =
+        balance * totalReactions + totalReactions * 0.001;
+
+      return {
+        id: articles.id,
+        sanityId: articles.sanityId,
+        title: articles.title,
+        slug: articles.slug,
+        author: articles.author,
+        type: articles.type,
+        visibility: articles.visibility,
+        isEditorsPick: articles.isEditorsPick,
+        isFeaturedOpinion: articles.isFeaturedOpinion,
+        lastSyncedAt: articles.lastSyncedAt,
+        readCount: articles._count.reads,
+        upvotes,
+        downvotes,
+        agreePct,
+        disagreePct,
+        controversialScore,
+      };
+    });
   }
 
   /**
